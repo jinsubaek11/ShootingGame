@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
+#include "components/ArrowComponent.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -16,16 +17,20 @@ ABullet::ABullet()
 	// boxcomp를 root로 설정
 	SetRootComponent(boxcomp);
 	// collision 크기 설정
-	boxcomp->SetBoxExtent(FVector(50));
+	boxcomp->SetBoxExtent(FVector(25));
 	// collision 스케일 설정
-	boxcomp->SetWorldScale3D(FVector(0.75, 1, 0.25));
+	//boxcomp->SetWorldScale3D(FVector(0.75, 1, 0.25));
+
+	arrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
+	arrowComp->SetupAttachment(RootComponent);
 
 	// mesh 생성
 	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	meshcomp->SetWorldScale3D(FVector(0.2));
 	// meshcomp를 root아래로 설정
 	meshcomp->SetupAttachment(RootComponent);
 	// mesh 위치조정
-	meshcomp->SetRelativeLocation(FVector(0, 0, -50));
+	meshcomp->SetRelativeLocation(FVector(0, 0, -10));
 }
 
 // Called when the game starts or when spawned

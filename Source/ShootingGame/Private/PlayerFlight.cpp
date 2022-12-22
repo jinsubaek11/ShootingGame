@@ -56,16 +56,28 @@ void APlayerFlight::Tick(float DeltaTime)
 	if (isShoot && accTime >= shootingDelay)
 	{
 		FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
-		// 스폰 로테이션 정의 ( Pitch, Roll, Yaw )
-		FRotator spawnrotation = FRotator(0, 0, 0);
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-		FActorSpawnParameters para;
-		para.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		if (attackLevel == 0)
+		{
+			FRotator spawnrotation = FRotator(0, 0, 0);
+			ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
+			bullet->SetLifeSpan(3.0f);
 
-		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, para);
-		bullet->SetLifeSpan(3.0f);
+			projectiles.Add(bullet);
+		}
+		else
+		{
+			for (int i = MIN_DEGREE * attackLevel; i < MAX_DEGREE * attackLevel; i += COUNT_CONTROL_VAR / attackLevel)
+			{
+				FRotator spawnrotation = FRotator(0, 0, -i);
+				ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
+				bullet->SetLifeSpan(3.0f);
 
-		projectiles.Add(bullet);
+				projectiles.Add(bullet);
+			}
+		}
 
 		UE_LOG(LogTemp, Warning, TEXT("%d"), projectiles.Num());
 
@@ -89,6 +101,13 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	// Mapping 설정한 input이 들어오면 bulletfire함수 실행
 	//PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
+}
+
+void APlayerFlight::SetAttackLevel(char value)
+{
+	if (attackLevel > STRONG) return;
+
+	attackLevel += value;
 }
 
 // 좌우입력이 들어왔을 때 실행될 함수 정의

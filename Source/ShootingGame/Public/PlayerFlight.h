@@ -6,6 +6,11 @@
 #include "GameFramework/Pawn.h"
 #include "PlayerFlight.generated.h"
 
+#define WEAK 0b00000001
+#define NORMAL 0b00000010
+#define STRONG 0b00000100
+
+
 UCLASS()
 class SHOOTINGGAME_API APlayerFlight : public APawn
 {
@@ -32,9 +37,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	TSubclassOf<class ABullet>bulletfactory;
 
-	UPROPERTY(EditDefaultsOnly, Category = Playersettings)
+	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
 	float shootingDelay = 0.1;
 
+	UPROPERTY(EditAnywhere, Category = PlayerSettings)
+	uint8 attackLevel = 0;
 
 
 
@@ -48,6 +55,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	void SetAttackLevel(char value);
 
 private:
 	// 좌우입력이 들어왔을 때 실행될 함수 선언
@@ -65,5 +75,9 @@ private:
 
 	float accTime = 0;
 	bool isShoot = false;
+
+	const uint8 MIN_DEGREE = -5;
+	const uint8 MAX_DEGREE =  5;
+	const uint8 COUNT_CONTROL_VAR = 4;
 };
 
