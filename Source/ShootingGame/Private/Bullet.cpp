@@ -12,20 +12,20 @@ ABullet::ABullet()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// collision 생성
-	boxcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
-	// boxcomp를 root로 설정
-	SetRootComponent(boxcomp);
+	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
+	// boxComp를 root로 설정
+	SetRootComponent(boxComp);
 	// collision 크기 설정
-	boxcomp->SetBoxExtent(FVector(50));
+	boxComp->SetBoxExtent(FVector(50));
 	// collision 스케일 설정
-	boxcomp->SetWorldScale3D(FVector(0.75, 1, 0.25));
+	boxComp->SetWorldScale3D(FVector(0.75, 1, 0.25));
 
 	// mesh 생성
-	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	// meshcomp를 root아래로 설정
-	meshcomp->SetupAttachment(RootComponent);
+	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	// meshComp를 root아래로 설정
+	meshComp->SetupAttachment(RootComponent);
 	// mesh 위치조정
-	meshcomp->SetRelativeLocation(FVector(0, 0, -50));
+	meshComp->SetRelativeLocation(FVector(0, 0, -50));
 }
 
 // Called when the game starts or when spawned
@@ -43,7 +43,7 @@ void ABullet::Tick(float DeltaTime)
 	// 액터기준 정면(우측) 벡터값 받아오기
 	direction = GetActorRightVector();
 	// 이동구현 p=p0+vt
-	SetActorLocation(GetActorLocation() + direction * bulletspeed * DeltaTime);
+	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
 
 
 

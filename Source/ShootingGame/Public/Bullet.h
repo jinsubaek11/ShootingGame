@@ -17,14 +17,14 @@ public:
 
 	// collision 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UBoxComponent* boxcomp;
+	class UBoxComponent* boxComp;
 	// mesh 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UStaticMeshComponent* meshcomp;
+	class UStaticMeshComponent* meshComp;
 
 	// 총알속도 변수 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	float bulletspeed=1600;
+	float bulletSpeed=1600;
 	// 총알이동 벡터변수 선언
 	FVector direction;
 
