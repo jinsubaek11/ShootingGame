@@ -31,7 +31,7 @@ public:
 	FVector direction;
 	// 이동속도 변수 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	float movespeed = 800;
+	float moveSpeed = 800;
 
 	// 총알 블루프린트를 넣을 수 있는 변수 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
@@ -42,8 +42,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)
 	uint8 attackLevel = 0;
-
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -72,12 +70,13 @@ private:
 private:
 	UPROPERTY()
 	TArray<class ABullet*> projectiles;
+	TArray<class AAttackBarrier*> attackBarriers;
 
 	float accTime = 0;
 	bool isShoot = false;
 
-	const uint8 MIN_DEGREE = -5;
-	const uint8 MAX_DEGREE =  5;
-	const uint8 COUNT_CONTROL_VAR = 4;
+	const int8 MIN_DEGREE = -5;
+	const int8 MAX_DEGREE =  5;
+	const int8 COUNT_CONTROL_VAR = 4;
 };
 
