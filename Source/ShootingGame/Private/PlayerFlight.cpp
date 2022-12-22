@@ -80,7 +80,7 @@ void APlayerFlight::VerticalInput(float value)
 void APlayerFlight::BulletFire()
 {
 	// 스폰위치 정의
-	FVector spawnPosition = GetActorLocation() + GetActorRightVector() * 60;
+	FVector spawnPosition = GetActorLocation() + GetActorRightVector() * 200;
 	// 스폰 로테이션 정의 ( Pitch, Roll, Yaw )
 	FRotator spawnRotation = FRotator(0, 0, 0);
 	// 스폰 옵션 (optional)

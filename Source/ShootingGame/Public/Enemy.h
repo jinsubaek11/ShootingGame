@@ -4,36 +4,36 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bullet.generated.h"
+#include "Enemy.generated.h"
 
 UCLASS()
-class SHOOTINGGAME_API ABullet : public AActor
+class SHOOTINGGAME_API AEnemy : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABullet();
+	AEnemy();
 
-	// collision 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
+	// 박스 콜리전 선언
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UBoxComponent* boxComp;
-	// mesh 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
+	// 메쉬 선언
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UStaticMeshComponent* meshComp;
 
-	// 총알속도 변수 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	float bulletSpeed=1600;
-	// 총알이동 벡터변수 선언
+	// 적 이동 속도 변수
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
+	float enemySpeed=400;
+	// 적 이동 벡터
 	FVector direction;
 
 	// 오버랩 감지 함수
 	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
-	// 시간이 흐르면 빗나간 총알 자동삭제할 타이머
-	float currentTime;
-	float settingTime = 5;
+	// 아이템 블루프린트 선택창 만들기
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	TSubclassOf <class AItem> itemFactory;
 
 protected:
 	// Called when the game starts or when spawned

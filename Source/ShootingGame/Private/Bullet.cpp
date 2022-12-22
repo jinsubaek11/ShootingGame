@@ -45,7 +45,16 @@ void ABullet::Tick(float DeltaTime)
 	// 이동구현 p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
 
-
+	// 빗나간 탄환 시간에 따라 자동삭제하기
+	currentTime += DeltaTime;
+	if (currentTime >= settingTime)
+	{
+		Destroy();
+	}
 
 }
 
+void ABullet::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Destroy();
+}
