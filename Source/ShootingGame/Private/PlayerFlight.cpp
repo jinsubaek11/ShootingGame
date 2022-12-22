@@ -51,6 +51,28 @@ void APlayerFlight::Tick(float DeltaTime)
 	// 이동 구현 p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * movespeed * DeltaTime);
 
+	accTime += DeltaTime;
+
+	if (isShoot && accTime >= shootingDelay)
+	{
+		FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
+		// 스폰 로테이션 정의 ( Pitch, Roll, Yaw )
+		FRotator spawnrotation = FRotator(0, 0, 0);
+
+		FActorSpawnParameters para;
+		para.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, para);
+		bullet->SetLifeSpan(3.0f);
+
+		projectiles.Add(bullet);
+
+		UE_LOG(LogTemp, Warning, TEXT("%d"), projectiles.Num());
+
+		accTime = 0.f;
+	}
+
+
 }
 
 // Called to bind functionality to input
@@ -59,20 +81,23 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Mapping 설정한 Horizontal input이 들어오면 horizontalinput함수 실행
-	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::horizontalinput);
+	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::HorizontalInput);
 	// Mapping 설정한 Vertical input이 들어오면 verticalinput함수 실행
-	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::verticalinput);
+	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::VerticalInput);
+
+	PlayerInputComponent->BindAxis("Fire", this, &APlayerFlight::Fire);
+
 	// Mapping 설정한 input이 들어오면 bulletfire함수 실행
-	PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
+	//PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
 }
 
 // 좌우입력이 들어왔을 때 실행될 함수 정의
-void APlayerFlight::horizontalinput(float value)
+void APlayerFlight::HorizontalInput(float value)
 {
 	direction.Y = value;
 }
 // 상하입력이 들어왔을 때 실행될 함수 정의
-void APlayerFlight::verticalinput(float value)
+void APlayerFlight::VerticalInput(float value)
 {
 	direction.Z = value;
 }
@@ -88,4 +113,16 @@ void APlayerFlight::bulletfire()
 	para.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	// 총알 블루프린트를 넣은 변수를 스폰
 	GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, para);
+}
+
+void APlayerFlight::Fire(float value)
+{
+	if (value >= 1.0f)
+	{
+		isShoot = true;
+	}
+	else
+	{
+		isShoot = false;
+	}
 }

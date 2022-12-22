@@ -26,11 +26,16 @@ public:
 	FVector direction;
 	// 이동속도 변수 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	float movespeed=800;
+	float movespeed = 800;
 
 	// 총알 블루프린트를 넣을 수 있는 변수 선언
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	TSubclassOf<class ABullet>bulletfactory;
+
+	UPROPERTY(EditDefaultsOnly, Category = Playersettings)
+	float shootingDelay = 0.1;
+
+
 
 
 protected:
@@ -46,10 +51,19 @@ public:
 
 private:
 	// 좌우입력이 들어왔을 때 실행될 함수 선언
-	void horizontalinput(float value);
+	void HorizontalInput(float value);
 	// 상하입력이 들어왔을 때 실행될 함수 선언
-	void verticalinput(float value);
+	void VerticalInput(float value);
 	// 클릭입력이 들어왔을 때 실행될 함수 선언
 	void bulletfire();
 
+	void Fire(float value);
+
+private:
+	UPROPERTY()
+	TArray<class ABullet*> projectiles;
+
+	float accTime = 0;
+	bool isShoot = false;
 };
+
