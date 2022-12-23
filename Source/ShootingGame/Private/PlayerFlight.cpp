@@ -6,6 +6,7 @@
 #include "components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Bullet.h"
+#include "AttackBarrier.h"
 
 // Sets default values
 APlayerFlight::APlayerFlight()
@@ -49,7 +50,64 @@ void APlayerFlight::Tick(float DeltaTime)
 	// 벡터 정규화
 	direction.Normalize();
 	// 이동 구현 p=p0+vt
-	SetActorLocation(GetActorLocation() + direction * movespeed * DeltaTime);
+	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
+
+	accTime += DeltaTime;
+
+	if (attackLevel == 0 && attackBarriers.Num() < attackLevel + 1)
+	{
+		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
+		attackBarriers.Emplace(attackBarrier);
+	}
+
+	if (attackLevel == 1 && attackBarriers.Num() < attackLevel + 1)
+	{
+		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
+		attackBarriers.Emplace(attackBarrier);
+	}
+
+	if (attackLevel == 2 && attackBarriers.Num() < attackLevel + 1)
+	{
+		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
+		attackBarriers.Emplace(attackBarrier);
+	}
+
+	if (isShoot && accTime >= shootingDelay)
+	{
+		FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
+		FActorSpawnParameters param;
+		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		if (attackLevel == 0)
+		{
+			FRotator spawnrotation = FRotator(0, 0, 0);
+			ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
+			bullet->SetLifeSpan(3.0f);
+
+			projectiles.Emplace(bullet);
+		}
+		else
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("%d"), attackLevel);
+
+			for (int i = MIN_DEGREE * attackLevel; i < MAX_DEGREE * attackLevel; i += COUNT_CONTROL_VAR / attackLevel)
+			//for (int i = -20; i < 20; i += 3)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("%d"), attackLevel + 1);
+
+				FRotator spawnrotation = FRotator(0, 0, -i);
+				ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
+				bullet->SetLifeSpan(3.0f);
+
+				projectiles.Emplace(bullet);
+			}
+		}
+
+		//UE_LOG(LogTemp, Warning, TEXT("%d"), projectiles.Num());
+
+		accTime = 0.f;
+	}
+
 
 }
 
@@ -59,20 +117,30 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Mapping 설정한 Horizontal input이 들어오면 horizontalinput함수 실행
-	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::horizontalinput);
+	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::HorizontalInput);
 	// Mapping 설정한 Vertical input이 들어오면 verticalinput함수 실행
-	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::verticalinput);
+	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::VerticalInput);
+
+	PlayerInputComponent->BindAxis("Fire", this, &APlayerFlight::Fire);
+
 	// Mapping 설정한 input이 들어오면 bulletfire함수 실행
-	PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
+	//PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
+}
+
+void APlayerFlight::SetAttackLevel(char value)
+{
+	if (attackLevel > STRONG) return;
+
+	attackLevel += value;
 }
 
 // 좌우입력이 들어왔을 때 실행될 함수 정의
-void APlayerFlight::horizontalinput(float value)
+void APlayerFlight::HorizontalInput(float value)
 {
 	direction.Y = value;
 }
 // 상하입력이 들어왔을 때 실행될 함수 정의
-void APlayerFlight::verticalinput(float value)
+void APlayerFlight::VerticalInput(float value)
 {
 	direction.Z = value;
 }
@@ -84,8 +152,20 @@ void APlayerFlight::bulletfire()
 	// 스폰 로테이션 정의 ( Pitch, Roll, Yaw )
 	FRotator spawnrotation = FRotator(0, 0, 0);
 	// 스폰 옵션 (optional)
-	FActorSpawnParameters para;
-	para.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FActorSpawnParameters param;
+	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	// 총알 블루프린트를 넣은 변수를 스폰
-	GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, para);
+	GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
+}
+
+void APlayerFlight::Fire(float value)
+{
+	if (value >= 1.0f)
+	{
+		isShoot = true;
+	}
+	else
+	{
+		isShoot = false;
+	}
 }
