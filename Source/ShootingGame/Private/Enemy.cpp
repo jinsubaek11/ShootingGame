@@ -38,7 +38,7 @@ void AEnemy::Tick(float DeltaTime)
 	// 적 이동 구현 p=p0+vt
 	direction = GetActorForwardVector();
 	SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
-
+	
 }
 
 void AEnemy::NotifyActorBeginOverlap(AActor* OtherActor)
