@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
+#include "Runtime/Engine/public/TimerManager.h"
 
 
 // Sets default values
@@ -28,6 +29,8 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
+
+
 }
 
 // Called every frame
@@ -47,7 +50,12 @@ void AEnemy::NotifyActorBeginOverlap(AActor* OtherActor)
 
 	// 아이템 스폰 로케이션을 제자리로 하면 스폰시 엔진 셧다운되서 임시조치함
 	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation()+FVector(0,0,-100), GetActorRotation());
+
+// 	FTimerHandle TimerHandle;
+// 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+// 		{
+// 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, 0), GetActorRotation());
+// 		}, 0.2, false);
+
 	Destroy();
 }
-
-
