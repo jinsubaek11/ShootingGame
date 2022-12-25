@@ -4,6 +4,7 @@
 #include "Item.h"
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
+#include "PlayerFlight.h"
 
 // Sets default values
 AItem::AItem()
@@ -26,7 +27,7 @@ AItem::AItem()
 void AItem::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnOverlap);
 }
 
 // Called every frame
@@ -36,3 +37,12 @@ void AItem::Tick(float DeltaTime)
 
 }
 
+void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+
+	if (player != nullptr)
+	{
+		Destroy();
+	}
+}
