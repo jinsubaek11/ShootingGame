@@ -15,22 +15,29 @@ public:
 	// Sets default values for this actor's properties
 	ABullet();
 
-	// collision ¼±¾ð
+	// collision ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	class UBoxComponent* boxComp;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UArrowComponent* arrowComp;
 	
-	// mesh ¼±¾ð
+	// mesh ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	class UStaticMeshComponent* meshComp;
 
-	// ÃÑ¾Ë¼Óµµ º¯¼ö ¼±¾ð
+	// ï¿½Ñ¾Ë¼Óµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	float bulletSpeed = 400;
-	// ÃÑ¾ËÀÌµ¿ º¤ÅÍº¯¼ö ¼±¾ð
+	// ï¿½Ñ¾ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½Íºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	FVector direction;
+
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+
+	// ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½å¸£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½
+	float currentTime;
+	float settingTime = 5;
 
 protected:
 	// Called when the game starts or when spawned
