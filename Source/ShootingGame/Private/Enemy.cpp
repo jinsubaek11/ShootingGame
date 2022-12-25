@@ -30,6 +30,9 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
+
+	drawRate = FMath::RandRange(0.0f, 1.0f);
+
 }
 
 // Called every frame
@@ -49,7 +52,12 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (bullet != nullptr)
 	{
-		GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+
+		if (drawRate <= dropRate)
+		{
+			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+		}
+
 		bullet->Destroy();
 		Destroy();
 	}
