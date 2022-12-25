@@ -40,9 +40,27 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 적 이동 구현 p=p0+vt
-	direction = GetActorForwardVector();
-	SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
+	if (movingMode==1)
+	{
+		// Y축따라 직선으로 들어왔다가 나가도록
+		FVector newLocation = GetActorLocation();
+		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
+		newLocation.Y += deltaY * -800.0f;
+		runningTime += DeltaTime;
+		SetActorLocation(newLocation);
+
+		if (newLocation.Y>1200)
+		{
+			Destroy();
+		}
+	} 
+	else
+	{
+		// 적 등속이동 p=p0+vt
+		direction = GetActorForwardVector();
+		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
+	}
+
 	
 }
 
