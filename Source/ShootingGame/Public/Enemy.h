@@ -28,12 +28,13 @@ public:
 	// 적 이동 벡터
 	FVector direction;
 
-	// 오버랩 감지 함수
-	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
-
 	// 아이템 블루프린트 선택창 만들기
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactory;
+
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 
 protected:
 	// Called when the game starts or when spawned

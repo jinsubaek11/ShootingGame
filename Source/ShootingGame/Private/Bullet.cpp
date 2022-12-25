@@ -5,6 +5,7 @@
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
+#include "Enemy.h"
 
 // Sets default values
 ABullet::ABullet()
@@ -31,7 +32,7 @@ ABullet::ABullet()
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -43,7 +44,4 @@ void ABullet::Tick(float DeltaTime)
 	// 이동구현 p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
 
-
-
 }
-

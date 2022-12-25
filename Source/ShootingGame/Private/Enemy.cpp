@@ -6,7 +6,7 @@
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "Runtime/Engine/public/TimerManager.h"
-
+#include "Bullet.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -29,8 +29,7 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	
-
-
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
 }
 
 // Called every frame
@@ -44,18 +43,14 @@ void AEnemy::Tick(float DeltaTime)
 	
 }
 
-void AEnemy::NotifyActorBeginOverlap(AActor* OtherActor)
+void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-//	UE_LOG(LogTemp, Warning, TEXT("Begin Overlap"));
+	ABullet* bullet = Cast<ABullet>(OtherActor);
 
-	// 아이템 스폰 로케이션을 제자리로 하면 스폰시 엔진 셧다운되서 임시조치함
-	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation()+FVector(0,0,-100), GetActorRotation());
-
-// 	FTimerHandle TimerHandle;
-// 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
-// 		{
-// 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, 0), GetActorRotation());
-// 		}, 0.2, false);
-
-	Destroy();
+	if (bullet != nullptr)
+	{
+		GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+		bullet->Destroy();
+		Destroy();
+	}
 }
