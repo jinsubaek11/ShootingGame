@@ -54,9 +54,12 @@ void AAttackBarrier::Tick(float DeltaTime)
 	{
 		FVector spawnPosition = GetActorLocation();
 		FRotator spawnRotation = FRotator(0, 0, 0);
-
-		GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), spawnPosition, spawnRotation);
 		
+		// 헤더에서 경로 지정한 총알을 로드 후 스폰
+		UClass* LoadedBpAsset = subBulletBP.LoadSynchronous();
+		ABullet* bullet = GetWorld()->SpawnActor<ABullet>(LoadedBpAsset, spawnPosition, spawnRotation);
+		bullet->SetLifeSpan(3.0f);
+
 		accTime = 0.f;
 	}
 }
