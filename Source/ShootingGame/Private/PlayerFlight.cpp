@@ -14,26 +14,26 @@ APlayerFlight::APlayerFlight()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Collision ï¿½ï¿½ï¿½ï¿½
-	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
-	// boxCompï¿½ï¿½ rootï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	SetRootComponent(boxComp);
-	// boxComp Å©ï¿½â¼³ï¿½ï¿½
-	boxComp->SetBoxExtent(FVector(50));
+	// Collision »ý¼º
+	boxcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
+	// boxcomp¸¦ root·Î ¼³Á¤
+	SetRootComponent(boxcomp);
+	// boxcomp Å©±â¼³Á¤
+	boxcomp->SetBoxExtent(FVector(50));
 
-	// Mesh ï¿½ï¿½ï¿½ï¿½
-	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	// meshCompï¿½ï¿½ rootï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	meshComp->SetupAttachment(RootComponent);
-	// static meshï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ meshï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½
+	// Mesh »ý¼º
+	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	// meshcomp¸¦ root¾Æ·¡·Î ¼³Á¤
+	meshcomp->SetupAttachment(RootComponent);
+	// static mesh¿¡ ³ÖÀ» meshÆÄÀÏ ·Îµå
 	ConstructorHelpers::FObjectFinder<UStaticMesh>cubemesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	// meshï¿½ï¿½ï¿½ï¿½ ï¿½Îµå°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½
+	// meshÆÄÀÏ ·Îµå°¡ ¼º°øÇÏ¸é ¼¼ÆÃÇÏ¶ó
 	if (cubemesh.Succeeded())
 	{
-		meshComp->SetStaticMesh(cubemesh.Object);
+		meshcomp->SetStaticMesh(cubemesh.Object);
 	}
-	// mesh location ï¿½ï¿½ï¿½ï¿½
-	meshComp->SetRelativeLocation(FVector(0, 0, -50));
+	// mesh location Á¶Á¤
+	meshcomp->SetRelativeLocation(FVector(0, 0, -50));
 }
 
 // Called when the game starts or when spawned
@@ -47,9 +47,9 @@ void APlayerFlight::BeginPlay()
 void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
+	// º¤ÅÍ Á¤±ÔÈ­
 	direction.Normalize();
-	// ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ p=p0+vt
+	// ÀÌµ¿ ±¸Çö p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
 
 	accTime += DeltaTime;
@@ -116,14 +116,14 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Mapping ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Horizontal inputï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ horizontalinputï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// Mapping ¼³Á¤ÇÑ Horizontal inputÀÌ µé¾î¿À¸é horizontalinputÇÔ¼ö ½ÇÇà
 	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::HorizontalInput);
-	// Mapping ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Vertical inputï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ verticalinputï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// Mapping ¼³Á¤ÇÑ Vertical inputÀÌ µé¾î¿À¸é verticalinputÇÔ¼ö ½ÇÇà
 	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::VerticalInput);
 
 	PlayerInputComponent->BindAxis("Fire", this, &APlayerFlight::Fire);
 
-	// Mapping ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ inputï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ bulletfireï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// Mapping ¼³Á¤ÇÑ inputÀÌ µé¾î¿À¸é bulletfireÇÔ¼ö ½ÇÇà
 	//PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
 }
 
@@ -134,27 +134,27 @@ void APlayerFlight::SetAttackLevel(char value)
 	attackLevel += value;
 }
 
-// ï¿½Â¿ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ÁÂ¿ìÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö Á¤ÀÇ
 void APlayerFlight::HorizontalInput(float value)
 {
 	direction.Y = value;
 }
-// ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+// »óÇÏÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö Á¤ÀÇ
 void APlayerFlight::VerticalInput(float value)
 {
 	direction.Z = value;
 }
-// Å¬ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
-void APlayerFlight::BulletFire()
+// Å¬¸¯ÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö Á¤ÀÇ
+void APlayerFlight::bulletfire()
 {
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
-	FVector spawnPosition = GetActorLocation() + GetActorRightVector() * 200;
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ( Pitch, Roll, Yaw )
-	FRotator spawnRotation = FRotator(0, 0, 0);
-	// ï¿½ï¿½ï¿½ï¿½ ï¿½É¼ï¿½ (optional)
+	// ½ºÆùÀ§Ä¡ Á¤ÀÇ
+	FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
+	// ½ºÆù ·ÎÅ×ÀÌ¼Ç Á¤ÀÇ ( Pitch, Roll, Yaw )
+	FRotator spawnrotation = FRotator(0, 0, 0);
+	// ½ºÆù ¿É¼Ç (optional)
 	FActorSpawnParameters param;
 	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	// ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÃÑ¾Ë ºí·çÇÁ¸°Æ®¸¦ ³ÖÀº º¯¼ö¸¦ ½ºÆù
 	GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
 }
 

@@ -20,22 +20,22 @@ public:
 	// Sets default values for this pawn's properties
 	APlayerFlight();
 
-	// Collision ï¿½ï¿½ï¿½ï¿½
+	// Collision ¼±¾ð
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UBoxComponent* boxComp;
-	// Mesh ï¿½ï¿½ï¿½ï¿½
+	class UBoxComponent* boxcomp;
+	// Mesh ¼±¾ð
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UStaticMeshComponent* meshComp;
+	class UStaticMeshComponent* meshcomp;
 
-	// ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÀÌµ¿À» À§ÇÑ º¤ÅÍ ¼±¾ð
 	FVector direction;
-	// ï¿½Ìµï¿½ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÀÌµ¿¼Óµµ º¯¼ö ¼±¾ð
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
 	float moveSpeed = 800;
 
-	// ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÃÑ¾Ë ºí·çÇÁ¸°Æ®¸¦ ³ÖÀ» ¼ö ÀÖ´Â º¯¼ö ¼±¾ð
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	TSubclassOf<class ABullet>bulletFactory;
+	TSubclassOf<class ABullet>bulletfactory;
 
 	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
 	float shootingDelay = 0.1;
@@ -58,12 +58,12 @@ public:
 	void SetAttackLevel(char value);
 
 private:
-	// ï¿½Â¿ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ÁÂ¿ìÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö ¼±¾ð
 	void HorizontalInput(float value);
-	// ï¿½ï¿½ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// »óÇÏÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö ¼±¾ð
 	void VerticalInput(float value);
-	// Å¬ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
-	void BulletFire();
+	// Å¬¸¯ÀÔ·ÂÀÌ µé¾î¿ÔÀ» ¶§ ½ÇÇàµÉ ÇÔ¼ö ¼±¾ð
+	void bulletfire();
 
 	void Fire(float value);
 

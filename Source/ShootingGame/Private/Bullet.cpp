@@ -40,19 +40,10 @@ void ABullet::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	direction = GetActorRightVector();
-	// ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ p=p0+vt
+	// ÀÌµ¿±¸Çö p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
 
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ÅºÈ¯ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
-	currentTime += DeltaTime;
-	if (currentTime >= settingTime)
-	{
-		Destroy();
-	}
+
 
 }
 
-void ABullet::NotifyActorBeginOverlap(AActor* OtherActor)
-{
-	Destroy();
-}
