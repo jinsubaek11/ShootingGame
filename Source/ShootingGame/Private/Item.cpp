@@ -43,6 +43,7 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 	if (player != nullptr)
 	{
+		player->SetAttackLevel(player->GetAttackLevel() + 1);
 		Destroy();
 	}
 }
