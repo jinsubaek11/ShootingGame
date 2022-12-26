@@ -1,15 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "PlayerFlight.generated.h"
 
-#define WEAK 0b00000001
-#define NORMAL 0b00000010
-#define STRONG 0b00000100
-
+UENUM()
+enum class AttackLevel : uint8
+{
+	WEAK = 1,
+	NORMAL,
+	STRONG
+};
 
 UCLASS()
 class SHOOTINGGAME_API APlayerFlight : public APawn
@@ -17,66 +18,62 @@ class SHOOTINGGAME_API APlayerFlight : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	APlayerFlight();
 
-	// Collision 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UBoxComponent* boxcomp;
-	// Mesh 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	class UStaticMeshComponent* meshcomp;
-
-	// 이동을 위한 벡터 선언
-	FVector direction;
-	// 이동속도 변수 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	float moveSpeed = 800;
-
-	// 총알 블루프린트를 넣을 수 있는 변수 선언
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=PlayerSettings)
-	TSubclassOf<class ABullet>bulletfactory;
-
-	UPROPERTY(EditDefaultsOnly, Category = PlayerSettings)
-	float shootingDelay = 0.1;
-
-	UPROPERTY(EditAnywhere, Category = PlayerSettings)
-	uint8 attackLevel = 0;
-
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	void SetAttackLevel(char value);
+	void SetAttackLevel(uint8 level);
+	uint8 GetAttackLevel() const;
+	class ABulletPool* GetBulletPool() const;
 
 private:
-	// 좌우입력이 들어왔을 때 실행될 함수 선언
+	void SetAttackBarrier(uint8 level);
 	void HorizontalInput(float value);
-	// 상하입력이 들어왔을 때 실행될 함수 선언
 	void VerticalInput(float value);
-	// 클릭입력이 들어왔을 때 실행될 함수 선언
-	void bulletfire();
-
 	void Fire(float value);
+	void ShootStrongAttack();
+	void ShootUltimate();
+
+public:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
+	class UBoxComponent* boxcomp;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
+	class UStaticMeshComponent* meshcomp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
+	float moveSpeed = 800.f;
+	UPROPERTY(EditAnywhere, Category = PlayerSettings)
+	float shootCoolTime = 0.1f;
+	UPROPERTY(EditAnywhere, Category = PlayerSettings)
+	uint8 attackLevel = 1;
 
 private:
 	UPROPERTY()
-	TArray<class ABullet*> projectiles;
 	TArray<class AAttackBarrier*> attackBarriers;
+	UPROPERTY()
+	class ABulletPool* bulletPool;
+	class AUltimateBullet* ultimate;
 
-	float accTime = 0;
-	bool isShoot = false;
+	FVector direction;
 
-	const int8 MIN_DEGREE = -5;
-	const int8 MAX_DEGREE =  5;
-	const int8 COUNT_CONTROL_VAR = 4;
+	int ultimateCount = 2;
+	float ultimateDurationTime;
+	float ultimateMaxDurationTime = 3.f;
+	bool isFireUltimate = false;
+	bool isShooting = false;
+	bool readyToSubAttack = false;
+	bool isFireSubAttack = false;
+	float shootWaitingTime = 0.f;
+	float subAttackWaitingTime = 0.f;
+	float subAttackCoolTime = 1.f;
+
+	const int8 MIN_DEGREE = -2;
+	const int8 MAX_DEGREE =  2;
+	const int8 COUNT_CONTROL_VAR = 8;
 };
 

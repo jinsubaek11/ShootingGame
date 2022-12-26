@@ -1,16 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "Bullet.h"
+#include "BulletPool.h"
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
 #include "Enemy.h"
 
-// Sets default values
 ABullet::ABullet()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
@@ -20,6 +16,8 @@ ABullet::ABullet()
 	arrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	arrowComp->SetupAttachment(RootComponent);
 
+	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
+
 	ConstructorHelpers::FObjectFinder<UStaticMesh> sphereMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetStaticMesh(sphereMesh.Object);
@@ -28,20 +26,64 @@ ABullet::ABullet()
 	meshComp->SetRelativeLocation(FVector(0, 0, -10));
 }
 
-// Called when the game starts or when spawned
 void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
-// Called every frame
 void ABullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	direction = GetActorRightVector();
-	// 이동구현 p=p0+vt
-	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
-
+	if (isActive)
+	{
+		SetActorLocation(GetActorLocation() + bulletDirection * bulletSpeed * DeltaTime);
+	}
 }
+
+void ABullet::SetActive(bool isActiveBullet)
+{
+	isActive = isActiveBullet;
+	SetActorHiddenInGame(!isActive);
+
+	if (isActive)
+	{
+		GetWorldTimerManager().SetTimer(
+			lifeSpanTimer, this, &ABullet::SetDeactive, lifeSpan, false
+		);
+	}
+}
+
+void ABullet::SetDeactive()
+{
+	SetActive(false);
+	GetWorldTimerManager().ClearAllTimersForObject(this);
+	OnPooledBulletDespawn.Broadcast(this);
+}
+
+void ABullet::SetLifeSpan(float lifeTime)
+{
+	lifeSpan = lifeTime;
+}
+
+void ABullet::SetDirection(FVector direction)
+{
+	bulletDirection = direction;
+}
+
+void ABullet::SetIndex(uint16 bulletIndex)
+{
+	index = bulletIndex;
+}
+
+bool ABullet::IsActive() const
+{
+	return isActive;
+}
+
+uint16 ABullet::GetIndex() const
+{
+	return index;
+}
+
+

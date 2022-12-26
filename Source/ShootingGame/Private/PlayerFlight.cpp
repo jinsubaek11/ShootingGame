@@ -1,171 +1,222 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PlayerFlight.h"
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Bullet.h"
+#include "StrongBullet.h"
+#include "UltimateBullet.h"
 #include "AttackBarrier.h"
+#include "BulletPool.h"
 
-// Sets default values
 APlayerFlight::APlayerFlight()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Collision 생성
 	boxcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
-	// boxcomp를 root로 설정
-	SetRootComponent(boxcomp);
-	// boxcomp 크기설정
 	boxcomp->SetBoxExtent(FVector(50));
 
-	// Mesh 생성
-	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	// meshcomp를 root아래로 설정
-	meshcomp->SetupAttachment(RootComponent);
-	// static mesh에 넣을 mesh파일 로드
+	SetRootComponent(boxcomp);
+
 	ConstructorHelpers::FObjectFinder<UStaticMesh>cubemesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	// mesh파일 로드가 성공하면 세팅하라
+	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	meshcomp->SetupAttachment(RootComponent);
 	if (cubemesh.Succeeded())
 	{
 		meshcomp->SetStaticMesh(cubemesh.Object);
 	}
-	// mesh location 조정
+
 	meshcomp->SetRelativeLocation(FVector(0, 0, -50));
 }
 
-// Called when the game starts or when spawned
 void APlayerFlight::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetAttackBarrier(attackLevel);
+	bulletPool = GetWorld()->SpawnActor<ABulletPool>(FVector(0, 2000, 0), FRotator(0, 0, 0));
+	ultimate = GetWorld()->SpawnActor<AUltimateBullet>(GetActorLocation(), FRotator().ZeroRotator);
+	ultimate->SetActive(false);
 }
 
-// Called every frame
 void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// 벡터 정규화
+
 	direction.Normalize();
-	// 이동 구현 p=p0+vt
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
 
-	accTime += DeltaTime;
+	if (attackLevel > (uint8)AttackLevel::STRONG) return;
 
-	if (attackLevel == 0 && attackBarriers.Num() < attackLevel + 1)
+	if (attackBarriers.Num() < attackLevel)
 	{
-		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
-		attackBarriers.Emplace(attackBarrier);
+		SetAttackBarrier(attackLevel);
 	}
 
-	if (attackLevel == 1 && attackBarriers.Num() < attackLevel + 1)
+	if (ultimateCount && isFireUltimate)
 	{
-		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
-		attackBarriers.Emplace(attackBarrier);
-	}
+		ultimateDurationTime += DeltaTime;
 
-	if (attackLevel == 2 && attackBarriers.Num() < attackLevel + 1)
-	{
-		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>();
-		attackBarriers.Emplace(attackBarrier);
-	}
-
-	if (isShoot && accTime >= shootingDelay)
-	{
-		FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
-		FActorSpawnParameters param;
-		param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-		if (attackLevel == 0)
+		if (ultimateDurationTime <= ultimateMaxDurationTime)
 		{
-			FRotator spawnrotation = FRotator(0, 0, 0);
-			ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
-			bullet->SetLifeSpan(3.0f);
-
-			projectiles.Emplace(bullet);
+			ultimate->SetActive(true);
+			ultimate->SetActorLocation(GetActorLocation() + GetActorRightVector() * 150);
 		}
 		else
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("%d"), attackLevel);
+			ultimateCount--;
+			ultimateDurationTime = 0.f;
+			isFireUltimate = false;
+			ultimate->SetActive(false);
+		}
 
-			for (int i = MIN_DEGREE * attackLevel; i < MAX_DEGREE * attackLevel; i += COUNT_CONTROL_VAR / attackLevel)
-			//for (int i = -20; i < 20; i += 3)
+		return;
+	}
+
+	if (readyToSubAttack && isFireSubAttack && !isShooting)
+	{
+		AStrongBullet* strongBullet = GetWorld()->SpawnActor<AStrongBullet>();
+		strongBullet->SetActorLocation(GetActorLocation());
+		strongBullet->SetDirection(GetActorRightVector());
+		strongBullet->isActive = true;
+		isFireSubAttack = false;
+		readyToSubAttack = false;
+		return;
+	}
+
+	if (subAttackWaitingTime >= subAttackCoolTime)
+	{
+		readyToSubAttack = true;
+
+		return;
+	}
+
+	if (!isShooting) return;
+
+	shootWaitingTime += DeltaTime;
+	subAttackWaitingTime += DeltaTime;
+
+	if (shootWaitingTime >= shootCoolTime)
+	{
+		if (attackLevel == (uint8)AttackLevel::WEAK)
+		{
+			bulletPool->SpawnPooledBullet(GetActorLocation(), GetActorRightVector());
+		}
+		else
+		{
+			for (int i = MIN_DEGREE * attackLevel; i <= MAX_DEGREE * attackLevel; i += COUNT_CONTROL_VAR / attackLevel)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("%d"), attackLevel + 1);
+				FVector playerLocation = GetActorLocation();
+				FVector targetDirection = FVector(
+					0,
+					playerLocation.Y + FMath::Cos(FMath::DegreesToRadians(i)),
+					playerLocation.Z + FMath::Sin(FMath::DegreesToRadians(i))
+				);
+				FVector bulletDirection = targetDirection - playerLocation;
+				bulletDirection.Normalize();
 
-				FRotator spawnrotation = FRotator(0, 0, -i);
-				ABullet* bullet = GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
-				bullet->SetLifeSpan(3.0f);
-
-				projectiles.Emplace(bullet);
+				bulletPool->SpawnPooledBullet(playerLocation, bulletDirection);
 			}
 		}
 
-		//UE_LOG(LogTemp, Warning, TEXT("%d"), projectiles.Num());
+		for (AAttackBarrier* attackBarrier : attackBarriers)
+		{
+			attackBarrier->Shoot();
+		}
 
-		accTime = 0.f;
+		shootWaitingTime = 0.f;
 	}
-
-
 }
 
-// Called to bind functionality to input
 void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Mapping 설정한 Horizontal input이 들어오면 horizontalinput함수 실행
 	PlayerInputComponent->BindAxis("Horizontal", this, &APlayerFlight::HorizontalInput);
-	// Mapping 설정한 Vertical input이 들어오면 verticalinput함수 실행
 	PlayerInputComponent->BindAxis("Vertical", this, &APlayerFlight::VerticalInput);
-
 	PlayerInputComponent->BindAxis("Fire", this, &APlayerFlight::Fire);
-
-	// Mapping 설정한 input이 들어오면 bulletfire함수 실행
-	//PlayerInputComponent->BindAction("Fire",IE_Pressed, this, &APlayerFlight::bulletfire);
+	PlayerInputComponent->BindAction("StrongFire", EInputEvent::IE_Released, this, &APlayerFlight::ShootStrongAttack);
+	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &APlayerFlight::ShootUltimate);
 }
 
-void APlayerFlight::SetAttackLevel(char value)
+void APlayerFlight::SetAttackLevel(uint8 level)
 {
-	if (attackLevel > STRONG) return;
-
-	attackLevel += value;
+	if (level > (uint8)AttackLevel::STRONG) return;
+	
+	attackLevel = level;
 }
 
-// 좌우입력이 들어왔을 때 실행될 함수 정의
+uint8 APlayerFlight::GetAttackLevel() const
+{
+	return attackLevel;
+}
+
+ABulletPool* APlayerFlight::GetBulletPool() const
+{
+	return bulletPool;
+}
+
+void APlayerFlight::SetAttackBarrier(uint8 level)
+{
+	if (level > (uint8)AttackLevel::STRONG) return;
+
+	if (attackBarriers.Num() > 0)
+	{
+		for (auto attackBarrier : attackBarriers)
+		{
+			attackBarrier->Destroy();
+		}
+	}
+	
+	attackBarriers.Empty();
+
+	for (uint8 i = 1; i <= level; i++)
+	{
+		FVector spawnLocation = FVector(
+			0,
+			GetActorLocation().Y + FMath::Sin(FMath::DegreesToRadians(120 * i)) * 150,
+			GetActorLocation().Z + FMath::Cos(FMath::DegreesToRadians(120 * i)) * 150
+		);
+
+		AAttackBarrier* attackBarrier = GetWorld()->SpawnActor<AAttackBarrier>(spawnLocation, FRotator().ZeroRotator);
+		attackBarrier->SetStartAngle(120 * i);
+		attackBarriers.Add(attackBarrier);
+	}	
+}
+
 void APlayerFlight::HorizontalInput(float value)
 {
+	//FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	direction.Y = value;
 }
-// 상하입력이 들어왔을 때 실행될 함수 정의
+
 void APlayerFlight::VerticalInput(float value)
 {
 	direction.Z = value;
-}
-// 클릭입력이 들어왔을 때 실행될 함수 정의
-void APlayerFlight::bulletfire()
-{
-	// 스폰위치 정의
-	FVector spawnposition = GetActorLocation() + GetActorRightVector() * 60;
-	// 스폰 로테이션 정의 ( Pitch, Roll, Yaw )
-	FRotator spawnrotation = FRotator(0, 0, 0);
-	// 스폰 옵션 (optional)
-	FActorSpawnParameters param;
-	param.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	// 총알 블루프린트를 넣은 변수를 스폰
-	GetWorld()->SpawnActor<ABullet>(bulletfactory, spawnposition, spawnrotation, param);
 }
 
 void APlayerFlight::Fire(float value)
 {
 	if (value >= 1.0f)
 	{
-		isShoot = true;
+		isShooting = true;
 	}
 	else
 	{
-		isShoot = false;
+		isShooting = false;
+		//readyToSubAttack = false;
+		//subAttackWaitingTime = 0.f;
 	}
+}
+
+void APlayerFlight::ShootStrongAttack()
+{
+	//UE_LOG(LogTemp, Warning, TEXT("ShootStrongAttack"));
+
+	isFireSubAttack = true;
+	subAttackWaitingTime = 0.f;
+}
+
+void APlayerFlight::ShootUltimate()
+{
+	isFireUltimate = true;
 }
