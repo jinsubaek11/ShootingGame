@@ -3,6 +3,7 @@
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
+#include "Enemy.h"
 
 ABullet::ABullet()
 {
@@ -82,4 +83,5 @@ uint16 ABullet::GetIndex() const
 {
 	return index;
 }
+
 

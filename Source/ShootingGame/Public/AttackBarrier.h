@@ -34,6 +34,8 @@ public:
 	UPROPERTY()
 	class APlayerFlight* player;
 
+	TSoftClassPtr<AActor> subBulletBP = TSoftClassPtr<AActor>(FSoftObjectPath(TEXT("Blueprint'/Game/Blueprints/BP_Bullet.BP_Bullet_C'")));
+
 private:
 	float angle;
 	float delay = 1.f;

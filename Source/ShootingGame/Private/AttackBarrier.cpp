@@ -44,6 +44,18 @@ void AAttackBarrier::Tick(float DeltaTime)
 	float circlePositionZ = 150.f * FMath::Sin(angle + accRotation);
 	
 	SetActorLocation(player->GetActorLocation() + FVector(0, circlePositionY, circlePositionZ));
+
+	// if (accTime >= delay)
+	// {
+	// 	FVector spawnPosition = GetActorLocation();
+	// 	FRotator spawnRotation = FRotator(0, 0, 0);
+		
+	// 	UClass* LoadedBpAsset = subBulletBP.LoadSynchronous();
+	// 	ABullet* bullet = GetWorld()->SpawnActor<ABullet>(LoadedBpAsset, spawnPosition, spawnRotation);
+	// 	bullet->SetLifeSpan(3.0f);
+
+	// 	accTime = 0.f;
+	// }
 }
 
 void AAttackBarrier::Shoot()
