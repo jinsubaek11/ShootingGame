@@ -1,7 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "AttackBarrier.h"
 #include "Bullet.h"
+#include "SubBullet.h"
+#include "BulletPool.h"
 #include "PlayerFlight.h"
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
@@ -9,10 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Math/UnrealMathUtility.h"
 
-// Sets default values
 AAttackBarrier::AAttackBarrier()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
@@ -30,34 +28,37 @@ AAttackBarrier::AAttackBarrier()
 	meshComp->SetupAttachment(RootComponent);
 }
 
-// Called when the game starts or when spawned
 void AAttackBarrier::BeginPlay()
 {
 	Super::BeginPlay();
+	player = Cast<APlayerFlight>(UGameplayStatics::GetPlayerPawn(this, 0));
 }
 
-// Called every frame
 void AAttackBarrier::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	accTime += DeltaTime;
-	accRotation += DeltaTime;
 	
-	APlayerFlight* player = Cast<APlayerFlight>(UGameplayStatics::GetPlayerPawn(this, 0));
-	float circlePositionY = 200.f * FMath::Sin(accRotation * 1.3f);
-	float circlePositionZ = 200.f * FMath::Cos(accRotation * 1.3f);
+	accRotation += DeltaTime * 1.3f;
+
+	float circlePositionY = 150.f * FMath::Cos(angle + accRotation);
+	float circlePositionZ = 150.f * FMath::Sin(angle + accRotation);
 	
 	SetActorLocation(player->GetActorLocation() + FVector(0, circlePositionY, circlePositionZ));
-
-	if (accTime >= delay)
-	{
-		FVector spawnPosition = GetActorLocation();
-		FRotator spawnRotation = FRotator(0, 0, 0);
-
-		GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), spawnPosition, spawnRotation);
-		
-		accTime = 0.f;
-	}
 }
+
+void AAttackBarrier::Shoot()
+{
+	ASubBullet* bullet = GetWorld()->SpawnActor<ASubBullet>();
+	bullet->SetDirection(GetActorLocation(), FVector(0, 600, 400));
+	bullet->isActive = true;
+	//player->GetBulletPool()->SpawnPooledBullet(GetActorLocation(), GetActorRightVector());
+	//player->GetB
+}
+
+void AAttackBarrier::SetStartAngle(float degree)
+{
+	float radian = FMath::DegreesToRadians(degree);
+	angle = radian;
+}
+
 
