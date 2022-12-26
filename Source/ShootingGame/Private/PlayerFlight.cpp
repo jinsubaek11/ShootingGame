@@ -12,20 +12,21 @@ APlayerFlight::APlayerFlight()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	boxcomp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
-	boxcomp->SetBoxExtent(FVector(50));
+	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
+	boxComp->SetCollisionProfileName(TEXT("PlayerPreset"));
+	boxComp->SetBoxExtent(FVector(50));
 
-	SetRootComponent(boxcomp);
+	SetRootComponent(boxComp);
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh>cubemesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	meshcomp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	meshcomp->SetupAttachment(RootComponent);
+	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
+	meshComp->SetupAttachment(RootComponent);
 	if (cubemesh.Succeeded())
 	{
-		meshcomp->SetStaticMesh(cubemesh.Object);
+		meshComp->SetStaticMesh(cubemesh.Object);
 	}
 
-	meshcomp->SetRelativeLocation(FVector(0, 0, -50));
+	meshComp->SetRelativeLocation(FVector(0, 0, -50));
 }
 
 void APlayerFlight::BeginPlay()
@@ -43,7 +44,7 @@ void APlayerFlight::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	direction.Normalize();
-	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
+	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
 
 	if (attackLevel > (uint8)AttackLevel::STRONG) return;
 

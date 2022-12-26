@@ -42,9 +42,9 @@ private:
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class UBoxComponent* boxcomp;
+	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class UStaticMeshComponent* meshcomp;
+	class UStaticMeshComponent* meshComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	float moveSpeed = 800.f;
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)
