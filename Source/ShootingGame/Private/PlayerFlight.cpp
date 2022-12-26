@@ -59,7 +59,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (ultimateDurationTime <= ultimateMaxDurationTime)
 		{
 			ultimate->SetActive(true);
-			ultimate->SetActorLocation(GetActorLocation() + GetActorRightVector() * 150);
+			ultimate->SetActorLocation(GetActorLocation() + GetActorRightVector() * 550);
 		}
 		else
 		{
