@@ -70,7 +70,6 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (bullet != nullptr)
 	{
-
 		if (drawRate <= dropRate)
 		{
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());

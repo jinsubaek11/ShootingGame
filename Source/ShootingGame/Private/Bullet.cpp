@@ -16,6 +16,8 @@ ABullet::ABullet()
 	arrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	arrowComp->SetupAttachment(RootComponent);
 
+	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
+
 	ConstructorHelpers::FObjectFinder<UStaticMesh> sphereMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetStaticMesh(sphereMesh.Object);
