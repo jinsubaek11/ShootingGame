@@ -58,11 +58,11 @@ void AAttackBarrier::Tick(float DeltaTime)
 	// }
 }
 
-void AAttackBarrier::Shoot()
+void AAttackBarrier::Shoot(FVector target)
 {
-	ASubBullet* bullet = GetWorld()->SpawnActor<ASubBullet>();
-	bullet->SetDirection(GetActorLocation(), FVector(0, 600, 400));
-	bullet->isActive = true;
+	ASubBullet* subBullet = GetWorld()->SpawnActor<ASubBullet>();
+	subBullet->SetDirection(GetActorLocation(), target);
+	subBullet->isActive = true;
 	//player->GetBulletPool()->SpawnPooledBullet(GetActorLocation(), GetActorRightVector());
 	//player->GetB
 }

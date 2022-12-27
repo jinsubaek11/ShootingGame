@@ -55,6 +55,8 @@ public:
 private:
 	UPROPERTY()
 	TArray<class AAttackBarrier*> attackBarriers;
+	TArray<class AEnemy*> enemies;
+
 	UPROPERTY()
 	class ABulletPool* bulletPool;
 	class AUltimateBullet* ultimate;
