@@ -19,7 +19,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	void Shoot();
+	void Shoot(FVector target);
 	void SetStartAngle(float degree);
 
 public:

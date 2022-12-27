@@ -24,7 +24,7 @@ public:
 
 private:
 	uint16 poolSize = 200;
-	float pooledBulletLifeSpan = 2.5f;
+	float pooledBulletLifeSpan = 2.f;
 
 	TArray<class ABullet*> bulletPool;
 	TArray<uint16> spawnedPoolIndexes;

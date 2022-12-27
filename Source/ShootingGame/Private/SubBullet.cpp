@@ -22,11 +22,11 @@ void ASubBullet::Tick(float DeltaTime)
 	{
 		accumulateTime += DeltaTime / durationTime;
 
-		float time = accumulateTime > durationTime ? 1.f : accumulateTime;
+		//float time = accumulateTime > durationTime ? 1.f : accumulateTime;
 
-		if (time >= 1.f) return;
+		//if (time >= 1.f) return;
 
-		SetActorLocation(GetCalculateLocation(time));
+		SetActorLocation(GetCalculateLocation(accumulateTime));
 	}
 }
 

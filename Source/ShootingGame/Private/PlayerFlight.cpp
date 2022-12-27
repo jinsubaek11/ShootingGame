@@ -3,10 +3,13 @@
 #include "components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Bullet.h"
+#include "Enemy.h"
 #include "StrongBullet.h"
 #include "UltimateBullet.h"
 #include "AttackBarrier.h"
 #include "BulletPool.h"
+#include "EngineUtils.h"
+
 
 APlayerFlight::APlayerFlight()
 {
@@ -118,10 +121,28 @@ void APlayerFlight::Tick(float DeltaTime)
 				bulletPool->SpawnPooledBullet(playerLocation, bulletDirection);
 			}
 		}
+		
+		//AEnemy* target;
+
+		enemies.Empty();
+		
+
+		for (TActorIterator<AEnemy> it(GetWorld()); it; ++it)
+		{
+			enemies.Emplace(*it);
+		}
 
 		for (AAttackBarrier* attackBarrier : attackBarriers)
 		{
-			attackBarrier->Shoot();
+			if (enemies.Num() > 0)
+			{
+				attackBarrier->Shoot(enemies[FMath::RandRange(0, enemies.Num() - 1)]->GetActorLocation());
+			}
+			else
+			{
+				FVector randomDest = FVector(0, 2000, FMath::RandRange(-600, 600));
+				attackBarrier->Shoot(randomDest);
+			}
 		}
 
 		shootWaitingTime = 0.f;
