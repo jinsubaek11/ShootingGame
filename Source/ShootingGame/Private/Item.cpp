@@ -16,6 +16,7 @@ AItem::AItem()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(25));
+	boxComp->SetCollisionProfileName(TEXT("ItemPreset"));
 
 	// 메쉬 생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -28,12 +29,24 @@ void AItem::BeginPlay()
 {
 	Super::BeginPlay();
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AItem::OnOverlap);
+
+	randomDir.Y = FMath::RandRange(-100.0f, 100.0f);
+	randomDir.Z = FMath::RandRange(-100.0f, 100.0f);
+	randomDir.Normalize();
+
 }
 
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	// 아이템 스폰시 랜덤한 방향으로 이동하게
+	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
+
+	// 펜스에 닿으면 어떤 벡터를 더해서 이동방향을 꺽기? 튕기기?
+	// 중앙방향 단위벡터를 더해보자!
+
 
 }
 
@@ -45,5 +58,12 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	{
 		player->SetAttackLevel(player->GetAttackLevel() + 1);
 		Destroy();
+	}
+	// 캐스트가 안되었으므로 콜리전프리셋에 의해 펜스와 오버랩된 경우
+	else
+	{
+		randomDir.Y = FMath::RandRange(-100.0f, 100.0f);
+		randomDir.Z = FMath::RandRange(-100.0f, 100.0f);
+		randomDir.Normalize();
 	}
 }

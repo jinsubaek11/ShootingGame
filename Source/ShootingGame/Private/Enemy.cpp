@@ -45,7 +45,7 @@ void AEnemy::Tick(float DeltaTime)
 		// Y축따라 직선으로 들어왔다가 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -800.0f;
+		newLocation.Y += deltaY * -1000.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 

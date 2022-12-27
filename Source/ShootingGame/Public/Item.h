@@ -33,5 +33,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	FVector randomDir;
+
+private:
+	float itemSpeed = 200;
 
 };

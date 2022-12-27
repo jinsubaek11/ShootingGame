@@ -42,7 +42,7 @@ public:
 
 	// 아이템 드롭 확률
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float dropRate=0.1;
+	float dropRate=0.5;
 	float drawRate;
 protected:
 	// Called when the game starts or when spawned
