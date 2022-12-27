@@ -61,7 +61,7 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	if (fenceVer != nullptr)
 	{
 		randomDir.Y *= -1;
-		UE_LOG(LogTemp, Warning, TEXT("toched v"));
+		//UE_LOG(LogTemp, Warning, TEXT("toched v"));
 		return;
 	}
 
@@ -69,6 +69,6 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	if (fenceHor != nullptr)
 	{
 		randomDir.Z *= -1;
-		UE_LOG(LogTemp, Warning, TEXT("toched h"));
+		//UE_LOG(LogTemp, Warning, TEXT("toched h"));
 	}
 }
