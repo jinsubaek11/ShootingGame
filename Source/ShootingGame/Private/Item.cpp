@@ -5,6 +5,8 @@
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "PlayerFlight.h"
+#include "Fence_Vertical.h"
+#include "Fence_Horizontal.h"
 
 // Sets default values
 AItem::AItem()
@@ -43,27 +45,30 @@ void AItem::Tick(float DeltaTime)
 
 	// 아이템 스폰시 랜덤한 방향으로 이동하게
 	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
-
-	// 펜스에 닿으면 어떤 벡터를 더해서 이동방향을 꺽기? 튕기기?
-	// 중앙방향 단위벡터를 더해보자!
-
-
 }
 
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
-
 	if (player != nullptr)
 	{
 		player->SetAttackLevel(player->GetAttackLevel() + 1);
 		Destroy();
+		return;
 	}
-	// 캐스트가 안되었으므로 콜리전프리셋에 의해 펜스와 오버랩된 경우
-	else
+
+	AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
+	if (fenceVer != nullptr)
 	{
-		randomDir.Y = FMath::RandRange(-100.0f, 100.0f);
-		randomDir.Z = FMath::RandRange(-100.0f, 100.0f);
-		randomDir.Normalize();
+		randomDir.Y *= -1;
+		UE_LOG(LogTemp, Warning, TEXT("toched v"));
+		return;
+	}
+
+	AFence_Horizontal* fenceHor = Cast<AFence_Horizontal>(OtherActor);
+	if (fenceHor != nullptr)
+	{
+		randomDir.Z *= -1;
+		UE_LOG(LogTemp, Warning, TEXT("toched h"));
 	}
 }
