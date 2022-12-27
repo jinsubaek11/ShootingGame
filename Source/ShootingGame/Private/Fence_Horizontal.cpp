@@ -2,6 +2,8 @@
 
 
 #include "Fence_Horizontal.h"
+#include "kismet/GameplayStatics.h"
+#include "TengaiGameMode.h"
 
 // Sets default values
 AFence_Horizontal::AFence_Horizontal()
@@ -22,6 +24,12 @@ void AFence_Horizontal::BeginPlay()
 void AFence_Horizontal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	// 기본 플레이 속도 적용
+	AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
+	float spd = tengaiGM->playSpeed;
+	FVector newLoca = GetActorLocation();
+	newLoca.Y = newLoca.Y + spd * DeltaTime;
+	SetActorLocation(newLoca);
 }
 

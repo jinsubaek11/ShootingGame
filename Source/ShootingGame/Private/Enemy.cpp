@@ -49,10 +49,10 @@ void AEnemy::Tick(float DeltaTime)
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 
-		if (newLocation.Y>1200)
-		{
-			Destroy();
-		}
+// 		if (newLocation.Y>1200)
+// 		{
+// 			Destroy();
+// 		}
 	} 
 	else
 	{
