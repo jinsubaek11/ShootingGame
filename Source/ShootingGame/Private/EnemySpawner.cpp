@@ -5,7 +5,6 @@
 #include "Enemy.h"
 #include "components/SceneComponent.h"
 #include "components/ArrowComponent.h"
-#include "kismet/GameplayStatics.h"
 #include "TengaiGameMode.h"
 
 // Sets default values
@@ -32,15 +31,24 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	currentTime += DeltaTime;
-	if (currentTime>=spawnTime)
+	// 주기적으로 스폰
+// 	currentTime += DeltaTime;
+// 	if (currentTime>=spawnTime)
+// 	{
+// 		GetWorld()->SpawnActor<AEnemy>(enemyFactory,GetActorLocation(),spawnArrow->GetComponentRotation());
+// 		currentTime = 0;
+// 	}
+
+	curLoc = GetActorLocation();
+
+	if (curLoc.Y >= spawnY)
 	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory,GetActorLocation(),spawnArrow->GetComponentRotation());
-		currentTime = 0;
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY = 99999;
 	}
 
 	// 기본 플레이 속도 적용
-	AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;
 	FVector newLoca = GetActorLocation();

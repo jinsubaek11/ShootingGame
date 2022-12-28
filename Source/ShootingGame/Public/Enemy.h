@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRate=0.5;
 	float drawRate;
+
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	int8 myHP=1;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

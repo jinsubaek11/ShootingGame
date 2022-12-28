@@ -2,7 +2,6 @@
 
 
 #include "Fence_Horizontal.h"
-#include "kismet/GameplayStatics.h"
 #include "TengaiGameMode.h"
 
 // Sets default values
@@ -25,7 +24,7 @@ void AFence_Horizontal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	// 기본 플레이 속도 적용
-	AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;
 	FVector newLoca = GetActorLocation();

@@ -7,6 +7,7 @@
 #include "components/StaticMeshComponent.h"
 #include "Runtime/Engine/public/TimerManager.h"
 #include "Bullet.h"
+#include "TengaiGameMode.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -22,6 +23,7 @@ AEnemy::AEnemy()
 	// 메쉬 생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
@@ -45,7 +47,7 @@ void AEnemy::Tick(float DeltaTime)
 		// Y축따라 직선으로 들어왔다가 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -1000.0f;
+		newLocation.Y += deltaY * -800.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 
@@ -76,6 +78,17 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		}
 
 		bullet->Destroy();
-		Destroy();
+
+		if (myHP > 0)
+		{
+			myHP -= 1;
+		} 
+		else
+		{
+			Destroy();
+		}
+		
 	}
+
+
 }

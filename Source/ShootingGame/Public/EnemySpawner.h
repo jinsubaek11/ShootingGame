@@ -18,8 +18,8 @@ public:
 	// 시간이 지날수록 증가하는 값을 받을 변수
 	float currentTime;
 	// 세팅 시간이 되면 적이 스폰되게끔
-	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
-	float spawnTime=2;
+// 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
+// 	float spawnTime=2;
 	// 스폰할 블루프린트 선택창 만들기
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
@@ -29,6 +29,10 @@ public:
 	class UArrowComponent* spawnArrow;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	class USceneComponent* rootScene;
+
+	FVector curLoc;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY = 1500;
 
 protected:
 	// Called when the game starts or when spawned

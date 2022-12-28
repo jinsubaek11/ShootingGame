@@ -9,7 +9,6 @@
 #include "AttackBarrier.h"
 #include "BulletPool.h"
 #include "EngineUtils.h"
-#include "kismet/GameplayStatics.h"
 #include "TengaiGameMode.h"
 
 
@@ -49,7 +48,7 @@ void APlayerFlight::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// 기본 플레이 속도 적용
-	AGameModeBase* gm = UGameplayStatics::GetGameMode(this);
+	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;
 	FVector newLoca = GetActorLocation();

@@ -45,6 +45,7 @@ void AItem::Tick(float DeltaTime)
 
 	// 아이템 스폰시 랜덤한 방향으로 이동하게
 	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
+
 }
 
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
