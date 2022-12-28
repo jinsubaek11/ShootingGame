@@ -8,6 +8,8 @@
 #include "Runtime/Engine/public/TimerManager.h"
 #include "Bullet.h"
 #include "TengaiGameMode.h"
+#include "Fence_Vertical.h"
+#include "Fence_Horizontal.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -90,5 +92,17 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		
 	}
 
+	AFence_Horizontal* fenceH = Cast<AFence_Horizontal>(OtherActor);
 
+	if (fenceH != nullptr)
+	{
+		Destroy();
+	}
+
+	AFence_Vertical* fenceV = Cast<AFence_Vertical>(OtherActor);
+
+	if (fenceV != nullptr)
+	{
+		Destroy();
+	}
 }
