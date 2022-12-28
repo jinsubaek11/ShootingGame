@@ -29,12 +29,12 @@ public:
 	class UStaticMeshComponent* meshComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UArrowComponent* arrowComp;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class ABullet* bulletfactory;
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
+	//class ABullet* bulletfactory;
 	UPROPERTY()
 	class APlayerFlight* player;
 
-	TSoftClassPtr<AActor> subBulletBP = TSoftClassPtr<AActor>(FSoftObjectPath(TEXT("Blueprint'/Game/Blueprints/BP_Bullet.BP_Bullet_C'")));
+	//TSoftClassPtr<AActor> subBulletBP = TSoftClassPtr<AActor>(FSoftObjectPath(TEXT("Blueprint'/Game/Blueprints/BP_Bullet.BP_Bullet_C'")));
 
 private:
 	float angle;

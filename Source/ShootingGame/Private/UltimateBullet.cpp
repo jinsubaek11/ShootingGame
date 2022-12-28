@@ -9,12 +9,12 @@ AUltimateBullet::AUltimateBullet()
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
-	boxComp->SetBoxExtent(FVector(70, 500, 85));
+	boxComp->SetBoxExtent(FVector(70, 1200, 85));
 	SetRootComponent(boxComp);
 
 	ConstructorHelpers::FObjectFinder<UNiagaraSystem> niagaraAsset(TEXT("/Script/Niagara.NiagaraSystem'/Game/Test/test.test'"));
 	niagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Niagara Component"));
-	niagaraComp->SetRelativeLocation(FVector(0, -440, 0));
+	niagaraComp->SetRelativeLocation(FVector(0, -1170, 0));
 	niagaraComp->SetAsset(niagaraAsset.Object);
 	niagaraComp->SetupAttachment(boxComp);
 }
@@ -23,18 +23,21 @@ void AUltimateBullet::BeginPlay()
 {
 	Super::BeginPlay();
 
+	SetActorLocation(FVector(0, 3000, 0));
+	niagaraComp->SetActive(false);
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AUltimateBullet::OnOverlap);
 }
 
 void AUltimateBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AUltimateBullet::SetActive(bool isActive)
 {
-	if (isActive)
+	isUltimateActive = isActive;
+
+	if (isUltimateActive)
 	{
 		niagaraComp->SetActive(true);
 	}
@@ -43,9 +46,9 @@ void AUltimateBullet::SetActive(bool isActive)
 		niagaraComp->SetActive(false);
 	}
 
-	SetActorHiddenInGame(!isActive);
-	SetActorEnableCollision(isActive);
-	SetActorTickEnabled(isActive);
+	SetActorHiddenInGame(!isUltimateActive);
+	SetActorEnableCollision(isUltimateActive);
+	SetActorTickEnabled(isUltimateActive);
 }
 
 void AUltimateBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, 

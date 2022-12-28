@@ -2,13 +2,15 @@
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "UObject/ConstructorHelpers.h"
-#include "Bullet.h"
 #include "Enemy.h"
-#include "StrongBullet.h"
 #include "UltimateBullet.h"
 #include "AttackBarrier.h"
-#include "BulletPool.h"
 #include "EngineUtils.h"
+#include "ObjectsPool.h"
+#include "NormalBulletPool.h"
+#include "SubBulletPool.h"
+#include "PooledStrongBullet.h"
+#include "StrongBulletPool.h"
 
 
 APlayerFlight::APlayerFlight()
@@ -37,9 +39,11 @@ void APlayerFlight::BeginPlay()
 	Super::BeginPlay();
 	
 	SetAttackBarrier(attackLevel);
-	bulletPool = GetWorld()->SpawnActor<ABulletPool>(FVector(0, 2000, 0), FRotator(0, 0, 0));
+
+	normalBulletPool = GetWorld()->SpawnActor<ANormalBulletPool>();
+	subBulletPool = GetWorld()->SpawnActor<ASubBulletPool>();
+	strongBulletPool = GetWorld()->SpawnActor<AStrongBulletPool>();
 	ultimate = GetWorld()->SpawnActor<AUltimateBullet>(GetActorLocation(), FRotator().ZeroRotator);
-	ultimate->SetActive(false);
 }
 
 void APlayerFlight::Tick(float DeltaTime)
@@ -63,7 +67,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (ultimateDurationTime <= ultimateMaxDurationTime)
 		{
 			ultimate->SetActive(true);
-			ultimate->SetActorLocation(GetActorLocation() + GetActorRightVector() * 550);
+			ultimate->SetActorLocation(GetActorLocation() + GetActorRightVector() * 1300);
 		}
 		else
 		{
@@ -78,12 +82,10 @@ void APlayerFlight::Tick(float DeltaTime)
 
 	if (readyToSubAttack && isFireSubAttack && !isShooting)
 	{
-		AStrongBullet* strongBullet = GetWorld()->SpawnActor<AStrongBullet>();
-		strongBullet->SetActorLocation(GetActorLocation());
-		strongBullet->SetDirection(GetActorRightVector());
-		strongBullet->isActive = true;
+		strongBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
 		isFireSubAttack = false;
 		readyToSubAttack = false;
+
 		return;
 	}
 
@@ -103,7 +105,7 @@ void APlayerFlight::Tick(float DeltaTime)
 	{
 		if (attackLevel == (uint8)AttackLevel::WEAK)
 		{
-			bulletPool->SpawnPooledBullet(GetActorLocation(), GetActorRightVector());
+			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
 		}
 		else
 		{
@@ -115,17 +117,12 @@ void APlayerFlight::Tick(float DeltaTime)
 					playerLocation.Y + FMath::Cos(FMath::DegreesToRadians(i)),
 					playerLocation.Z + FMath::Sin(FMath::DegreesToRadians(i))
 				);
-				FVector bulletDirection = targetDirection - playerLocation;
-				bulletDirection.Normalize();
 
-				bulletPool->SpawnPooledBullet(playerLocation, bulletDirection);
+				normalBulletPool->SpawnPooledObject(playerLocation, targetDirection);
 			}
 		}
 		
-		//AEnemy* target;
-
 		enemies.Empty();
-		
 
 		for (TActorIterator<AEnemy> it(GetWorld()); it; ++it)
 		{
@@ -167,14 +164,9 @@ void APlayerFlight::SetAttackLevel(uint8 level)
 	attackLevel = level;
 }
 
-uint8 APlayerFlight::GetAttackLevel() const
+uint8 APlayerFlight::GetAttackLevel()
 {
 	return attackLevel;
-}
-
-ABulletPool* APlayerFlight::GetBulletPool() const
-{
-	return bulletPool;
 }
 
 void APlayerFlight::SetAttackBarrier(uint8 level)
@@ -207,7 +199,6 @@ void APlayerFlight::SetAttackBarrier(uint8 level)
 
 void APlayerFlight::HorizontalInput(float value)
 {
-	//FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
 	direction.Y = value;
 }
 
@@ -225,15 +216,11 @@ void APlayerFlight::Fire(float value)
 	else
 	{
 		isShooting = false;
-		//readyToSubAttack = false;
-		//subAttackWaitingTime = 0.f;
 	}
 }
 
 void APlayerFlight::ShootStrongAttack()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("ShootStrongAttack"));
-
 	isFireSubAttack = true;
 	subAttackWaitingTime = 0.f;
 }

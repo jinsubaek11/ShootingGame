@@ -1,7 +1,6 @@
 #include "AttackBarrier.h"
-#include "Bullet.h"
-#include "SubBullet.h"
-#include "BulletPool.h"
+#include "PooledSubBullet.h"
+#include "SubBulletPool.h"
 #include "PlayerFlight.h"
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
@@ -60,9 +59,15 @@ void AAttackBarrier::Tick(float DeltaTime)
 
 void AAttackBarrier::Shoot(FVector target)
 {
-	ASubBullet* subBullet = GetWorld()->SpawnActor<ASubBullet>();
-	subBullet->SetDirection(GetActorLocation(), target);
-	subBullet->isActive = true;
+	APooledSubBullet* subBullet = Cast<APooledSubBullet>(player->subBulletPool->SpawnPooledObject(GetActorLocation(), target));
+	//APooledSubBullet* subBullet = Cast<APooledSubBullet>(player->GetSubBulletPool().SpawnPooledObject(GetActorLocation(), target));
+	
+	//subBullet->SetDirection(GetActorLocation(), target);
+	//subBullet->SetActive(true);
+
+	//ASubBullet* subBullet = GetWorld()->SpawnActor<ASubBullet>();
+	//subBullet->SetDirection(GetActorLocation(), target);
+	//subBullet->isActive = true;
 	//player->GetBulletPool()->SpawnPooledBullet(GetActorLocation(), GetActorRightVector());
 	//player->GetB
 }
