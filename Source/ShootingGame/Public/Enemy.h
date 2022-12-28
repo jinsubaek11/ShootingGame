@@ -45,8 +45,15 @@ public:
 	float dropRate=0.5;
 	float drawRate;
 
+	// 적 체력
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;
+
+	// 적총알 블루프린트 설정
+	UPROPERTY(EditInstanceOnly, category = EnemySettings)
+	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
+
+	bool isShoot = false;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

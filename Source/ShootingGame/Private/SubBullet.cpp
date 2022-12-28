@@ -48,7 +48,6 @@ void ASubBullet::SetDirection(FVector start, FVector end)
 FVector ASubBullet::GetCalculateLocation(float time) const
 {
 	float t = time;
-
 	FVector position = 
 		(1 - t) * (1 - t) * (1 - t) * startPosition +
 		3 * t * (1 - t) * (1 - t) * firstControlPosition +
