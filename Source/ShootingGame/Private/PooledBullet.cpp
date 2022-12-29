@@ -60,3 +60,8 @@ void APooledBullet::SetDeactive()
 	OnPooledNormalBulletDespawn.Broadcast(this);
 	//UE_LOG(LogTemp, Warning, TEXT("Pooled bullet deactive %d"), GetIndex());
 }
+
+float APooledBullet::GetAttackPower()
+{
+	return att;
+}

@@ -26,6 +26,8 @@ public:
 	virtual void Reset() override;
 	virtual void SetActive(bool value) override;
 	virtual void SetDeactive() override;
+	virtual float GetAttackPower() override;
+
 
 private:
 	FVector GetCalculateLocation(float time) const;
@@ -50,4 +52,5 @@ private:
 	float movingTime;
 
 	uint8 lifeCount = 2;
+	float att = 0.1;
 };

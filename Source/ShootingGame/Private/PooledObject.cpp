@@ -70,3 +70,8 @@ uint16 APooledObject::GetIndex() const
 {
 	return index;
 }
+
+float APooledObject::GetAttackPower()
+{
+	return 0;
+}

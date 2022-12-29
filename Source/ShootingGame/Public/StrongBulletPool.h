@@ -19,4 +19,5 @@ protected:
 public:
 	UFUNCTION()
 	void OnPooledStrongBulletDespawn(class APooledStrongBullet* pooledStrongBullet);
+
 };
