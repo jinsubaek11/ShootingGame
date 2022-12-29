@@ -6,11 +6,12 @@
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "Runtime/Engine/public/TimerManager.h"
-#include "Bullet.h"
 #include "TengaiGameMode.h"
 #include "Fence_Vertical.h"
 #include "Fence_Horizontal.h"
 #include "EnemyBullet.h"
+#include "PooledObject.h"
+#include "PooledSubBullet.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -89,16 +90,16 @@ void AEnemy::Tick(float DeltaTime)
 
 void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ABullet* bullet = Cast<ABullet>(OtherActor);
+	APooledObject* playerBullet = Cast<APooledObject>(OtherActor);
 
-	if (bullet != nullptr)
+	if (playerBullet)
 	{
 		if (drawRate <= dropRate)
 		{
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 		}
 
-		bullet->Destroy();
+		playerBullet->Reset();
 
 		if (myHP > 0)
 		{
@@ -124,4 +125,31 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	{
 		Destroy();
 	}
+
+
+	//APooledSubBullet* subBullet = Cast<APooledSubBullet>(OtherActor);
+
+	//// reset moving time overriding APooledObject
+	//if (subBullet)
+	//{
+	//	subBullet->ResetMovingTime();
+	//	subBullet->SetDeactive();
+	//}
+	//else
+	//{
+	//	APooledObject* bullet = Cast<APooledObject>(OtherActor);
+	//	
+	//	if (bullet)
+	//	{
+	//		bullet->SetDeactive();
+	//	}
+	//}
+
+	//if (drawRate <= dropRate)
+	//{
+	//	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+	//}
+
+	//Destroy();
+
 }

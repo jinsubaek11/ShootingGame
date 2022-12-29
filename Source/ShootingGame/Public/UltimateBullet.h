@@ -32,4 +32,7 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UNiagaraComponent* niagaraComp;
+
+private:
+	bool isUltimateActive = false;
 };

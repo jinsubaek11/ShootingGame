@@ -29,8 +29,11 @@ public:
 
 public:
 	void SetAttackLevel(uint8 level);
-	uint8 GetAttackLevel() const;
-	class ABulletPool* GetBulletPool() const;
+	//FORCEINLINE uint8 GetAttackLevel() { return attackLevel; };
+	//FORCEINLINE ASubBulletPool& GetSubBulletPool() { return *subBulletPool; };
+
+	uint8 GetAttackLevel(); 
+	class ASubBulletPool& GetSubBulletPool();
 
 private:
 	void SetAttackBarrier(uint8 level);
@@ -38,6 +41,8 @@ private:
 	void VerticalInput(float value);
 	void Fire(float value);
 	void ShootStrongAttack();
+
+	//FORCEINLINE void ShootUltimate() { isFireUltimate = true; }
 	void ShootUltimate();
 
 public:
@@ -51,14 +56,18 @@ public:
 	float shootCoolTime = 0.1f;
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)
 	uint8 attackLevel = 1;
-
+	UPROPERTY()
+	class ASubBulletPool* subBulletPool;
 private:
 	UPROPERTY()
 	TArray<class AAttackBarrier*> attackBarriers;
-	TArray<class AEnemy*> enemies;
-
 	UPROPERTY()
-	class ABulletPool* bulletPool;
+	TArray<class AEnemy*> enemies;
+	UPROPERTY()
+	class ANormalBulletPool* normalBulletPool;
+	UPROPERTY()
+	class AStrongBulletPool* strongBulletPool;
+	UPROPERTY()
 	class AUltimateBullet* ultimate;
 
 	FVector direction;
