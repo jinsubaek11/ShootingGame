@@ -54,6 +54,7 @@ public:
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
 	bool isShoot = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

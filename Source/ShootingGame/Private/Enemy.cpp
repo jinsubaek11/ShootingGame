@@ -56,14 +56,13 @@ void AEnemy::Tick(float DeltaTime)
 	} 
 	if (movingMode == 2)
 	{
-		// Y축따라 직선으로 들어와서 정지(++시간으로)
-		//	FMath::Sin(DeltaTime * PI *2);
+		// Y축따라 직선으로 부드럽게 들어와서 정지
 		FVector newLocation = GetActorLocation();
-		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
+		runningTime += DeltaTime;
+		float deltaY = FMath::Sin(runningTime);
 		if (deltaY > 0)
 		{
-			newLocation.Y += deltaY * -600.0f;
-			runningTime += DeltaTime;
+			newLocation.Y += deltaY * -3.0f;
 			SetActorLocation(newLocation);
 			return;
 		}
@@ -76,6 +75,18 @@ void AEnemy::Tick(float DeltaTime)
 		}
 		// Z축 따라 위로 올라감 (펜스에 부딫혀 사라짐)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
+		SetActorLocation(newLocation);
+	}
+	if (movingMode == 3)
+	{
+	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
+		FVector newLocation = GetActorLocation();
+		runningTime += DeltaTime;
+		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
+		float deltaZ = FMath::Sin(runningTime * 2);
+		newLocation.Y -= 3.0f;
+		newLocation.Y -= deltaY * 400.0f;
+		newLocation.Z += deltaZ * 5.0f;
 		SetActorLocation(newLocation);
 	}
 	else

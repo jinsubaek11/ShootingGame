@@ -32,7 +32,15 @@ public:
 
 	FVector curLoc;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY = 1500;
+	float spawnY1 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY2 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY3 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY4 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY5 = 99999;
 
 protected:
 	// Called when the game starts or when spawned

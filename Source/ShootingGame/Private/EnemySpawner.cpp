@@ -41,11 +41,33 @@ void AEnemySpawner::Tick(float DeltaTime)
 
 	curLoc = GetActorLocation();
 
-	if (curLoc.Y >= spawnY)
+
+	if (curLoc.Y >= spawnY1)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY = 99999;
+		spawnY1 = 99999;
 	}
+	if (curLoc.Y >= spawnY2)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY2 = 99999;
+	}
+	if (curLoc.Y >= spawnY3)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY3 = 99999;
+	}
+	if (curLoc.Y >= spawnY4)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY4 = 99999;
+	}
+	if (curLoc.Y >= spawnY5)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY5 = 99999;
+	}
+
 
 	// 기본 플레이 속도 적용
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
