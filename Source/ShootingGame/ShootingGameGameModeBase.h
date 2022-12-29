@@ -14,4 +14,6 @@ class SHOOTINGGAME_API AShootingGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	float playSpeed = 50;
 };

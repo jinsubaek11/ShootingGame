@@ -6,6 +6,10 @@
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "Runtime/Engine/public/TimerManager.h"
+#include "TengaiGameMode.h"
+#include "Fence_Vertical.h"
+#include "Fence_Horizontal.h"
+#include "EnemyBullet.h"
 #include "PooledObject.h"
 #include "PooledSubBullet.h"
 
@@ -23,6 +27,7 @@ AEnemy::AEnemy()
 	// 메쉬 생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
@@ -31,7 +36,6 @@ void AEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
-
 	drawRate = FMath::RandRange(0.0f, 1.0f);
 
 }
@@ -41,20 +45,50 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (movingMode==1)
+	if (movingMode == 1)
 	{
-		// Y축따라 직선으로 들어왔다가 나가도록
+		// Y축따라 직선으로 들어왔다가 다시 오른쪽으로 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
 		newLocation.Y += deltaY * -800.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
-
-		if (newLocation.Y>1200)
-		{
-			Destroy();
-		}
 	} 
+	if (movingMode == 2)
+	{
+		// Y축따라 직선으로 부드럽게 들어와서 정지
+		FVector newLocation = GetActorLocation();
+		runningTime += DeltaTime;
+		float deltaY = FMath::Sin(runningTime);
+		if (deltaY > 0)
+		{
+			newLocation.Y += deltaY * -3.0f;
+			SetActorLocation(newLocation);
+			return;
+		}
+		// 플레이어 방향으로 가는 총알을 스폰
+		if (!isShoot)
+		{
+			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
+			isShoot = true;
+			return;
+		}
+		// Z축 따라 위로 올라감 (펜스에 부딫혀 사라짐)
+		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
+		SetActorLocation(newLocation);
+	}
+	if (movingMode == 3)
+	{
+	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
+		FVector newLocation = GetActorLocation();
+		runningTime += DeltaTime;
+		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
+		float deltaZ = FMath::Sin(runningTime * 2);
+		newLocation.Y -= 3.0f;
+		newLocation.Y -= deltaY * 400.0f;
+		newLocation.Z += deltaZ * 5.0f;
+		SetActorLocation(newLocation);
+	}
 	else
 	{
 		// 적 등속이동 p=p0+vt
@@ -77,6 +111,29 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		}
 
 		playerBullet->Reset();
+
+		if (myHP > 0)
+		{
+			myHP -= 1;
+		} 
+		else
+		{
+			Destroy();
+		}
+		
+	}
+
+	AFence_Horizontal* fenceH = Cast<AFence_Horizontal>(OtherActor);
+
+	if (fenceH != nullptr)
+	{
+		Destroy();
+	}
+
+	AFence_Vertical* fenceV = Cast<AFence_Vertical>(OtherActor);
+
+	if (fenceV != nullptr)
+	{
 		Destroy();
 	}
 
