@@ -22,7 +22,7 @@ void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetMovingPath(20);
+	SetMovingPath(30);
 
 	enemyBulletPool = GetWorld()->SpawnActor<AEnemyBulletPool>();
 }
@@ -67,6 +67,11 @@ void ABoss::SetMovingPath(uint16 pathCount)
 
 		if (i == pathCount - 1)
 		{
+			if (customPath[i - 1].type == MovingType::NONE)
+			{
+				customPath[i - 1].type = MovingType::LINEAR;
+			}
+
 			FMovement end;
 			end.type = MovingType::NONE;
 			end.position = GetActorLocation();
