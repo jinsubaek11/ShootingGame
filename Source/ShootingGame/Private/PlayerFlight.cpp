@@ -53,9 +53,9 @@ void APlayerFlight::Tick(float DeltaTime)
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
 
-	if (attackLevel > (uint8)AttackLevel::STRONG) return;
+	if (attackLevel > AttackLevel::STRONG) return;
 
-	if (attackBarriers.Num() < attackLevel)
+	if (attackBarriers.Num() < (uint8)attackLevel)
 	{
 		SetAttackBarrier(attackLevel);
 	}
@@ -103,13 +103,13 @@ void APlayerFlight::Tick(float DeltaTime)
 
 	if (shootWaitingTime >= shootCoolTime)
 	{
-		if (attackLevel == (uint8)AttackLevel::WEAK)
+		if (attackLevel == AttackLevel::WEAK)
 		{
 			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
 		}
 		else
 		{
-			for (int i = MIN_DEGREE * attackLevel; i <= MAX_DEGREE * attackLevel; i += COUNT_CONTROL_VAR / attackLevel)
+			for (int i = MIN_DEGREE * (uint8)attackLevel; i <= MAX_DEGREE * (uint8)attackLevel; i += COUNT_CONTROL_VAR / (uint8)attackLevel)
 			{
 				FVector playerLocation = GetActorLocation();
 				FVector targetDirection = FVector(
@@ -157,21 +157,21 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &APlayerFlight::ShootUltimate);
 }
 
-void APlayerFlight::SetAttackLevel(uint8 level)
+void APlayerFlight::SetAttackLevel(AttackLevel level)
 {
-	if (level > (uint8)AttackLevel::STRONG) return;
+	if (level > AttackLevel::STRONG) return;
 	
 	attackLevel = level;
 }
 
 uint8 APlayerFlight::GetAttackLevel()
 {
-	return attackLevel;
+	return (uint8)attackLevel;
 }
 
-void APlayerFlight::SetAttackBarrier(uint8 level)
+void APlayerFlight::SetAttackBarrier(AttackLevel level)
 {
-	if (level > (uint8)AttackLevel::STRONG) return;
+	if (level > AttackLevel::STRONG) return;
 
 	if (attackBarriers.Num() > 0)
 	{
@@ -183,7 +183,7 @@ void APlayerFlight::SetAttackBarrier(uint8 level)
 	
 	attackBarriers.Empty();
 
-	for (uint8 i = 1; i <= level; i++)
+	for (uint8 i = 1; i <= (uint8)level; i++)
 	{
 		FVector spawnLocation = FVector(
 			0,

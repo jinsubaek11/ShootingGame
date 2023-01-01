@@ -9,7 +9,7 @@ enum class MovingType : uint8
 {
 	LINEAR,
 	CURVE,
-	NONE
+	NONE,
 	//CIRCLE,
 };
 

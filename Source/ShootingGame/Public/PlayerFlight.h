@@ -28,7 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	void SetAttackLevel(uint8 level);
+	void SetAttackLevel(AttackLevel level);
 	//FORCEINLINE uint8 GetAttackLevel() { return attackLevel; };
 	//FORCEINLINE ASubBulletPool& GetSubBulletPool() { return *subBulletPool; };
 
@@ -36,7 +36,7 @@ public:
 	class ASubBulletPool& GetSubBulletPool();
 
 private:
-	void SetAttackBarrier(uint8 level);
+	void SetAttackBarrier(AttackLevel level);
 	void HorizontalInput(float value);
 	void VerticalInput(float value);
 	void Fire(float value);
@@ -55,7 +55,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)
 	float shootCoolTime = 0.1f;
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)
-	uint8 attackLevel = 1;
+	AttackLevel attackLevel = AttackLevel::WEAK;
 	UPROPERTY()
 	class ASubBulletPool* subBulletPool;
 private:
