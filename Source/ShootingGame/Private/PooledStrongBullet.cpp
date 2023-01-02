@@ -56,4 +56,8 @@ void APooledStrongBullet::SetDeactive()
 	OnPooledStrongBulletDespawn.Broadcast(this);
 }
 
+float APooledStrongBullet::GetAttackPower()
+{
+	return att;
+}
 

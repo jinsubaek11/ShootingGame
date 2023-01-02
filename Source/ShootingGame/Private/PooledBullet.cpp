@@ -54,3 +54,8 @@ void APooledBullet::SetDeactive()
 	Super::SetDeactive();
 	OnPooledNormalBulletDespawn.Broadcast(this);
 }
+
+float APooledBullet::GetAttackPower()
+{
+	return att;
+}

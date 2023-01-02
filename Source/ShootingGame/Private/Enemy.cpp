@@ -19,12 +19,13 @@ AEnemy::AEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ¹Ú½º ÄÝ¸®Àü »ý¼º
+	// ï¿½Ú½ï¿½ ï¿½Ý¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50));
+	boxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
 
-	// ¸Þ½¬ »ý¼º
+	// ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 
@@ -47,16 +48,16 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (movingMode == 1)
 	{
-		// YÃàµû¶ó Á÷¼±À¸·Î µé¾î¿Ô´Ù°¡ ´Ù½Ã ¿À¸¥ÂÊÀ¸·Î ³ª°¡µµ·Ï
+		// Yï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ù°ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -800.0f;
+		newLocation.Y += deltaY * -700.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 	} 
-	if (movingMode == 2)
+	else if (movingMode == 2)
 	{
-		// YÃàµû¶ó Á÷¼±À¸·Î ºÎµå·´°Ô µé¾î¿Í¼­ Á¤Áö
+		// Yï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµå·´ï¿½ï¿½ ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = FMath::Sin(runningTime);
@@ -66,20 +67,20 @@ void AEnemy::Tick(float DeltaTime)
 			SetActorLocation(newLocation);
 			return;
 		}
-		// ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î °¡´Â ÃÑ¾ËÀ» ½ºÆù
-		if (!isShoot)
+		// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
 			return;
 		}
-		// ZÃà µû¶ó À§·Î ¿Ã¶ó°¨ (Ææ½º¿¡ ºÎ‹HÇô »ç¶óÁü)
+		// Zï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¶ï¿½ (ï¿½æ½ºï¿½ï¿½ ï¿½Î‹Hï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
-	if (movingMode == 3)
+	else if (movingMode == 3)
 	{
-	// ³ª¿ÀÀÚ¸¶ÀÚ ¿øÀ» ±×¸®¸ç È¸Àü ÈÄ ¿ÞÂÊÀ¸·Î ÅðÀå
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
@@ -87,11 +88,17 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;
+
+		float DeltaZ = FMath::Sin(runningTime * 2);
+		newLocation.Y -= 3.0f;
+		newLocation.Y -= deltaY * 400.0f;
+		newLocation.Z += DeltaZ * 5.0f;
+
 		SetActorLocation(newLocation);
 	}
 	else
 	{
-		// Àû µî¼ÓÀÌµ¿ p=p0+vt
+		// ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ìµï¿½ p=p0+vt
 		direction = GetActorForwardVector();
 		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
 	}
@@ -109,13 +116,14 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		{
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 		}
-
+	
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
 
 		if (myHP > 0)
 		{
-			myHP -= 1;
-		} 
+			myHP -= playerBullet->GetAttackPower();
+		}
 		else
 		{
 			Destroy();

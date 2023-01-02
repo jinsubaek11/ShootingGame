@@ -3,3 +3,8 @@
 
 #include "TengaiGameMode.h"
 
+void ATengaiGameMode::BeginPlay()
+{
+
+}
+
