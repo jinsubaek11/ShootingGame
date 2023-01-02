@@ -43,7 +43,10 @@ public:
 	float spawnY5 = 99999;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
@@ -53,6 +56,9 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float spawnY8 = 99999;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
