@@ -73,6 +73,7 @@ void AEnemy::Tick(float DeltaTime)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
+			UE_LOG(LogTemp, Warning, TEXT("Shoot"));
 			return;
 		}
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
