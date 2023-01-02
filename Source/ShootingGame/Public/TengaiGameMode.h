@@ -16,6 +16,8 @@ class SHOOTINGGAME_API ATengaiGameMode : public AGameModeBase
 	
 public:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	
 	float playSpeed = 50;
+	float worldTime = 0;
 };
