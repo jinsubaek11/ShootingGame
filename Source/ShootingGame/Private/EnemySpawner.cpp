@@ -31,7 +31,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ÁÖ±âÀûÀ¸·Î ½ºÆù
+	// ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 // 	currentTime += DeltaTime;
 // 	if (currentTime>=spawnTime)
 // 	{
@@ -47,81 +47,21 @@ void AEnemySpawner::Tick(float DeltaTime)
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY1 = 99999;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if (curLoc.Y >= spawnY2)
-=======
 	else if (curLoc.Y >= spawnY2)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY2)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY2)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY2)
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY2 = 99999;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if (curLoc.Y >= spawnY3)
-=======
 	else if (curLoc.Y >= spawnY3)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY3)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY3)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY3)
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY3 = 99999;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if (curLoc.Y >= spawnY4)
-=======
 	else if (curLoc.Y >= spawnY4)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY4)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY4)
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY4)
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY4 = 99999;
 	}
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	if (curLoc.Y >= spawnY5)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY5 = 99999;
-	}
-
-
-=======
 	else if (curLoc.Y >= spawnY5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
@@ -143,77 +83,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY5)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY5 = 99999;
-	}
-	else if (curLoc.Y >= spawnY6)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY6 = 99999;
-	}
-	else if (curLoc.Y >= spawnY7)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY7 = 99999;
-	}
-	else if (curLoc.Y >= spawnY8)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY8 = 99999;
-	}
-
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY5)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY5 = 99999;
-	}
-	else if (curLoc.Y >= spawnY6)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY6 = 99999;
-	}
-	else if (curLoc.Y >= spawnY7)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY7 = 99999;
-	}
-	else if (curLoc.Y >= spawnY8)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY8 = 99999;
-	}
-
->>>>>>> b95a99b32cacab323193a55547cdd984304772fe
-=======
-	else if (curLoc.Y >= spawnY5)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY5 = 99999;
-	}
-	else if (curLoc.Y >= spawnY6)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY6 = 99999;
-	}
-	else if (curLoc.Y >= spawnY7)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY7 = 99999;
-	}
-	else if (curLoc.Y >= spawnY8)
-	{
-		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY8 = 99999;
-	}
-
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
-	// ±âº» ÇÃ·¹ÀÌ ¼Óµµ Àû¿ë
+	// ï¿½âº» ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;
