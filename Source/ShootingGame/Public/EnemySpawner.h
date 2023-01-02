@@ -15,16 +15,16 @@ public:
 	// Sets default values for this actor's properties
 	AEnemySpawner();
 
-	// ½Ã°£ÀÌ Áö³¯¼ö·Ï Áõ°¡ÇÏ´Â °ªÀ» ¹ÞÀ» º¯¼ö
+	// ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	float currentTime;
-	// ¼¼ÆÃ ½Ã°£ÀÌ µÇ¸é ÀûÀÌ ½ºÆùµÇ°Ô²û
-// 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
-// 	float spawnTime=2;
-	// ½ºÆùÇÒ ºí·çÇÁ¸°Æ® ¼±ÅÃÃ¢ ¸¸µé±â
+
+	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
+	float spawnTime=2;
+
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
 
-	// ¾Ö·Î¿ì ºÙÀÌ±â À§ÇØ ¾À°ú ÇÔ²² ¼±¾ð
+	// ï¿½Ö·Î¿ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	class UArrowComponent* spawnArrow;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
@@ -41,6 +41,12 @@ public:
 	float spawnY4 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float spawnY5 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY6 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY7 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY8 = 99999;
 
 protected:
 	// Called when the game starts or when spawned

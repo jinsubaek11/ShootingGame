@@ -15,41 +15,40 @@ public:
 	// Sets default values for this actor's properties
 	AEnemy();
 
-	// ¹Ú½º ÄÝ¸®Àü ¼±¾ð
+	// ï¿½Ú½ï¿½ ï¿½Ý¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UBoxComponent* boxComp;
-	// ¸Þ½¬ ¼±¾ð
+	// ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UStaticMeshComponent* meshComp;
 
-	// Àû ÀÌµ¿ ¼Óµµ º¯¼ö
+	// ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	float enemySpeed=400;
-	// Àû ÀÌµ¿ º¤ÅÍ
+	// ï¿½ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 	FVector direction;
-	// ÀÌµ¿ ¸ðµå º¯¼ö
+	// ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
-	int32 movingMode=1;
-	float runningTime=0;
+	int32 movingMode = 0;
+	float runningTime = 0;
 
-	// ¾ÆÀÌÅÛ ºí·çÇÁ¸°Æ® ¼±ÅÃÃ¢ ¸¸µé±â
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Ã¢ ï¿½ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactory;
 
-	// ¿À¹ö·¦ °¨Áö ÇÔ¼ö
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
-	// ¾ÆÀÌÅÛ µå·Ó È®·ü
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float dropRate=0.5;
+	float dropRate=0.05;
+
 	float drawRate;
 
-	// Àû Ã¼·Â
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;
 
-	// ÀûÃÑ¾Ë ºí·çÇÁ¸°Æ® ¼³Á¤
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
