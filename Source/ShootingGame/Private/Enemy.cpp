@@ -50,6 +50,7 @@ void AEnemy::Tick(float DeltaTime)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	{
 =======
 	{		
@@ -60,6 +61,9 @@ void AEnemy::Tick(float DeltaTime)
 =======
 	{		
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+	{		
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		// Y축따라 직선으로 들어왔다가 다시 오른쪽으로 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
@@ -67,6 +71,7 @@ void AEnemy::Tick(float DeltaTime)
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 	} 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -80,6 +85,9 @@ void AEnemy::Tick(float DeltaTime)
 =======
 	else if (movingMode == 2)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+	else if (movingMode == 2)
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	{
 		// Y축따라 직선으로 부드럽게 들어와서 정지
 		FVector newLocation = GetActorLocation();
@@ -95,6 +103,7 @@ void AEnemy::Tick(float DeltaTime)
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!isShoot)
 =======
 		else if (!isShoot)
@@ -105,6 +114,9 @@ void AEnemy::Tick(float DeltaTime)
 =======
 		else if (!isShoot)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+		else if (!isShoot)
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
@@ -114,6 +126,7 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -127,11 +140,15 @@ void AEnemy::Tick(float DeltaTime)
 =======
 	else if (movingMode == 3)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+	else if (movingMode == 3)
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	{
 	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -144,17 +161,22 @@ void AEnemy::Tick(float DeltaTime)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		float DeltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += DeltaZ * 5.0f;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		SetActorLocation(newLocation);
 	}
 	else
@@ -183,6 +205,7 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		if (myHP > 0)
 		{
@@ -202,6 +225,11 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		{
 			myHP -= playerBullet->GetAttackPower();
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+		if (myHP > 0)
+		{
+			myHP -= playerBullet->GetAttackPower();
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		} 
 		else
 		{

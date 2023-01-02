@@ -46,6 +46,7 @@ public:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	float dropRate=0.5;
 =======
 	float dropRate=0.05;
@@ -56,6 +57,9 @@ public:
 =======
 	float dropRate=0.05;
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
+	float dropRate=0.05;
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	float drawRate;
 
 	// Àû Ã¼·Â
