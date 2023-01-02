@@ -31,7 +31,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 주기적으로 스폰
 // 	currentTime += DeltaTime;
 // 	if (currentTime>=spawnTime)
 // 	{
@@ -40,7 +39,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 // 	}
 
 	curLoc = GetActorLocation();
-
 
 	if (curLoc.Y >= spawnY1)
 	{
@@ -83,12 +81,16 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
-	// 기본 플레이 속도 적용
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	float spd = tengaiGM->playSpeed;
-	FVector newLoca = GetActorLocation();
-	newLoca.Y = newLoca.Y + spd * DeltaTime;
-	SetActorLocation(newLoca);
+	if (tengaiGM)
+	{
+		float spd = tengaiGM->playSpeed;
+		FVector newLoca = GetActorLocation();
+		newLoca.Y = newLoca.Y + spd * DeltaTime;
+		SetActorLocation(newLoca);
+	}
+
+
 }
 

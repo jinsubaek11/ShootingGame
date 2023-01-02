@@ -20,13 +20,12 @@ protected:
 
 public:	
 	APooledObject* SpawnPooledObject(FVector start, FVector end);
-	//UFUNCTION()
-	//void OnPooledObjectDespawn(APooledObject* pooledObject);
+
+	TArray<APooledObject*> objectPool;
 
 protected:	
 	uint16 poolSize;
 	float pooledObjectLifeSpan;
 
-	TArray<APooledObject*> objectPool;
 	TArray<uint16> spawnedPoolIndexes;
 };

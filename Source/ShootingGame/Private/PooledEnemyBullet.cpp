@@ -1,10 +1,10 @@
-#include "PooledBullet.h"
+#include "PooledEnemyBullet.h"
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
 
 
-APooledBullet::APooledBullet()
+APooledEnemyBullet::APooledEnemyBullet()
 {
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	boxComp->SetBoxExtent(FVector(25));
@@ -13,7 +13,7 @@ APooledBullet::APooledBullet()
 	arrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	arrowComp->SetupAttachment(RootComponent);
 
-	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
+	boxComp->SetCollisionProfileName(TEXT("EnemyBulletPreset"));
 
 	ConstructorHelpers::FObjectFinder<UStaticMesh> sphereMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -22,40 +22,36 @@ APooledBullet::APooledBullet()
 	meshComp->SetupAttachment(RootComponent);
 	meshComp->SetRelativeLocation(FVector(0, 0, -10));
 
-	speed = 1100.f;
+	speed = 1000.f;
 }
 
-void APooledBullet::BeginPlay()
+void APooledEnemyBullet::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void APooledBullet::Tick(float DeltaTime)
+void APooledEnemyBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-void APooledBullet::Reset()
+void APooledEnemyBullet::Reset()
 {
 	SetDeactive();
 }
 
-void APooledBullet::SetActive(bool value)
+void APooledEnemyBullet::SetActive(bool value)
 {
 	Super::SetActive(value);
 
 	GetWorldTimerManager().SetTimer(
-		lifeSpanTimer, this, &APooledBullet::SetDeactive, lifeSpan, false
+		lifeSpanTimer, this, &APooledEnemyBullet::SetDeactive, lifeSpan, false
 	);
 }
 
-void APooledBullet::SetDeactive()
+void APooledEnemyBullet::SetDeactive()
 {
 	Super::SetDeactive();
-	OnPooledNormalBulletDespawn.Broadcast(this);
-}
+	OnPooledEnemyBulletDespawn.Broadcast(this);
 
-float APooledBullet::GetAttackPower()
-{
-	return att;
 }
