@@ -24,11 +24,11 @@ void AFence_Vertical::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	// 기본 플레이 속도 적용
-	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	float spd = tengaiGM->playSpeed;
-	FVector newLoca = GetActorLocation();
-	newLoca.Y = newLoca.Y + spd * DeltaTime;
-	SetActorLocation(newLoca);
+	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
+	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
+	//float spd = tengaiGM->playSpeed;
+	//FVector newLoca = GetActorLocation();
+	//newLoca.Y = newLoca.Y + spd * DeltaTime;
+	//SetActorLocation(newLoca);
 }
 

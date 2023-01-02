@@ -35,11 +35,6 @@ void APooledBullet::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-//void APooledBullet::SetDirection(FVector direction)
-//{
-//	bulletDirection = direction;
-//}
-
 void APooledBullet::Reset()
 {
 	SetDeactive();
@@ -58,7 +53,6 @@ void APooledBullet::SetDeactive()
 {
 	Super::SetDeactive();
 	OnPooledNormalBulletDespawn.Broadcast(this);
-	//UE_LOG(LogTemp, Warning, TEXT("Pooled bullet deactive %d"), GetIndex());
 }
 
 float APooledBullet::GetAttackPower()

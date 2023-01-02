@@ -47,11 +47,8 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (movingMode == 1)
-	{		
-<<<<<<< HEAD
-=======
-		// YÃàµû¶ó Á÷¼±À¸·Î µé¾î¿Ô´Ù°¡ ´Ù½Ã ¿À¸¥ÂÊÀ¸·Î ³ª°¡µµ·Ï
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
+	{
+		// Yï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´Ù°ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
 		newLocation.Y += deltaY * -700.0f;
@@ -60,10 +57,6 @@ void AEnemy::Tick(float DeltaTime)
 	} 
 	else if (movingMode == 2)
 	{
-<<<<<<< HEAD
-=======
-		// YÃàµû¶ó Á÷¼±À¸·Î ºÎµå·´°Ô µé¾î¿Í¼­ Á¤Áö
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = FMath::Sin(runningTime);
@@ -73,43 +66,27 @@ void AEnemy::Tick(float DeltaTime)
 			SetActorLocation(newLocation);
 			return;
 		}
-<<<<<<< HEAD
-=======
-		// ÇÃ·¹ÀÌ¾î ¹æÇâÀ¸·Î °¡´Â ÃÑ¾ËÀ» ½ºÆù
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
 			return;
 		}
-<<<<<<< HEAD
-
-=======
-		// ZÃà µû¶ó À§·Î ¿Ã¶ó°¨ (Ææ½º¿¡ ºÎ‹HÇô »ç¶óÁü)
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
 	else if (movingMode == 3)
 	{
-<<<<<<< HEAD
-
-=======
-	// ³ª¿ÀÀÚ¸¶ÀÚ ¿øÀ» ±×¸®¸ç È¸Àü ÈÄ ¿ÞÂÊÀ¸·Î ÅðÀå
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
-		float DeltaZ = FMath::Sin(runningTime * 2);
+		float deltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += DeltaZ * 5.0f;
-<<<<<<< HEAD
+		newLocation.Z += deltaZ * 5.0f;
 
-=======
 		SetActorLocation(newLocation);
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	}
 	else
 	{
@@ -132,14 +109,12 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
-<<<<<<< HEAD
-
-=======
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
+		
+		}
 		if (myHP > 0)
 		{
 			myHP -= playerBullet->GetAttackPower();
-		} 
+		}
 		else
 		{
 			Destroy();

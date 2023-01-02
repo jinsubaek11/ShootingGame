@@ -18,17 +18,14 @@ APooledObject* AObjectsPool::SpawnPooledObject(FVector start, FVector end)
 	{
 		if (object && !object->IsActive())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("Spawn"));
 			object->SetActorLocation(start);
 			object->SetDirection(start, end);
 			object->SetLifeSpan(pooledObjectLifeSpan);
 			object->SetActive(true);
 			spawnedPoolIndexes.Add(object->GetIndex());
-			//UE_LOG(LogTemp, Warning, TEXT("%d"), spawnedPoolIndexes.Num());
 			return object;
 		}
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("%d"), spawnedPoolIndexes.Num());
 
 	if (objectPool.Num() > 0 && spawnedPoolIndexes.Num() > 0)
 	{
@@ -56,11 +53,6 @@ APooledObject* AObjectsPool::SpawnPooledObject(FVector start, FVector end)
 	return nullptr;
 }
 
-//void AObjectsPool::OnPooledObjectDespawn(APooledObject* pooledObject)
-//{
-//	spawnedPoolIndexes.Remove(pooledObject->GetIndex());
-//	pooledObject->SetActorLocation(GetActorLocation());
-//}
 
 
 

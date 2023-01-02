@@ -17,7 +17,6 @@ public:
 
 	// �ð��� �������� �����ϴ� ���� ���� ����
 	float currentTime;
-
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
 

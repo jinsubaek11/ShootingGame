@@ -32,10 +32,6 @@ public:
 
 private:
 	FVector direction;
-<<<<<<< HEAD
-
-=======
->>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	float bulletSpeed = 300;
 	class APlayerFlight* target;
 };
