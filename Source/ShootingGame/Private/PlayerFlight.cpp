@@ -74,7 +74,6 @@ void APlayerFlight::Tick(float DeltaTime)
 		return;
 	}
 
-	// �⺻ �÷��� �ӵ� ����
 	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	//float spd = tengaiGM->playSpeed;
