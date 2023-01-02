@@ -29,11 +29,16 @@ public:
 
 public:
 	void SetAttackLevel(AttackLevel level);
-	//FORCEINLINE uint8 GetAttackLevel() { return attackLevel; };
-	//FORCEINLINE ASubBulletPool& GetSubBulletPool() { return *subBulletPool; };
-
 	uint8 GetAttackLevel(); 
 	class ASubBulletPool& GetSubBulletPool();
+
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnFenceHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 	void SetAttackBarrier(AttackLevel level);
@@ -41,9 +46,8 @@ private:
 	void VerticalInput(float value);
 	void Fire(float value);
 	void ShootStrongAttack();
-
-	//FORCEINLINE void ShootUltimate() { isFireUltimate = true; }
 	void ShootUltimate();
+	void Reset();
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
@@ -71,6 +75,9 @@ private:
 	class AUltimateBullet* ultimate;
 
 	FVector direction;
+	FVector position;
+	FVector velocity;
+	FVector gravity;
 
 	int ultimateCount = 2;
 	float ultimateDurationTime;
@@ -82,6 +89,10 @@ private:
 	float shootWaitingTime = 0.f;
 	float subAttackWaitingTime = 0.f;
 	float subAttackCoolTime = 1.f;
+	int8 lifeCount = 4;
+	bool isDead = false;
+	float deadWaitingTime = 0.f;
+	float deadCoolTime = 2.f;
 
 	const int8 MIN_DEGREE = -2;
 	const int8 MAX_DEGREE =  2;

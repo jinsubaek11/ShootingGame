@@ -2,6 +2,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EnemyBulletPool.h"
+#include "TengaiGameMode.h"
 
 ABoss::ABoss()
 {

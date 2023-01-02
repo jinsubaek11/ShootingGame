@@ -12,6 +12,10 @@
 #include "SubBulletPool.h"
 #include "PooledStrongBullet.h"
 #include "StrongBulletPool.h"
+#include "PooledObject.h"
+#include "PooledEnemyBullet.h"
+#include "Fence_Horizontal.h"
+
 
 
 APlayerFlight::APlayerFlight()
@@ -21,6 +25,8 @@ APlayerFlight::APlayerFlight()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	boxComp->SetCollisionProfileName(TEXT("PlayerPreset"));
 	boxComp->SetBoxExtent(FVector(50));
+	boxComp->SetSimulatePhysics(true);
+	boxComp->SetNotifyRigidBodyCollision(true);
 
 	SetRootComponent(boxComp);
 
@@ -39,6 +45,12 @@ void APlayerFlight::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	velocity = FVector(0, -20, 30);
+	gravity = FVector(0, 0, -9.8);
+
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &APlayerFlight::OnOverlap);
+	boxComp->OnComponentHit.AddDynamic(this, &APlayerFlight::OnFenceHit);
+
 	SetAttackBarrier(attackLevel);
 
 	normalBulletPool = GetWorld()->SpawnActor<ANormalBulletPool>();
@@ -51,13 +63,25 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (isDead)
+	{
+		position = GetActorLocation();
+
+		velocity += gravity * DeltaTime * 12;
+		position += velocity * DeltaTime * 12;
+
+		SetActorLocation(position, true);
+		
+		return;
+	}
+
 	// 기본 플레이 속도 적용
-	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	float spd = tengaiGM->playSpeed;
-	FVector newLoca = GetActorLocation();
-	newLoca.Y = newLoca.Y + spd * DeltaTime;
-	SetActorLocation(newLoca);
+	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
+	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
+	//float spd = tengaiGM->playSpeed;
+	//FVector newLoca = GetActorLocation();
+	//newLoca.Y = newLoca.Y + spd * DeltaTime;
+	//SetActorLocation(newLoca);
 
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
@@ -234,7 +258,62 @@ void APlayerFlight::ShootStrongAttack()
 	subAttackWaitingTime = 0.f;
 }
 
+void APlayerFlight::Reset()
+{
+	SetActorLocation(FVector(0, -800, 0));
+
+	ultimateCount = 1;
+	ultimateDurationTime = 0.f;
+	shootWaitingTime = 0.f;
+	subAttackWaitingTime = 0.f;
+	isFireUltimate = false;
+	isShooting = false;
+	readyToSubAttack = false;
+	isFireSubAttack = false;
+}
+
 void APlayerFlight::ShootUltimate()
 {
 	isFireUltimate = true;
+}
+
+void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APooledObject* enemyBullet = Cast<APooledObject>(OtherActor);
+
+	if (enemyBullet)
+	{
+		enemyBullet->Reset();
+
+		if (lifeCount > 0)
+		{
+			lifeCount -= 1;
+			
+			//isDead = true;
+		}
+		else
+		{
+			//Destroy();
+		}
+
+	}
+	//UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+	AFence_Horizontal* fence = Cast<AFence_Horizontal>(OtherActor);
+
+	if (fence && isDead)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+	}
+}
+
+void APlayerFlight::OnFenceHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	AFence_Horizontal* fence = Cast<AFence_Horizontal>(OtherActor);
+	UE_LOG(LogTemp, Warning, TEXT("Hit"));
+
+	if (fence && isDead)
+	{
+//		UE_LOG(LogTemp, Warning, TEXT("Reset"));
+	}
 }
