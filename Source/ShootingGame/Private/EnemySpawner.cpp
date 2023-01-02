@@ -41,7 +41,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 
 	curLoc = GetActorLocation();
 
-
 	if (curLoc.Y >= spawnY1)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
@@ -62,6 +61,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY4 = 99999;
 	}
+
 	else if (curLoc.Y >= spawnY5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
@@ -83,7 +83,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
-	// �⺻ �÷��� �ӵ� ����
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;

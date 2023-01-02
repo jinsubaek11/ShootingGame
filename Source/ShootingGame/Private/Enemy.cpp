@@ -67,7 +67,6 @@ void AEnemy::Tick(float DeltaTime)
 			SetActorLocation(newLocation);
 			return;
 		}
-		// �÷��̾� �������� ���� �Ѿ��� ����
 		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
@@ -88,7 +87,6 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;
-
 		float DeltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
@@ -120,6 +118,7 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
 
+		}
 		if (myHP > 0)
 		{
 			myHP -= playerBullet->GetAttackPower();

@@ -43,7 +43,9 @@ public:
 
 	// ������ ��� Ȯ��
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+
 	float dropRate=0.05;
+
 	float drawRate;
 
 	// �� ü��
