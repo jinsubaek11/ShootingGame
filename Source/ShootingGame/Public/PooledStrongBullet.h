@@ -24,6 +24,8 @@ public:
 	virtual void Reset() override;
 	virtual void SetActive(bool value) override;
 	virtual void SetDeactive() override;
+	virtual float GetAttackPower() override;
+
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
@@ -34,4 +36,6 @@ public:
 	class UStaticMeshComponent* meshComp;
 
 	FOnPooledStrongBulletDespawn OnPooledStrongBulletDespawn;
+private:
+	float att = 2;
 };

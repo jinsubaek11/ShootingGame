@@ -23,6 +23,7 @@ AEnemy::AEnemy()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50));
+	boxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
 
 	// 메쉬 생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -46,15 +47,23 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (movingMode == 1)
+<<<<<<< HEAD
 	{
+=======
+	{		
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		// Y축따라 직선으로 들어왔다가 다시 오른쪽으로 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -800.0f;
+		newLocation.Y += deltaY * -700.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 	} 
+<<<<<<< HEAD
 	if (movingMode == 2)
+=======
+	else if (movingMode == 2)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 	{
 		// Y축따라 직선으로 부드럽게 들어와서 정지
 		FVector newLocation = GetActorLocation();
@@ -67,7 +76,11 @@ void AEnemy::Tick(float DeltaTime)
 			return;
 		}
 		// 플레이어 방향으로 가는 총알을 스폰
+<<<<<<< HEAD
 		if (!isShoot)
+=======
+		else if (!isShoot)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
@@ -77,16 +90,27 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
+<<<<<<< HEAD
 	if (movingMode == 3)
+=======
+	else if (movingMode == 3)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 	{
 	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
+<<<<<<< HEAD
 		float deltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;
+=======
+		float DeltaZ = FMath::Sin(runningTime * 2);
+		newLocation.Y -= 3.0f;
+		newLocation.Y -= deltaY * 400.0f;
+		newLocation.Z += DeltaZ * 5.0f;
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		SetActorLocation(newLocation);
 	}
 	else
@@ -109,12 +133,19 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		{
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 		}
-
+	
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
+<<<<<<< HEAD
 
 		if (myHP > 0)
 		{
 			myHP -= 1;
+=======
+		if (myHP > 0)
+		{
+			myHP -= playerBullet->GetAttackPower();
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		} 
 		else
 		{

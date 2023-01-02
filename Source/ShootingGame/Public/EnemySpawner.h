@@ -41,6 +41,15 @@ public:
 	float spawnY4 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float spawnY5 = 99999;
+<<<<<<< HEAD
+=======
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY6 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY7 = 99999;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float spawnY8 = 99999;
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 
 protected:
 	// Called when the game starts or when spawned

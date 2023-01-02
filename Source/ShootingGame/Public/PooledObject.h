@@ -23,6 +23,7 @@ public:
 	virtual void SetActive(bool value);
 	virtual void SetDeactive();
 	virtual void SetDirection(FVector start, FVector end);
+	virtual float GetAttackPower();
 	void SetLifeSpan(float lifeTime) override;
 	void SetIndex(uint16 objectIndex);
 	bool IsActive() const;
