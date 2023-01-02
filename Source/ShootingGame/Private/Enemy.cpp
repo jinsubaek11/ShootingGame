@@ -23,6 +23,7 @@ AEnemy::AEnemy()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50));
+	boxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
 
 	// 메쉬 생성
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -46,15 +47,15 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (movingMode == 1)
-	{
+	{		
 		// Y축따라 직선으로 들어왔다가 다시 오른쪽으로 나가도록
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -800.0f;
+		newLocation.Y += deltaY * -700.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 	} 
-	if (movingMode == 2)
+	else if (movingMode == 2)
 	{
 		// Y축따라 직선으로 부드럽게 들어와서 정지
 		FVector newLocation = GetActorLocation();
@@ -67,7 +68,7 @@ void AEnemy::Tick(float DeltaTime)
 			return;
 		}
 		// 플레이어 방향으로 가는 총알을 스폰
-		if (!isShoot)
+		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
@@ -77,16 +78,16 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
-	if (movingMode == 3)
+	else if (movingMode == 3)
 	{
 	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
-		float deltaZ = FMath::Sin(runningTime * 2);
+		float DeltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += deltaZ * 5.0f;
+		newLocation.Z += DeltaZ * 5.0f;
 		SetActorLocation(newLocation);
 	}
 	else
@@ -109,12 +110,12 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		{
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 		}
-
+	
+		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
-
 		if (myHP > 0)
 		{
-			myHP -= 1;
+			myHP -= playerBullet->GetAttackPower();
 		} 
 		else
 		{

@@ -47,27 +47,41 @@ void AEnemySpawner::Tick(float DeltaTime)
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY1 = 99999;
 	}
-	if (curLoc.Y >= spawnY2)
+	else if (curLoc.Y >= spawnY2)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY2 = 99999;
 	}
-	if (curLoc.Y >= spawnY3)
+	else if (curLoc.Y >= spawnY3)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY3 = 99999;
 	}
-	if (curLoc.Y >= spawnY4)
+	else if (curLoc.Y >= spawnY4)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY4 = 99999;
 	}
-	if (curLoc.Y >= spawnY5)
+	else if (curLoc.Y >= spawnY5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY5 = 99999;
 	}
-
+	else if (curLoc.Y >= spawnY6)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY6 = 99999;
+	}
+	else if (curLoc.Y >= spawnY7)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY7 = 99999;
+	}
+	else if (curLoc.Y >= spawnY8)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY8 = 99999;
+	}
 
 	// 기본 플레이 속도 적용
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();

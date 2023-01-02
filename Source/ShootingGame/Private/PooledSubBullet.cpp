@@ -93,3 +93,8 @@ FVector APooledSubBullet::GetCalculateLocation(float time) const
 	
 	return position;
 }
+
+float APooledSubBullet::GetAttackPower()
+{
+	return att;
+}

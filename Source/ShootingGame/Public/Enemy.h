@@ -29,8 +29,9 @@ public:
 	FVector direction;
 	// 이동 모드 변수
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
-	int32 movingMode=1;
-	float runningTime=0;
+	int32 movingMode = 0;
+
+	float runningTime = 0;
 
 	// 아이템 블루프린트 선택창 만들기
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
@@ -42,7 +43,7 @@ public:
 
 	// 아이템 드롭 확률
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float dropRate=0.5;
+	float dropRate=0.05;
 	float drawRate;
 
 	// 적 체력
