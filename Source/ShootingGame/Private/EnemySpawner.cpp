@@ -31,7 +31,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// �ֱ������� ����
+
 // 	currentTime += DeltaTime;
 // 	if (currentTime>=spawnTime)
 // 	{
@@ -83,7 +83,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
-	// �⺻ �÷��� �ӵ� ����
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;

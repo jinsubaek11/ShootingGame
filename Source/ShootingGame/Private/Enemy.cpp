@@ -48,7 +48,6 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (movingMode == 1)
 	{		
-		// Y����� �������� ���Դٰ� �ٽ� ���������� ��������
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
 		newLocation.Y += deltaY * -700.0f;
@@ -57,7 +56,6 @@ void AEnemy::Tick(float DeltaTime)
 	} 
 	else if (movingMode == 2)
 	{
-		// Y����� �������� �ε巴�� ���ͼ� ����
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = FMath::Sin(runningTime);
@@ -67,20 +65,19 @@ void AEnemy::Tick(float DeltaTime)
 			SetActorLocation(newLocation);
 			return;
 		}
-		// �÷��̾� �������� ���� �Ѿ��� ����
 		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
 			return;
 		}
-		// Z�� ���� ���� �ö� (�潺�� �΋H�� �����)
+
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
 	else if (movingMode == 3)
 	{
-	// �����ڸ��� ���� �׸��� ȸ�� �� �������� ����
+
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
@@ -88,6 +85,7 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += DeltaZ * 5.0f;
+
 	}
 	else
 	{

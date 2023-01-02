@@ -50,7 +50,6 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;
 
-	// ���Ѿ� ��������Ʈ ����
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
