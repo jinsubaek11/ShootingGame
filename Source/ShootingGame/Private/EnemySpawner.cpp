@@ -31,7 +31,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// �ֱ������� ����
 // 	currentTime += DeltaTime;
 // 	if (currentTime>=spawnTime)
 // 	{
@@ -61,7 +60,6 @@ void AEnemySpawner::Tick(float DeltaTime)
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY4 = 99999;
 	}
-
 	else if (curLoc.Y >= spawnY5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());

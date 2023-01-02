@@ -17,10 +17,6 @@ public:
 
 	// �ð��� �������� �����ϴ� ���� ���� ����
 	float currentTime;
-	// ���� �ð��� �Ǹ� ���� �����ǰԲ�
-// 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
-// 	float spawnTime=2;
-	// ������ ��������Ʈ ����â �����
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
 

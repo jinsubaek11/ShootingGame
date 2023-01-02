@@ -57,7 +57,6 @@ void AEnemy::Tick(float DeltaTime)
 	} 
 	else if (movingMode == 2)
 	{
-		// Y����� �������� �ε巴�� ���ͼ� ����
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = FMath::Sin(runningTime);
@@ -73,7 +72,6 @@ void AEnemy::Tick(float DeltaTime)
 			isShoot = true;
 			return;
 		}
-		// Z�� ���� ���� �ö� (�潺�� �΋H�� �����)
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
@@ -87,10 +85,6 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;
-		float DeltaZ = FMath::Sin(runningTime * 2);
-		newLocation.Y -= 3.0f;
-		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += DeltaZ * 5.0f;
 
 		SetActorLocation(newLocation);
 	}
@@ -99,9 +93,7 @@ void AEnemy::Tick(float DeltaTime)
 		// �� ����̵� p=p0+vt
 		direction = GetActorForwardVector();
 		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
-	}
-
-	
+	}	
 }
 
 void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -117,7 +109,7 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
-
+		
 		}
 		if (myHP > 0)
 		{

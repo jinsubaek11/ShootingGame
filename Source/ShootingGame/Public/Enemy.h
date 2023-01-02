@@ -30,7 +30,6 @@ public:
 	// �̵� ��� ����
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	int32 movingMode = 0;
-
 	float runningTime = 0;
 
 	// ������ ��������Ʈ ����â �����
@@ -43,16 +42,13 @@ public:
 
 	// ������ ��� Ȯ��
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-
 	float dropRate=0.05;
 
 	float drawRate;
 
-	// �� ü��
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;
 
-	// ���Ѿ� ��������Ʈ ����
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
