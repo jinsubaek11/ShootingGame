@@ -72,6 +72,7 @@ void AEnemy::Tick(float DeltaTime)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
+			UE_LOG(LogTemp, Warning, TEXT("Shoot"));
 			return;
 		}
 		// Z축 따라 위로 올라감 (펜스에 부딫혀 사라짐)
