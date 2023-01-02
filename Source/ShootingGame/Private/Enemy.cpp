@@ -49,7 +49,7 @@ void AEnemy::Tick(float DeltaTime)
 	{
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -900.0f + 2.0f;
+		newLocation.Y += deltaY * -900.0f + 3.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 
@@ -84,7 +84,7 @@ void AEnemy::Tick(float DeltaTime)
 		float deltaZ = FMath::Sin(runningTime * 1.5f);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += deltaZ * 5.0f;
+		newLocation.Z += deltaZ * 4.0f;
 
 		SetActorLocation(newLocation);
 	}
