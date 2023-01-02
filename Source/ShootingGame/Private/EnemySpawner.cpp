@@ -48,7 +48,11 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY1 = 99999;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (curLoc.Y >= spawnY2)
+=======
+	else if (curLoc.Y >= spawnY2)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (curLoc.Y >= spawnY2)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -57,7 +61,11 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY2 = 99999;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (curLoc.Y >= spawnY3)
+=======
+	else if (curLoc.Y >= spawnY3)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (curLoc.Y >= spawnY3)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -66,7 +74,11 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY3 = 99999;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (curLoc.Y >= spawnY4)
+=======
+	else if (curLoc.Y >= spawnY4)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (curLoc.Y >= spawnY4)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -75,6 +87,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY4 = 99999;
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (curLoc.Y >= spawnY5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
@@ -82,6 +95,29 @@ void AEnemySpawner::Tick(float DeltaTime)
 	}
 
 
+=======
+	else if (curLoc.Y >= spawnY5)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY5 = 99999;
+	}
+	else if (curLoc.Y >= spawnY6)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY6 = 99999;
+	}
+	else if (curLoc.Y >= spawnY7)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY7 = 99999;
+	}
+	else if (curLoc.Y >= spawnY8)
+	{
+		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		spawnY8 = 99999;
+	}
+
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (curLoc.Y >= spawnY5)
 	{

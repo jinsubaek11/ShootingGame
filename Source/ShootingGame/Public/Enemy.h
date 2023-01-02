@@ -44,7 +44,11 @@ public:
 	// 아이템 드롭 확률
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 <<<<<<< HEAD
+<<<<<<< HEAD
 	float dropRate=0.5;
+=======
+	float dropRate=0.05;
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	float dropRate=0.05;
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe

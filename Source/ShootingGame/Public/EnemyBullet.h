@@ -33,7 +33,11 @@ public:
 private:
 	FVector direction;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	float bulletSpeed = 250;
+=======
+	float bulletSpeed = 300;
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	float bulletSpeed = 300;
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe

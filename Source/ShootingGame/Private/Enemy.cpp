@@ -48,7 +48,11 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (movingMode == 1)
 <<<<<<< HEAD
+<<<<<<< HEAD
 	{
+=======
+	{		
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	{		
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -60,7 +64,11 @@ void AEnemy::Tick(float DeltaTime)
 		SetActorLocation(newLocation);
 	} 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (movingMode == 2)
+=======
+	else if (movingMode == 2)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (movingMode == 2)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -77,7 +85,11 @@ void AEnemy::Tick(float DeltaTime)
 		}
 		// 플레이어 방향으로 가는 총알을 스폰
 <<<<<<< HEAD
+<<<<<<< HEAD
 		if (!isShoot)
+=======
+		else if (!isShoot)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 		else if (!isShoot)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -91,7 +103,11 @@ void AEnemy::Tick(float DeltaTime)
 		SetActorLocation(newLocation);
 	}
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (movingMode == 3)
+=======
+	else if (movingMode == 3)
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 	else if (movingMode == 3)
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
@@ -101,15 +117,21 @@ void AEnemy::Tick(float DeltaTime)
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
 <<<<<<< HEAD
+<<<<<<< HEAD
 		float deltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;
 =======
+=======
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		float DeltaZ = FMath::Sin(runningTime * 2);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += DeltaZ * 5.0f;
+<<<<<<< HEAD
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
+=======
 >>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 		SetActorLocation(newLocation);
 	}
@@ -137,10 +159,16 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		if (myHP > 0)
 		{
 			myHP -= 1;
+=======
+		if (myHP > 0)
+		{
+			myHP -= playerBullet->GetAttackPower();
+>>>>>>> b95a99b32cacab323193a55547cdd984304772fe
 =======
 		if (myHP > 0)
 		{
