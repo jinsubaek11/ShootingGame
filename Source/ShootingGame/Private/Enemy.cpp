@@ -48,6 +48,10 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (movingMode == 1)
 	{		
+<<<<<<< HEAD
+=======
+		// Y축따라 직선으로 들어왔다가 다시 오른쪽으로 나가도록
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
 		newLocation.Y += deltaY * -700.0f;
@@ -56,6 +60,10 @@ void AEnemy::Tick(float DeltaTime)
 	} 
 	else if (movingMode == 2)
 	{
+<<<<<<< HEAD
+=======
+		// Y축따라 직선으로 부드럽게 들어와서 정지
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = FMath::Sin(runningTime);
@@ -65,19 +73,31 @@ void AEnemy::Tick(float DeltaTime)
 			SetActorLocation(newLocation);
 			return;
 		}
+<<<<<<< HEAD
+=======
+		// 플레이어 방향으로 가는 총알을 스폰
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
 			return;
 		}
+<<<<<<< HEAD
 
+=======
+		// Z축 따라 위로 올라감 (펜스에 부딫혀 사라짐)
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
 		SetActorLocation(newLocation);
 	}
 	else if (movingMode == 3)
 	{
+<<<<<<< HEAD
 
+=======
+	// 나오자마자 원을 그리며 회전 후 왼쪽으로 퇴장
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
@@ -85,7 +105,11 @@ void AEnemy::Tick(float DeltaTime)
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += DeltaZ * 5.0f;
+<<<<<<< HEAD
 
+=======
+		SetActorLocation(newLocation);
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	}
 	else
 	{
@@ -108,7 +132,10 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	
 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
+<<<<<<< HEAD
 
+=======
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 		if (myHP > 0)
 		{
 			myHP -= playerBullet->GetAttackPower();

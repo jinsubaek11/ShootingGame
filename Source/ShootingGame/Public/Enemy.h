@@ -30,6 +30,11 @@ public:
 	// ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	int32 movingMode = 0;
+<<<<<<< HEAD
+=======
+
+	float runningTime = 0;
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 
 	float runningTime = 0;
 
@@ -46,10 +51,18 @@ public:
 	float dropRate=0.05;
 	float drawRate;
 
+<<<<<<< HEAD
 	// ï¿½ï¿½ Ã¼ï¿½ï¿½
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;
 
+=======
+	// Àû Ã¼·Â
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	int8 myHP=1;
+
+	// ÀûÃÑ¾Ë ºí·çÇÁ¸°Æ® ¼³Á¤
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 

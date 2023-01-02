@@ -31,7 +31,11 @@ void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+<<<<<<< HEAD
 
+=======
+	// 주기적으로 스폰
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 // 	currentTime += DeltaTime;
 // 	if (currentTime>=spawnTime)
 // 	{
@@ -83,6 +87,10 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
+<<<<<<< HEAD
+=======
+	// 기본 플레이 속도 적용
+>>>>>>> bfc00b683e7e97e60e0897d8de0ca84f82dd0442
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
 	float spd = tengaiGM->playSpeed;
