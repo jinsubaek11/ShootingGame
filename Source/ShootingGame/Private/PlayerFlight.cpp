@@ -14,7 +14,9 @@
 #include "PooledObject.h"
 #include "PooledEnemyBullet.h"
 #include "Fence_Horizontal.h"
-
+#include "Fence_Vertical.h"
+#include "TengaiGameMode.h"
+#include "Item.h"
 
 
 APlayerFlight::APlayerFlight()
@@ -24,8 +26,8 @@ APlayerFlight::APlayerFlight()
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	boxComp->SetCollisionProfileName(TEXT("PlayerPreset"));
 	boxComp->SetBoxExtent(FVector(50));
-	boxComp->SetSimulatePhysics(true);
-	boxComp->SetNotifyRigidBodyCollision(true);
+	//boxComp->SetSimulatePhysics(true);
+	//boxComp->SetNotifyRigidBodyCollision(true);
 
 	SetRootComponent(boxComp);
 
@@ -76,10 +78,13 @@ void APlayerFlight::Tick(float DeltaTime)
 
 	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	//float spd = tengaiGM->playSpeed;
-	//FVector newLoca = GetActorLocation();
-	//newLoca.Y = newLoca.Y + spd * DeltaTime;
-	//SetActorLocation(newLoca);
+	//if (tengaiGM)
+	//{
+	//	float spd = tengaiGM->playSpeed;
+	//	FVector newLoca = GetActorLocation();
+	//	newLoca.Y = newLoca.Y + spd * DeltaTime;
+	//	SetActorLocation(newLoca);
+	//}
 
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
@@ -188,6 +193,11 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &APlayerFlight::ShootUltimate);
 }
 
+bool APlayerFlight::GetIsDead()
+{
+	return isDead;
+}
+
 void APlayerFlight::SetAttackLevel(AttackLevel level)
 {
 	if (level > AttackLevel::STRONG) return;
@@ -230,12 +240,18 @@ void APlayerFlight::SetAttackBarrier(AttackLevel level)
 
 void APlayerFlight::HorizontalInput(float value)
 {
-	direction.Y = value;
+	if (!isDead)
+	{
+		direction.Y = value;
+	}
 }
 
 void APlayerFlight::VerticalInput(float value)
 {
-	direction.Z = value;
+	if (!isDead)
+	{
+		direction.Z = value;
+	}
 }
 
 void APlayerFlight::Fire(float value)
@@ -259,15 +275,27 @@ void APlayerFlight::ShootStrongAttack()
 void APlayerFlight::Reset()
 {
 	SetActorLocation(FVector(0, -800, 0));
+	velocity = FVector(0, -20, 30);
+	gravity = FVector(0, 0, -9.8);
 
 	ultimateCount = 1;
 	ultimateDurationTime = 0.f;
-	shootWaitingTime = 0.f;
 	subAttackWaitingTime = 0.f;
-	isFireUltimate = false;
+	shootWaitingTime = 0.f;
+
 	isShooting = false;
 	readyToSubAttack = false;
 	isFireSubAttack = false;
+	isFireUltimate = false;
+	isDead = false;
+
+	isInvincibility = true;
+	GetWorldTimerManager().SetTimer(timer, this, &APlayerFlight::SetFalseInvincibility, 3.f, false);
+}
+
+void APlayerFlight::SetFalseInvincibility()
+{
+	isInvincibility = false;
 }
 
 void APlayerFlight::ShootUltimate()
@@ -277,6 +305,8 @@ void APlayerFlight::ShootUltimate()
 
 void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (isInvincibility || isDead) return;
+
 	APooledObject* enemyBullet = Cast<APooledObject>(OtherActor);
 
 	if (enemyBullet)
@@ -287,7 +317,16 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		{
 			lifeCount -= 1;
 			
-			//isDead = true;
+			for (uint8 i = 1; i < (uint8)attackLevel; i++)
+			{
+				GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+			}
+			// 궁극기 아이템 만들면 확인하고 스폰
+
+			SetAttackLevel(AttackLevel::WEAK);
+			SetAttackBarrier(AttackLevel::WEAK);
+
+			isDead = true;
 		}
 		else
 		{
@@ -295,23 +334,19 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		}
 
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("Overlap"));
-	AFence_Horizontal* fence = Cast<AFence_Horizontal>(OtherActor);
-
-	if (fence && isDead)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Overlap"));
-	}
 }
 
 void APlayerFlight::OnFenceHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	AFence_Horizontal* fence = Cast<AFence_Horizontal>(OtherActor);
-	UE_LOG(LogTemp, Warning, TEXT("Hit"));
+	if (isInvincibility || !isDead) return;
 
-	if (fence && isDead)
+	AFence_Horizontal* fenceH = Cast<AFence_Horizontal>(OtherActor);
+	AFence_Vertical* fenceV = Cast<AFence_Vertical>(OtherActor);
+
+	if ((fenceV || fenceH) && isDead)
 	{
-//		UE_LOG(LogTemp, Warning, TEXT("Reset"));
+		UE_LOG(LogTemp, Warning, TEXT("Hit"));
+		Reset();
 	}
 }

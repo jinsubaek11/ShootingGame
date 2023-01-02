@@ -41,7 +41,7 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 {
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 
-	if (player != nullptr)
+	if (player != nullptr && !player->GetIsDead())
 	{
 		player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
 		Destroy();

@@ -32,6 +32,21 @@ void ABoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
+	if (tengaiGM)
+	{
+		float spd = tengaiGM->playSpeed;
+		//FVector newLoca = GetActorLocation();
+		//newLoca.Y = newLoca.Y + spd * DeltaTime;
+		//SetActorLocation(newLoca);
+
+		for (int i = 0; i < customPath.Num(); i++)
+		{
+			//customPath[i].position.Y += spd * DeltaTime;
+		}
+	}
+
 	movementComp->Custom(customPath, timeLine, 60, time);
 	time += DeltaTime;
 
@@ -82,7 +97,7 @@ void ABoss::SetMovingPath(uint16 pathCount)
 		}
 
 		uint8 randomIdx = FMath::RandRange(0, 3);
-		float posY = FMath::RandRange(-200, 800);
+		float posY = FMath::RandRange(GetActorLocation().Y - 800, GetActorLocation().Y);
 		float posZ = FMath::RandRange(-500, 500);
 
 		FMovement movement;
@@ -99,7 +114,7 @@ void ABoss::SetMovingPath(uint16 pathCount)
 		{
 			for (int j = 0; j < 2; j++)
 			{
-				float controlPosY = FMath::RandRange(-1000, 1000);
+				float controlPosY = FMath::RandRange(GetActorLocation().Y - 1000, GetActorLocation().Y + 300);
 				float controlPosZ = FMath::RandRange(-700, 700);
 
 				movement.controlPoints[j] = FVector(0, controlPosY, controlPosZ);

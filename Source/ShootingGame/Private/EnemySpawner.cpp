@@ -81,16 +81,14 @@ void AEnemySpawner::Tick(float DeltaTime)
 		spawnY8 = 99999;
 	}
 
-	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	if (tengaiGM)
-	{
-		float spd = tengaiGM->playSpeed;
-		FVector newLoca = GetActorLocation();
-		newLoca.Y = newLoca.Y + spd * DeltaTime;
-		SetActorLocation(newLoca);
-	}
-
-
+	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
+	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
+	//if (tengaiGM)
+	//{
+	//	float spd = tengaiGM->playSpeed;
+	//	FVector newLoca = GetActorLocation();
+	//	newLoca.Y = newLoca.Y + spd * DeltaTime;
+	//	SetActorLocation(newLoca);
+	//}
 }
 

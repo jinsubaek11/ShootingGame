@@ -28,6 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
+	bool GetIsDead();
 	void SetAttackLevel(AttackLevel level);
 	uint8 GetAttackLevel(); 
 	class ASubBulletPool& GetSubBulletPool();
@@ -48,6 +49,7 @@ private:
 	void ShootStrongAttack();
 	void ShootUltimate();
 	void Reset();
+	void SetFalseInvincibility();
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
@@ -73,6 +75,10 @@ private:
 	class AStrongBulletPool* strongBulletPool;
 	UPROPERTY()
 	class AUltimateBullet* ultimate;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AItem> powerItem;
+
+	FTimerHandle timer;
 
 	FVector direction;
 	FVector position;
@@ -91,6 +97,7 @@ private:
 	float subAttackCoolTime = 1.f;
 	int8 lifeCount = 4;
 	bool isDead = false;
+	bool isInvincibility = false;
 	float deadWaitingTime = 0.f;
 	float deadCoolTime = 2.f;
 
