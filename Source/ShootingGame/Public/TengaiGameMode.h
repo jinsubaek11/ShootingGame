@@ -19,5 +19,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	float playSpeed = 50;
-	float worldTime = 0;
+
 };

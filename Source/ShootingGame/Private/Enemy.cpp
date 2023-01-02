@@ -49,14 +49,10 @@ void AEnemy::Tick(float DeltaTime)
 	{
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -700.0f;
+		newLocation.Y += deltaY * -900.0f + 2.0f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 
-		if (newLocation.Y>1200)
-		{
-			Destroy();
-		}
 	} 
 	else if (movingMode == 2)
 	{
@@ -73,7 +69,7 @@ void AEnemy::Tick(float DeltaTime)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
 			isShoot = true;
-			UE_LOG(LogTemp, Warning, TEXT("Shoot"));
+			//UE_LOG(LogTemp, Warning, TEXT("Shoot"));
 			return;
 		}
 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
@@ -84,8 +80,8 @@ void AEnemy::Tick(float DeltaTime)
 	// �����ڸ��� ���� �׸��� ȸ�� �� �������� ����
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
-		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 2) - FMath::Sin(runningTime * 2));
-		float deltaZ = FMath::Sin(runningTime * 2);
+		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 1.5f) - FMath::Sin(runningTime * 1.5f));
+		float deltaZ = FMath::Sin(runningTime * 1.5f);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
 		newLocation.Z += deltaZ * 5.0f;

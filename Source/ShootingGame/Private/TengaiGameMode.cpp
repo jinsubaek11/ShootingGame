@@ -13,5 +13,5 @@ void ATengaiGameMode::BeginPlay()
 
 void ATengaiGameMode::Tick(float DeltaTime)
 {
-	worldTime += DeltaTime;
+
 }

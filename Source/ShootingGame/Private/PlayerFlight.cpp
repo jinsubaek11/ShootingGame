@@ -76,15 +76,15 @@ void APlayerFlight::Tick(float DeltaTime)
 		return;
 	}
 
-	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	//if (tengaiGM)
-	//{
-	//	float spd = tengaiGM->playSpeed;
-	//	FVector newLoca = GetActorLocation();
-	//	newLoca.Y = newLoca.Y + spd * DeltaTime;
-	//	SetActorLocation(newLoca);
-	//}
+	// 기본 이동
+	auto tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM != nullptr)
+	{
+		float spd = tengaiGM->playSpeed;
+		FVector newLoca = GetActorLocation();
+		newLoca.Y = newLoca.Y + spd * DeltaTime;
+		SetActorLocation(newLoca);
+	}
 
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
