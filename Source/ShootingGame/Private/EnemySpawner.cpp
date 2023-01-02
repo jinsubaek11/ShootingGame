@@ -64,7 +64,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
 		spawnY5 = 99999;
-
+	}
 	else if (curLoc.Y >= spawnY6)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());

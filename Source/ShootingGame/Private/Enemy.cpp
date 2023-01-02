@@ -8,6 +8,9 @@
 #include "Runtime/Engine/public/TimerManager.h"
 #include "PooledObject.h"
 #include "PooledSubBullet.h"
+#include "Fence_Horizontal.h"
+#include "Fence_Vertical.h"
+#include "EnemyBullet.h"
 
 // Sets default values
 AEnemy::AEnemy()
