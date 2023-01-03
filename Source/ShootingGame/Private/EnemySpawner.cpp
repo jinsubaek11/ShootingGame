@@ -23,7 +23,7 @@ AEnemySpawner::AEnemySpawner()
 void AEnemySpawner::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -38,57 +38,61 @@ void AEnemySpawner::Tick(float DeltaTime)
 // 		currentTime = 0;
 // 	}
 
-	curLoc = GetActorLocation();
+	//curLoc = GetActorLocation();
+	
 
-	if (curLoc.Y >= spawnY1)
+	worldTime += DeltaTime;
+	//UE_LOG(LogTemp, Warning, TEXT("time is %d"), worldTime);
+
+
+	if (worldTime >= spawnTimer1)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY1 = 99999;
+		spawnTimer1 = 99999;
 	}
-	else if (curLoc.Y >= spawnY2)
+	else if (worldTime >= spawnTimer2)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY2 = 99999;
+		spawnTimer2 = 99999;
 	}
-	else if (curLoc.Y >= spawnY3)
+	else if (worldTime >= spawnTimer3)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY3 = 99999;
+		spawnTimer3 = 99999;
 	}
-	else if (curLoc.Y >= spawnY4)
+	else if (worldTime >= spawnTimer4)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY4 = 99999;
+		spawnTimer4 = 99999;
 	}
-	else if (curLoc.Y >= spawnY5)
+	else if (worldTime >= spawnTimer5)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY5 = 99999;
+		spawnTimer5 = 99999;
 	}
-	else if (curLoc.Y >= spawnY6)
+	else if (worldTime >= spawnTimer6)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY6 = 99999;
+		spawnTimer6 = 99999;
 	}
-	else if (curLoc.Y >= spawnY7)
+	else if (worldTime >= spawnTimer7)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY7 = 99999;
+		spawnTimer7 = 99999;
 	}
-	else if (curLoc.Y >= spawnY8)
+	else if (worldTime >= spawnTimer8)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
-		spawnY8 = 99999;
+		spawnTimer8 = 99999;
 	}
 
-	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	//if (tengaiGM)
-	//{
-	//	float spd = tengaiGM->playSpeed;
-	//	FVector newLoca = GetActorLocation();
-	//	newLoca.Y = newLoca.Y + spd * DeltaTime;
-	//	SetActorLocation(newLoca);
-	//}
+	auto tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM != nullptr)
+	{
+		float spd = tengaiGM->playSpeed;
+		FVector newLoca = GetActorLocation();
+		newLoca.Y = newLoca.Y + spd * DeltaTime;
+		SetActorLocation(newLoca);
+	}
 }
 

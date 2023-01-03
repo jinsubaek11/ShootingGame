@@ -16,10 +16,10 @@ public:
 	AEnemySpawner();
 
 	// �ð��� �������� �����ϴ� ���� ���� ����
-	float currentTime;
+	//float currentTime;
 
-	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
-	float spawnTime=2;
+	//UPROPERTY(EditInstanceOnly, Category=EnemySettings)
+	//float spawnTime=2;
 
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
@@ -30,23 +30,25 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	class USceneComponent* rootScene;
 
-	FVector curLoc;
+	//FVector curLoc;
+	float worldTime = 0;
+
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY1 = 99999;
+	float spawnTimer1 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY2 = 99999;
+	float spawnTimer2 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY3 = 99999;
+	float spawnTimer3 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY4 = 99999;
+	float spawnTimer4 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY5 = 99999;
+	float spawnTimer5 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY6 = 99999;
+	float spawnTimer6 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY7 = 99999;
+	float spawnTimer7 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	float spawnY8 = 99999;
+	float spawnTimer8 = 99999;
 
 protected:
 	// Called when the game starts or when spawned
