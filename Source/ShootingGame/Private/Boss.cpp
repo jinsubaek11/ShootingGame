@@ -3,6 +3,10 @@
 #include "Components/StaticMeshComponent.h"
 #include "EnemyBulletPool.h"
 #include "TengaiGameMode.h"
+#include "PaperFlipbook.h"
+#include "PaperFlipbookComponent.h"
+#include "PooledObject.h"
+
 
 ABoss::ABoss()
 {
@@ -10,27 +14,61 @@ ABoss::ABoss()
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
-	boxComp->SetBoxExtent(FVector(50));
+	boxComp->SetBoxExtent(FVector(50, 100, 150));
+	boxComp->SetCollisionProfileName(TEXT("BossPreset"));
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 
 	movementComp = CreateDefaultSubobject<UEnemyMovement>(TEXT("Movement"));
 	AddOwnedComponent(movementComp);
+
+	attackFlipBookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("AttackFlipBook"));
+	attackFlipBookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/BossEnemy/Boss_Attack1.Boss_Attack1'")));
+	attackFlipBookComp->SetupAttachment(RootComponent);
+	attackFlipBookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	attackFlipBookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	attackFlipBookComp->SetHiddenInGame(true);
+
+	normalWalkFlipBookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("NormalWalkFlipBook"));
+	normalWalkFlipBookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/BossEnemy/Boss_Walk.Boss_Walk'")));
+	normalWalkFlipBookComp->SetupAttachment(RootComponent);
+	normalWalkFlipBookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	normalWalkFlipBookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	normalWalkFlipBookComp->SetHiddenInGame(true);
+
+	walkWithSwordFlipBookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("WalkWithSwordFlipBook"));
+	walkWithSwordFlipBookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/BossEnemy/Boss_Walk_Attack.Boss_Walk_Attack'")));
+	walkWithSwordFlipBookComp->SetupAttachment(RootComponent); 
+	walkWithSwordFlipBookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	walkWithSwordFlipBookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	walkWithSwordFlipBookComp->SetHiddenInGame(true);
+	
+	deadFlipBookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("DeadFlipBook"));
+	deadFlipBookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/BossEnemy/Boss_Dead.Boss_Dead'")));
+	deadFlipBookComp->SetupAttachment(RootComponent);
+	deadFlipBookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	deadFlipBookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	deadFlipBookComp->SetHiddenInGame(true);
+
+	currentFlipBookComponent = walkWithSwordFlipBookComp;
 }
 
 void ABoss::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetMovingPath(30);
+	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABoss::OnOverlap);
 
+	SetMovingPath(30);
 	enemyBulletPool = GetWorld()->SpawnActor<AEnemyBulletPool>();
 }
 
 void ABoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (hp <= 0) return;
 
 	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
 	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
@@ -54,17 +92,68 @@ void ABoss::Tick(float DeltaTime)
 
 	if (customPath[currentTimeLineIndex].type == MovingType::NONE)
 	{
+		if (isFiredComplete)
+		{
+			SetAnimation(AnimationType::WALK_WITH_SWORD);
+			return;
+		}
+
 		if (!isFired)
 		{
+			SetAnimation(AnimationType::ATTACK);
 			Shoot(SelectAttackType());
 			isFired = true;
 		}
 	}
 	else
 	{
+		SetAnimation(AnimationType::WALK_WITH_SWORD);
+		isFiredComplete = false;
 		isFired = false;
 	}
 }
+
+void ABoss::SetAnimation(AnimationType animationType)
+{
+	SetAnimationComponent(animationType);
+}
+
+void ABoss::SetAnimationComponent(AnimationType animationType)
+{
+	currentAnimationType = animationType;
+
+	switch (animationType)
+	{
+	case AnimationType::WALK:
+		currentFlipBookComponent->SetHiddenInGame(true);
+		currentFlipBookComponent = normalWalkFlipBookComp;
+		currentFlipBookComponent->SetHiddenInGame(false);
+		break;
+
+	case AnimationType::WALK_WITH_SWORD:
+		currentFlipBookComponent->SetHiddenInGame(true);
+		currentFlipBookComponent = walkWithSwordFlipBookComp;
+		currentFlipBookComponent->SetHiddenInGame(false);
+		UE_LOG(LogTemp, Warning, TEXT("WALK_WITH_SWORD"));
+		break;
+
+	case AnimationType::ATTACK:
+		currentFlipBookComponent->SetHiddenInGame(true);
+		currentFlipBookComponent = attackFlipBookComp;
+		currentFlipBookComponent->SetHiddenInGame(false);
+
+		UE_LOG(LogTemp, Warning, TEXT("ATTACK"));
+		break;
+
+	case AnimationType::DEAD:
+		currentFlipBookComponent->SetHiddenInGame(true);
+		currentFlipBookComponent = deadFlipBookComp;
+		currentFlipBookComponent->SetHiddenInGame(false);
+		break;
+	}
+}
+
+
 
 void ABoss::SetMovingPath(uint16 pathCount)
 {
@@ -146,6 +235,7 @@ void ABoss::FanShoot()
 	{
 		GetWorldTimerManager().ClearTimer(timer);
 		fanShootCallsRemaining = 10;
+		isFiredComplete = true;
 		return;
 	}
 
@@ -171,6 +261,7 @@ void ABoss::SequenceShoot()
 	{
 		GetWorldTimerManager().ClearTimer(timer);
 		sequenceShootCallsRemaining = 60; 
+		isFiredComplete = true;
 		return;
 	}
 
@@ -194,6 +285,7 @@ void ABoss::SequenceSpiralShoot()
 	{
 		GetWorldTimerManager().ClearTimer(timer);
 		sequenceSpiralShootCallsRemaining = 180;
+		isFiredComplete = true;
 		return;
 	}
 
@@ -217,6 +309,7 @@ void ABoss::SpiralExplosion()
 	{
 		GetWorldTimerManager().ClearTimer(timer);
 		spiralExplosionCallsRemaining = 10;
+		isFiredComplete = true;
 		return;
 	}
 
@@ -244,6 +337,7 @@ void ABoss::RadialExplosion()
 	{
 		GetWorldTimerManager().ClearTimer(timer);
 		radialExplosionCallsRemaining = 10;
+		isFiredComplete = true;
 		return;
 	}
 
@@ -271,6 +365,11 @@ AttackType ABoss::SelectAttackType()
 	//return AttackType::SPIRAL_EXPLOSION;
 }
 
+void ABoss::DestroySelf()
+{
+	Destroy();
+}
+
 void ABoss::Shoot(AttackType attackType)
 {
 	switch (attackType)
@@ -292,6 +391,34 @@ void ABoss::Shoot(AttackType attackType)
 		break;
 	default:
 		break;
+	}
+}
+
+void ABoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	APooledObject* playerBullet = Cast<APooledObject>(OtherActor);
+
+	if (playerBullet)
+	{
+		hp -= playerBullet->GetAttackPower();
+		playerBullet->Reset();
+	}
+
+	if (hp < 0)
+	{
+		hp = 0;
+		SetAnimation(AnimationType::DEAD);
+
+		int32 playbackPosition = currentFlipBookComponent->GetPlaybackPositionInFrames();
+		int32 filpbookLength = currentFlipBookComponent->GetFlipbookLengthInFrames();
+
+		if (playbackPosition == filpbookLength - 1)
+		{
+			currentFlipBookComponent->Stop();
+		}
+
+		GetWorldTimerManager().SetTimer(timer, this, &ABoss::DestroySelf, 1.f, false);
 	}
 }
 

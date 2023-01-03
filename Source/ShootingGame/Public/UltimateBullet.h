@@ -35,4 +35,5 @@ public:
 
 private:
 	bool isUltimateActive = false;
+	uint8 att = 2;
 };
