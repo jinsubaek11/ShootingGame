@@ -48,6 +48,7 @@ void AEnemySpawner::Tick(float DeltaTime)
 	if (worldTime >= spawnTimer1)
 	{
 		GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), spawnArrow->GetComponentRotation());
+		//GetWorld()->SpawnActor<AEnemy>(enemyFactory, GetActorLocation(), FRotator::ZeroRotator);
 		spawnTimer1 = 99999;
 	}
 	else if (worldTime >= spawnTimer2)

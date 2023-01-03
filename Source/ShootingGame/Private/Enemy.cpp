@@ -11,6 +11,7 @@
 #include "Fence_Horizontal.h"
 #include "Fence_Vertical.h"
 #include "EnemyBullet.h"
+#include "PaperFlipbookComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -27,6 +28,13 @@ AEnemy::AEnemy()
 	// �޽� ����
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
+
+	flipbookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Flipbook"));
+	flipbookComp->SetRelativeScale3D(FVector(3));
+	flipbookComp->SetupAttachment(RootComponent);
+	flipbookComp->SetHiddenInGame(true);
+	flipbookComp->Stop();
+
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +45,12 @@ void AEnemy::BeginPlay()
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
 
 	drawRate = FMath::RandRange(0.0f, 1.0f);
+	
+
+
+	//flipbookComp->Deactivate();
+	//flipbookComp->Stop();
+
 
 }
 
@@ -44,6 +58,8 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (isDead) return;
 
 	if (movingMode==1)
 	{
@@ -95,6 +111,31 @@ void AEnemy::Tick(float DeltaTime)
 	}	
 }
 
+void AEnemy::DestroyEnemy()
+{
+	isDead = true;
+
+	boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	meshComp->SetHiddenInGame(true);
+	flipbookComp->SetHiddenInGame(false);
+	flipbookComp->Play();
+
+	GetWorldTimerManager().SetTimer(timer, this, &AEnemy::DestroySelf, 0.8f, false);
+
+	//int32 playbackPosition = flipbookComp->GetPlaybackPositionInFrames();
+	//int32 filpbookLength = flipbookComp->GetFlipbookLengthInFrames();
+
+	//if (playbackPosition == filpbookLength - 1)
+	//{
+	//	//flipbookComp->Stop();
+	//}
+}
+
+void AEnemy::DestroySelf()
+{
+	Destroy();
+}
+
 void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APooledObject* playerBullet = Cast<APooledObject>(OtherActor);
@@ -106,7 +147,6 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 // 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 // 		}
 // 	
-// 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
 		
 		if (myHP > 0)
@@ -119,7 +159,8 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 			}
-			Destroy();
+
+			DestroyEnemy();
 		}
 		
 	}

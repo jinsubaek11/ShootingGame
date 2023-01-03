@@ -54,6 +54,12 @@ public:
 
 	bool isShoot = false;
 
+	UPROPERTY(EditAnywhere, category = EnemySettings)
+	class UPaperFlipbookComponent* flipbookComp;
+
+	FTimerHandle timer;
+	bool isDead = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -62,4 +68,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	void DestroyEnemy();
+	void DestroySelf();
 };
+
