@@ -35,6 +35,9 @@ public:
 	// ������ ��������Ʈ ����â �����
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactory;
+	
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	TSubclassOf <class AItemUltimate> itemFactoryUlti;
 
 	// ������ ���� �Լ�
 	UFUNCTION()
@@ -43,8 +46,11 @@ public:
 	// ������ ��� Ȯ��
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRate=0.05;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float dropRateUlti=0.05;
 
 	float drawRate;
+	float drawRateUlti;
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;

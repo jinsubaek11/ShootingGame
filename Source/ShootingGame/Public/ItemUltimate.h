@@ -4,27 +4,26 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Item.generated.h"
+#include "ItemUltimate.generated.h"
 
 UCLASS()
-class SHOOTINGGAME_API AItem : public AActor
+class SHOOTINGGAME_API AItemUltimate : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AItem();
+	AItemUltimate();
 
-	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
 		class UBoxComponent* boxComp;
-	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
 		class UStaticMeshComponent* meshComp;
 
 	// 오버랩 감지 함수
 	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
 	// Called when the game starts or when spawned
@@ -37,5 +36,4 @@ public:
 
 private:
 	float itemSpeed = 200;
-
 };

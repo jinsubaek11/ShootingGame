@@ -3,6 +3,7 @@
 
 #include "Enemy.h"
 #include "Item.h"
+#include "ItemUltimate.h"
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
 #include "Runtime/Engine/public/TimerManager.h"
@@ -37,6 +38,7 @@ void AEnemy::BeginPlay()
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnOverlap);
 
 	drawRate = FMath::RandRange(0.0f, 1.0f);
+	drawRateUlti = FMath::RandRange(0.0f, 1.0f);
 
 }
 
@@ -118,6 +120,10 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 			if (drawRate <= dropRate)
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+			}
+			if (drawRateUlti <= dropRateUlti)
+			{
+				GetWorld()->SpawnActor<AItemUltimate>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
 			}
 			Destroy();
 		}
