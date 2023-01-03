@@ -80,11 +80,11 @@ void AEnemy::Tick(float DeltaTime)
 	// �����ڸ��� ���� �׸��� ȸ�� �� �������� ����
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
-		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 1.5f) - FMath::Sin(runningTime * 1.5f));
-		float deltaZ = FMath::Sin(runningTime * 1.5f);
+		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 1.0f) - FMath::Sin(runningTime * 1.0f));
+		float deltaZ = FMath::Sin(runningTime * 1.0f);
 		newLocation.Y -= 3.0f;
 		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += deltaZ * 4.0f;
+		newLocation.Z += deltaZ * 5.0f;
 
 		SetActorLocation(newLocation);
 	}
@@ -101,12 +101,12 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (playerBullet)
 	{
-		if (drawRate <= dropRate)
-		{
-			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-		}
-	
-		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
+// 		if (drawRate <= dropRate)
+// 		{
+// 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+// 		}
+// 	
+// 		//UE_LOG(LogTemp, Warning, TEXT("%f"), playerBullet->GetAttackPower());
 		playerBullet->Reset();
 		
 		if (myHP > 0)
@@ -115,6 +115,10 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		}
 		else
 		{
+			if (drawRate <= dropRate)
+			{
+				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+			}
 			Destroy();
 		}
 		
