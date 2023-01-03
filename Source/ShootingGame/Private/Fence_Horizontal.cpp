@@ -22,12 +22,15 @@ void AFence_Horizontal::BeginPlay()
 void AFence_Horizontal::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	// 기본 플레이 속도 적용
-	//AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	//float spd = tengaiGM->playSpeed;
-	//FVector newLoca = GetActorLocation();
-	//newLoca.Y = newLoca.Y + spd * DeltaTime;
-	//SetActorLocation(newLoca);
+
+	 //기본 플레이 속도 적용
+	auto tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	 if (tengaiGM != nullptr)
+	 {
+		 float spd = tengaiGM->playSpeed;
+		 FVector newLoca = GetActorLocation();
+		 newLoca.Y = newLoca.Y + spd * DeltaTime;
+		 SetActorLocation(newLoca);
+	 }
 }
 
