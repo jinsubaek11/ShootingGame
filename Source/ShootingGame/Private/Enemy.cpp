@@ -148,11 +148,6 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (playerBullet)
 	{
-// 		if (drawRate <= dropRate)
-// 		{
-// 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-// 		}
-// 	
 		playerBullet->Reset();
 		
 		if (myHP > 0)
