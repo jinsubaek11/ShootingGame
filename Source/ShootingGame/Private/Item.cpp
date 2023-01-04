@@ -51,33 +51,33 @@ void AItem::Tick(float DeltaTime)
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ItemSelector();
-	UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+	//UE_LOG(LogTemp, Warning, TEXT("Overlap"));
 
-	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+	//APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 
-	if (player != nullptr && !player->GetIsDead())
-	{
-		ItemSelector();
-		//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
-		Destroy();
-		return;
-	}
+	//if (player != nullptr && !player->GetIsDead())
+	//{
+	//	ItemSelector();
+	//	//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
+	//	Destroy();
+	//	return;
+	//}
 
 
-	AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
-	if (fenceVer != nullptr)
-	{
-		randomDir.Y *= -1;
-		//UE_LOG(LogTemp, Warning, TEXT("toched v"));
-		return;
-	}
+	//AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
+	//if (fenceVer != nullptr)
+	//{
+	//	randomDir.Y *= -1;
+	//	//UE_LOG(LogTemp, Warning, TEXT("toched v"));
+	//	return;
+	//}
 
-	AFence_Horizontal* fenceHor = Cast<AFence_Horizontal>(OtherActor);
-	if (fenceHor != nullptr)
-	{
-		randomDir.Z *= -1;
-		//UE_LOG(LogTemp, Warning, TEXT("toched h"));
-	}
+	//AFence_Horizontal* fenceHor = Cast<AFence_Horizontal>(OtherActor);
+	//if (fenceHor != nullptr)
+	//{
+	//	randomDir.Z *= -1;
+	//	//UE_LOG(LogTemp, Warning, TEXT("toched h"));
+	//}
 }
 
 void AItem::ItemSelector()
