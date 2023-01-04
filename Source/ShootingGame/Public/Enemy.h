@@ -36,6 +36,9 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactory;
 
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	TSubclassOf <class AItem> itemFactoryUlti;
+
 	// ������ ���� �Լ�
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -44,7 +47,11 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRate=0.05;
 
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float dropRateUlti = 0.05;
+
 	float drawRate;
+	float drawRateUlti;
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	int8 myHP=1;

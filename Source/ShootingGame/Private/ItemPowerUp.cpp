@@ -2,8 +2,18 @@
 
 
 #include "ItemPowerUp.h"
+#include "PlayerFlight.h"
 
-void AItemPowerUp::ItemSelector()
+void AItemPowerUp::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("This is PowerUp item"));
+	Super::BeginPlay();
+
+}
+
+void AItemPowerUp::ItemSelector(APlayerFlight* player)
+{
+		if (player != nullptr)
+		{
+			player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
+		}
 }

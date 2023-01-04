@@ -54,8 +54,7 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 	if (player != nullptr && !player->GetIsDead())
 	{
-		ItemSelector();
-		//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
+		ItemSelector(player);
 		Destroy();
 	}
 
@@ -76,6 +75,6 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	}
 }
 
-void AItem::ItemSelector()
+void AItem::ItemSelector(APlayerFlight* player)
 {
 }
