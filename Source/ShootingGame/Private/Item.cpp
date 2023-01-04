@@ -14,13 +14,13 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ¹Ú½º ÄÝ¸®Àü »ý¼º
+	// ï¿½Ú½ï¿½ ï¿½Ý¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(25));
 	boxComp->SetCollisionProfileName(TEXT("ItemPreset"));
 
-	// ¸Þ½¬ »ý¼º
+	// ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 
@@ -43,43 +43,35 @@ void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ¾ÆÀÌÅÛ ½ºÆù½Ã ·£´ýÇÑ ¹æÇâÀ¸·Î ÀÌµ¿ÇÏ°Ô
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï°ï¿½
 	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
 
 }
 
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	ItemSelector();
-	//UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+	if (player != nullptr && !player->GetIsDead())
+	{
+		ItemSelector(player);
+		Destroy();
+	}
 
-	//APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+	AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
+	if (fenceVer != nullptr)
+	{
+		randomDir.Y *= -1;
+		//UE_LOG(LogTemp, Warning, TEXT("toched v"));
+		return;
+	}
 
-	//if (player != nullptr && !player->GetIsDead())
-	//{
-	//	ItemSelector();
-	//	//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
-	//	Destroy();
-	//	return;
-	//}
-
-
-	//AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
-	//if (fenceVer != nullptr)
-	//{
-	//	randomDir.Y *= -1;
-	//	//UE_LOG(LogTemp, Warning, TEXT("toched v"));
-	//	return;
-	//}
-
-	//AFence_Horizontal* fenceHor = Cast<AFence_Horizontal>(OtherActor);
-	//if (fenceHor != nullptr)
-	//{
-	//	randomDir.Z *= -1;
-	//	//UE_LOG(LogTemp, Warning, TEXT("toched h"));
-	//}
+	AFence_Horizontal* fenceHor = Cast<AFence_Horizontal>(OtherActor);
+	if (fenceHor != nullptr)
+	{
+		randomDir.Z *= -1;
+		//UE_LOG(LogTemp, Warning, TEXT("toched h"));
+	}
 }
 
-void AItem::ItemSelector()
+void AItem::ItemSelector(APlayerFlight* player)
 {
 }
