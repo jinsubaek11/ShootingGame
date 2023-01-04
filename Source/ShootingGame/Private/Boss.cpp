@@ -134,7 +134,7 @@ void ABoss::SetAnimationComponent(AnimationType animationType)
 		currentFlipBookComponent->SetHiddenInGame(true);
 		currentFlipBookComponent = walkWithSwordFlipBookComp;
 		currentFlipBookComponent->SetHiddenInGame(false);
-		UE_LOG(LogTemp, Warning, TEXT("WALK_WITH_SWORD"));
+		//UE_LOG(LogTemp, Warning, TEXT("WALK_WITH_SWORD"));
 		break;
 
 	case AnimationType::ATTACK:
@@ -142,7 +142,7 @@ void ABoss::SetAnimationComponent(AnimationType animationType)
 		currentFlipBookComponent = attackFlipBookComp;
 		currentFlipBookComponent->SetHiddenInGame(false);
 
-		UE_LOG(LogTemp, Warning, TEXT("ATTACK"));
+		//UE_LOG(LogTemp, Warning, TEXT("ATTACK"));
 		break;
 
 	case AnimationType::DEAD:

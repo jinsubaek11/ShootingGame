@@ -50,6 +50,9 @@ void AItem::Tick(float DeltaTime)
 
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	ItemSelector();
+	UE_LOG(LogTemp, Warning, TEXT("Overlap"));
+
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 
 	if (player != nullptr && !player->GetIsDead())
@@ -57,6 +60,7 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 		ItemSelector();
 		//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
 		Destroy();
+		return;
 	}
 
 
