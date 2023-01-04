@@ -15,5 +15,10 @@ class SHOOTINGGAME_API AItemPowerUp : public AItem
 	GENERATED_BODY()
 
 public:
-	virtual void ItemSelector() override;
+	virtual void ItemSelector(class APlayerFlight* player) override;
+//	class APlayerFlight* player;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };
