@@ -54,7 +54,8 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 	if (player != nullptr && !player->GetIsDead())
 	{
-		player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
+		ItemSelector();
+		//player->SetAttackLevel((AttackLevel)(player->GetAttackLevel() + 1));
 		Destroy();
 	}
 
@@ -73,4 +74,8 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 		randomDir.Z *= -1;
 		//UE_LOG(LogTemp, Warning, TEXT("toched h"));
 	}
+}
+
+void AItem::ItemSelector()
+{
 }
