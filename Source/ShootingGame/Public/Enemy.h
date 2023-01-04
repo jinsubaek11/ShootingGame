@@ -58,7 +58,10 @@ public:
 	class UPaperFlipbookComponent* flipbookComp;
 
 	FTimerHandle timer;
+	FTimerHandle TimerHandle;
+	FTimerHandle TimerHandle2;
 	bool isDead = false;
+	bool canMove = false;
 
 protected:
 	// Called when the game starts or when spawned

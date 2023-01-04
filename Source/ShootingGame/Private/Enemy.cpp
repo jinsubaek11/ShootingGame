@@ -65,7 +65,7 @@ void AEnemy::Tick(float DeltaTime)
 	{
 		FVector newLocation = GetActorLocation();
 		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -900.0f + 3.0f;
+		newLocation.Y += deltaY * -900.0f + 3.5f;
 		runningTime += DeltaTime;
 		SetActorLocation(newLocation);
 
@@ -74,22 +74,27 @@ void AEnemy::Tick(float DeltaTime)
 	{
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
-		float deltaY = FMath::Sin(runningTime);
+		float deltaY = FMath::Sin(runningTime * 2);
 		if (deltaY > 0)
 		{
-			newLocation.Y += deltaY * -3.0f;
+			newLocation.Y += deltaY * -6.0f;
 			SetActorLocation(newLocation);
 			return;
 		}
 		else if (!isShoot)
 		{
 			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+				{
+						GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
+						//UE_LOG(LogTemp, Warning, TEXT("Shoot Timer"));
+				}, 0.1f, false);
 			isShoot = true;
 			//UE_LOG(LogTemp, Warning, TEXT("Shoot"));
 			return;
 		}
-		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed;
-		SetActorLocation(newLocation);
+ 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed * 2;
+ 		SetActorLocation(newLocation);
 	}
 	else if (movingMode == 3)
 	{
