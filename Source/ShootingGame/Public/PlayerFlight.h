@@ -28,9 +28,13 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	bool GetIsDead();
+	int32 GetLifeCount() const;
+	int32 GetMaxLifeCount() const;
+	int32 GetUltimateCount() const;
+	int32 GetMaxUltimateCount() const;
+	bool GetIsDead() const;
 	void SetAttackLevel(AttackLevel level);
-	uint8 GetAttackLevel(); 
+	uint8 GetAttackLevel() const; 
 	class ASubBulletPool& GetSubBulletPool();
 
 	UFUNCTION()
@@ -78,6 +82,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AItem> powerItem;
 
+	class ATengaiGameMode* tengaiGM;
 	FTimerHandle timer;
 
 	FVector direction;
@@ -85,7 +90,10 @@ private:
 	FVector velocity;
 	FVector gravity;
 
-	int ultimateCount = 2;
+	int32 lifeCount = 4;
+	int32 const MAX_LIFE_COUNT = 4;
+	int32 ultimateCount = 2;
+	int32 const MAX_ULTIMATE_COUNT = 3;
 	float ultimateDurationTime;
 	float ultimateMaxDurationTime = 3.f;
 	bool isFireUltimate = false;
@@ -95,7 +103,6 @@ private:
 	float shootWaitingTime = 0.f;
 	float subAttackWaitingTime = 0.f;
 	float subAttackCoolTime = 1.f;
-	int8 lifeCount = 4;
 	bool isDead = false;
 	bool isInvincibility = false;
 	float deadWaitingTime = 0.f;

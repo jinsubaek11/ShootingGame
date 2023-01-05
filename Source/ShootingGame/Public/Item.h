@@ -6,6 +6,13 @@
 #include "GameFramework/Actor.h"
 #include "Item.generated.h"
 
+UENUM()
+enum class ItemType
+{
+	POWER_UP,
+	ULTIMATE
+};
+
 UCLASS()
 class SHOOTINGGAME_API AItem : public AActor
 {
@@ -15,12 +22,7 @@ public:
 	// Sets default values for this actor's properties
 	AItem();
 
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
-		class UBoxComponent* boxComp;
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
-		class UStaticMeshComponent* meshComp;
+	virtual void Tick(float DeltaTime) override;
 
 	// 오버랩 감지 함수
 	UFUNCTION()
@@ -28,6 +30,8 @@ public:
 	
 	// 오버라이드 할 가상 함수
 	virtual void ItemSelector(class APlayerFlight* player);
+	
+	ItemType GetItemType() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,8 +39,19 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	FVector randomDir;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
+	class UBoxComponent* boxComp;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
+	class UStaticMeshComponent* meshComp;
+
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<class UItemWidget> itemWidgetClass;
+	//class UWidgetComponent* widgetComp;
+
+protected:
+	ItemType type;
 
 private:
 	float itemSpeed = 200;

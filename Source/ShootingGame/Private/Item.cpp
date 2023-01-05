@@ -4,9 +4,13 @@
 #include "Item.h"
 #include "components/BoxComponent.h"
 #include "components/StaticMeshComponent.h"
+#include "Components/WidgetComponent.h"
 #include "PlayerFlight.h"
 #include "Fence_Vertical.h"
 #include "Fence_Horizontal.h"
+#include "TengaiGameMode.h"
+#include "ItemWidget.h"
+
 
 // Sets default values
 AItem::AItem()
@@ -24,6 +28,10 @@ AItem::AItem()
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 
+	
+	//widgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	//widgetComp->SetWidget(CreateWidget<UItemWidget>(GetWorld(), itemWidgetClass));
+	//widgetComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -50,9 +58,21 @@ void AItem::Tick(float DeltaTime)
 
 void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 	if (player != nullptr && !player->GetIsDead())
 	{
 		ItemSelector(player);
+		
+		//ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+		//gm->itemUI->PrintGetItemInfo(GetItemType(), GetActorLocation());
+
+		//UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+		//if (itemWidget)
+		//{
+		//	itemWidget->PrintGetItemInfo(GetItemType(), GetActorLocation());
+		//}
+
+
 		Destroy();
 	}
 
@@ -74,4 +94,9 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 void AItem::ItemSelector(APlayerFlight* player)
 {
+}
+
+ItemType AItem::GetItemType() const
+{
+	return type;
 }

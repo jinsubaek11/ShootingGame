@@ -16,6 +16,7 @@
 #include "Fence_Horizontal.h"
 #include "Fence_Vertical.h"
 #include "TengaiGameMode.h"
+#include "MainWidget.h"
 #include "Item.h"
 
 
@@ -54,6 +55,8 @@ void APlayerFlight::BeginPlay()
 
 	SetAttackBarrier(attackLevel);
 
+	tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+
 	normalBulletPool = GetWorld()->SpawnActor<ANormalBulletPool>();
 	subBulletPool = GetWorld()->SpawnActor<ASubBulletPool>();
 	strongBulletPool = GetWorld()->SpawnActor<AStrongBulletPool>();
@@ -72,20 +75,20 @@ void APlayerFlight::Tick(float DeltaTime)
 		position += velocity * DeltaTime * 12;
 
 		SetActorLocation(position, true);
+
+		ultimateDurationTime = 0.f;
+		isFireUltimate = false;
+		ultimate->SetActive(false);
 		
 		return;
 	}
 
 	// 기본 이동
-	auto tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-	if (tengaiGM != nullptr)
-	{
-		float spd = tengaiGM->playSpeed;
-		FVector newLoca = GetActorLocation();
-		newLoca.Y = newLoca.Y + spd * DeltaTime;
-		SetActorLocation(newLoca);
-	}
-
+	float spd = tengaiGM->playSpeed;
+	FVector newLoca = GetActorLocation();
+	newLoca.Y = newLoca.Y + spd * DeltaTime;
+	SetActorLocation(newLoca);
+	
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
 
@@ -107,7 +110,6 @@ void APlayerFlight::Tick(float DeltaTime)
 		}
 		else
 		{
-			ultimateCount--;
 			ultimateDurationTime = 0.f;
 			isFireUltimate = false;
 			ultimate->SetActive(false);
@@ -193,7 +195,27 @@ void APlayerFlight::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("Ultimate", EInputEvent::IE_Pressed, this, &APlayerFlight::ShootUltimate);
 }
 
-bool APlayerFlight::GetIsDead()
+int32 APlayerFlight::GetLifeCount() const
+{
+	return lifeCount;
+}
+
+int32 APlayerFlight::GetMaxLifeCount() const
+{
+	return MAX_LIFE_COUNT;
+}
+
+int32 APlayerFlight::GetUltimateCount() const
+{
+	return ultimateCount;
+}
+
+int32 APlayerFlight::GetMaxUltimateCount() const
+{
+	return MAX_ULTIMATE_COUNT;
+}
+
+bool APlayerFlight::GetIsDead() const
 {
 	return isDead;
 }
@@ -205,7 +227,7 @@ void APlayerFlight::SetAttackLevel(AttackLevel level)
 	attackLevel = level;
 }
 
-uint8 APlayerFlight::GetAttackLevel()
+uint8 APlayerFlight::GetAttackLevel() const
 {
 	return (uint8)attackLevel;
 }
@@ -290,6 +312,8 @@ void APlayerFlight::Reset()
 	isDead = false;
 
 	isInvincibility = true;
+	tengaiGM->mainUI->PrintUltimateCount(); 
+
 	GetWorldTimerManager().SetTimer(timer, this, &APlayerFlight::SetFalseInvincibility, 3.f, false);
 }
 
@@ -301,6 +325,8 @@ void APlayerFlight::SetFalseInvincibility()
 void APlayerFlight::ShootUltimate()
 {
 	isFireUltimate = true;
+	ultimateCount--;
+	tengaiGM->mainUI->PrintUltimateCount();
 }
 
 void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -313,7 +339,7 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	{
 		enemyBullet->Reset();
 
-		if (lifeCount > 0)
+		if (lifeCount > 1)
 		{
 			lifeCount -= 1;
 			
@@ -331,8 +357,9 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		else
 		{
 			//Destroy();
-		}
+		}			
 
+		tengaiGM->mainUI->PrintLifeCount();
 	}
 }
 

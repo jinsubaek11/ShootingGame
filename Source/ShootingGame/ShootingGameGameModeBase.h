@@ -14,4 +14,5 @@ class SHOOTINGGAME_API AShootingGameGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+
 };
