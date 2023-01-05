@@ -5,6 +5,7 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Engine.h"
 #include "MidBoss.h"
+#include "kismet/GameplayStatics.h"
 
 void ATengaiGameMode::BeginPlay()
 {
@@ -15,4 +16,16 @@ void ATengaiGameMode::BeginPlay()
 void ATengaiGameMode::Tick(float DeltaTime)
 {
 
+}
+
+void ATengaiGameMode::ShowGameover()
+{
+	gameoverUI = CreateWidget<UGameoverWidget>(GetWorld(), gameoverWidget);
+
+	if (gameoverUI != nullptr)
+	{
+		gameoverUI->AddToViewport();
+	}
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
 }
