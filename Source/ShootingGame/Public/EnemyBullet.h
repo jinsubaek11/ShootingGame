@@ -24,14 +24,24 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly, Category=EnemyBulletSettings)
-	class USphereComponent* sphereComp;
+	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, Category=EnemyBulletSettings)
 	class UStaticMeshComponent* meshComp;
 	UPROPERTY(EditDefaultsOnly, Category=EnemyBulletSettings)
-	int8 enemyBulletTrace = 1;
+	int32 enemyBulletTrace = 1;
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	int32 *lifeCount;
+	bool *isDead;
+
+	TSubclassOf<class AItem> powerItem;
+	class ATengaiGameMode* tengaiGM;
+
 
 private:
 	FVector direction;
 	float bulletSpeed = 600;
 	class APlayerFlight* target;
+
 };

@@ -32,8 +32,12 @@ public:
 	int32 GetMaxLifeCount() const;
 	int32 GetUltimateCount() const;
 	int32 GetMaxUltimateCount() const;
+	int32 lifeCount = 4;
+	int32 const MAX_LIFE_COUNT = 4;
 	bool GetIsDead() const;
+	bool isDead = false;
 	void SetAttackLevel(AttackLevel level);
+	void LifeCalculator();
 	uint8 GetAttackLevel() const; 
 	class ASubBulletPool& GetSubBulletPool();
 
@@ -90,8 +94,8 @@ private:
 	FVector velocity;
 	FVector gravity;
 
-	int32 lifeCount = 4;
-	int32 const MAX_LIFE_COUNT = 4;
+//	int32 lifeCount = 4;
+//	int32 const MAX_LIFE_COUNT = 4;
 	int32 ultimateCount = 2;
 	int32 const MAX_ULTIMATE_COUNT = 3;
 	float ultimateDurationTime;
@@ -103,7 +107,7 @@ private:
 	float shootWaitingTime = 0.f;
 	float subAttackWaitingTime = 0.f;
 	float subAttackCoolTime = 1.f;
-	bool isDead = false;
+//	bool isDead = false;
 	bool isInvincibility = false;
 	float deadWaitingTime = 0.f;
 	float deadCoolTime = 2.f;
