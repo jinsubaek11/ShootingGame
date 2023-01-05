@@ -9,6 +9,7 @@
 #include "Fence_Horizontal.h"
 #include "PooledObject.h"
 #include "EnemyBullet.h"
+#include "kismet/GameplayStatics.h"
 
 // Sets default values
 AMidBoss::AMidBoss()
@@ -30,6 +31,7 @@ void AMidBoss::BeginPlay()
 	Super::BeginPlay();
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
+
 }
 
 // Called every frame
@@ -38,82 +40,92 @@ void AMidBoss::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 	currentTime += DeltaTime;
+	currentLoc = GetActorLocation();
 
-	// Z축으로 내려온다 (이동)
-	if (currentTime <= 3)
+	// Z축으로 내려온다 (z가 0일때까지)
+	if (currentTime < 2 )
 	{
-		SetActorLocation(GetActorLocation() + direction * DeltaTime * 200);
+		if (currentLoc.Z >= 0)
+		{
+			SetActorLocation(GetActorLocation() + direction * DeltaTime * 400);
+		}
+	}
+	// 현재 위치를 저장한다
+	else if (currentTime >= 2 && currentTime < 2.5)
+	{
+		mainLoc = GetActorLocation();
 	}
 	// 총알을 쏜다
-	else if (currentTime >= 3 && currentTime <= 5)
+	else if (currentTime >= 2.5 && currentTime < 3)
 	{
 		if (!isShoot1)
 		{
-			for (int32 i = 0; i < 4; i++)
+			for (int32 i = 0; i < 5; i++)
 			{
 				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
-				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (4 - 1) + 30 * i));
+				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (5 - 1) + 30 * i));
 			}
-			UE_LOG(LogTemp, Warning, TEXT("shoot1"));
 			isShoot1 = true;
 		}
 
 	}
-	else if (currentTime >= 5 && currentTime <= 7)
+	else if (currentTime >= 3 && currentTime < 3.5)
 	{
 		if (!isShoot2)
 		{
-			for (int32 i = 0; i < 4; i++)
+			for (int32 i = 0; i < 6; i++)
 			{
 				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
-				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (4 - 1) + 30 * i));
+				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (6 - 1) + 30 * i));
 			}
-			UE_LOG(LogTemp,	Warning, TEXT("shoot2"));
 			isShoot2 = true;
 		}
 
 	}
-	else
+	else if (currentTime >= 3.5 && currentTime < 4)
 	{
-		SetActorLocation(GetActorLocation() + direction * DeltaTime * 200);
+		if (!isShoot3)
+		{
+			for (int32 i = 0; i < 7; i++)
+			{
+				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
+				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (7 - 1) + 30 * i));
+			}
+			isShoot3 = true;
+		}
+
+	}
+	// 플레이어쪽으로 방향을 정한다
+	else if (currentTime >= 4 && currentTime < 4.5)
+	{
+		AActor* target = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerFlight::StaticClass());
+		directionPlayer = target->GetActorLocation() - GetActorLocation();
+		directionPlayer.Normalize();
+	}
+	// 정한 방향으로 빠르게 이동한다
+	else if (currentTime >= 4.5 && currentTime < 8)
+	{
+		SetActorLocation(GetActorLocation() + directionPlayer * DeltaTime * 1200);
+	}
+	// 저장했던 메인위치로 돌아온다
+	else if (currentTime >=8 && currentTime < 10)
+	{
+		FVector toMain = mainLoc - currentLoc;
+		toMain.Normalize();
+ 		if (currentLoc.Y >= mainLoc.Y + 20 || currentLoc.Y <= mainLoc.Y - 20 || currentLoc.Z >= mainLoc.Z + 20 || currentLoc.Z <= mainLoc.Z - 20)
+ 		{
+ 		   SetActorLocation(GetActorLocation() + toMain * DeltaTime * 600);
+ 		}
+	}
+	else if (currentTime > 10)
+	{
+		isShoot1 = false;
+		isShoot2 = false;
+		isShoot3 = false;
+		currentTime = 2.5;
 	}
 
-// 	// 방향을 정하고
-// 	if (!isSetDir && isSaved)
-// 	{
-// 		SetDirection();
-// 		isSetDir = true;
-// 	}
-// 	// 3초간 빠르게 돌진한다
-// 	if (isSetDir)
-// 	{
-// 		currentTime = 0;
-// 		if (currentTime <= 3)
-// 		{
-// 			SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime);
-// 		}
-// 	}
-
-	// 중앙 위치로 돌아온다
-
-}
-
-
-// void AMidBoss::SetDirection()
-// {
-// 	// 플레이어 방향으로
-// 	for (TActorIterator<APlayerFlight> It(GetWorld()); It; ++It)
-// 	{
-// 		target = *It;
-// 	}
-// 	if (target != nullptr)
-// 	{
-// 		FVector targetDir = target->GetActorLocation() - GetActorLocation();
-// 		targetDir.Normalize();
-// 		direction = targetDir;
-// 	}
-// 
-// }
+	}
 
 
 void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -141,6 +153,7 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	if (fenceVer != nullptr)
 	{
 		direction.Y *= -1;
+		directionPlayer.Y *= -1;
 		return;
 	}
 
@@ -148,6 +161,7 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	if (fenceHor != nullptr)
 	{
 		direction.Z *= -1;
+		directionPlayer.Z *= -1;
 	}
 }
 
