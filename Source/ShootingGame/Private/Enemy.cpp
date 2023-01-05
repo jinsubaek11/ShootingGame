@@ -148,11 +148,6 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 	if (playerBullet)
 	{
-// 		if (drawRate <= dropRate)
-// 		{
-// 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-// 		}
-// 	
 		playerBullet->Reset();
 		
 		if (myHP > 0)
@@ -164,12 +159,12 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 			if (drawRate <= dropRate)
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-				UE_LOG(LogTemp, Warning, TEXT("Item Spawned1"));
+				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned1"));
 			}
 			if (drawRateUlti <= dropRateUlti)
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-				UE_LOG(LogTemp, Warning, TEXT("Item Spawned2"));
+				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned2"));
 			}
 			DestroyEnemy();
 		}

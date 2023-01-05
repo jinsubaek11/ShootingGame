@@ -20,4 +20,9 @@ public:
 	
 	float playSpeed = 50;
 
+	void ShowGameover();
+	class UGameoverWidget* gameoverUI;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
+	TSubclassOf <class UGameoverWidget> gameoverWidget;
+
 };
