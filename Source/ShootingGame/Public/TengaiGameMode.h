@@ -22,6 +22,9 @@ public:
 
 public:
 	int32 GetCurrentScore();
+	
+private:
+	void ShowGameover();
 
 public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
@@ -37,4 +40,8 @@ public:
 
 private:
 	int32 currentScore = 30;
+
+	class UGameoverWidget* gameoverUI;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
+	TSubclassOf <class UGameoverWidget> gameoverWidget;
 };

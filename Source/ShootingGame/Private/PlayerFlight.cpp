@@ -356,6 +356,8 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		}
 		else
 		{
+			ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+			gm->ShowGameover();
 			//Destroy();
 		}			
 

@@ -40,16 +40,17 @@ void AEnemyBullet::BeginPlay()
 			direction = targetDir;
 		}
 	}
-	else
-	{
-		direction = GetActorRightVector() * -1;
-	}
+
 }
 
 // Called every frame
 void AEnemyBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (enemyBulletTrace == 0)
+	{
+		direction = GetActorRightVector() * -1;
+	}
 
 	SetActorLocation(GetActorLocation() + direction * bulletSpeed * DeltaTime);
 }
