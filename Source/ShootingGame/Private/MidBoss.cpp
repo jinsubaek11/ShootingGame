@@ -10,6 +10,7 @@
 #include "PooledObject.h"
 #include "EnemyBullet.h"
 #include "kismet/GameplayStatics.h"
+#include "Item.h"
 
 // Sets default values
 AMidBoss::AMidBoss()

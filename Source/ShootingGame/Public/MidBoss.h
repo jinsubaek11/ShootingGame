@@ -24,9 +24,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=MidBossSettings)
-	UBoxComponent* boxComp;
+	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=MidBossSettings)
-	UPaperFlipbookComponent* flipComp;
+	class UPaperFlipbookComponent* flipComp;
 	UPROPERTY(EditInstanceOnly, Category = MidBossSettings)
 	TSubclassOf <class AItem> itemFactory;
 	UPROPERTY(EditInstanceOnly, Category = MidBossSettings)

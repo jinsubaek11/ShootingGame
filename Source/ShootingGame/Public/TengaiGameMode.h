@@ -22,8 +22,6 @@ public:
 
 public:
 	int32 GetCurrentScore();
-	
-private:
 	void ShowGameover();
 
 public:
