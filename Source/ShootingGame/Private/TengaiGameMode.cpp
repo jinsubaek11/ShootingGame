@@ -4,6 +4,7 @@
 #include "TengaiGameMode.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Engine.h"
+#include "MidBoss.h"
 
 void ATengaiGameMode::BeginPlay()
 {

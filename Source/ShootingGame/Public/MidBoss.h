@@ -34,7 +34,7 @@ public:
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= MidBossSettings)
-	uint8 myHP = 50;
+	int32 myHP = 10;
 
 	float currentTime = 0;
 	FVector direction;
@@ -49,4 +49,5 @@ public:
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 // 	void DestroyEnemy();
 // 	void SetDirection();
+	void MidBossStart();
 };
