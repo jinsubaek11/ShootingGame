@@ -22,8 +22,9 @@ public:
 
 public:
 	int32 GetCurrentScore();
-	void AddScore(int32 point);
+	int32 GetBestScore();
 	void ShowGameover();
+	void AddScore(int32 point);
 
 public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
@@ -39,6 +40,7 @@ public:
 
 private:
 	int32 currentScore = 0;
+	int32 bestScore = 0;
 
 	class UGameoverWidget* gameoverUI;
 	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)

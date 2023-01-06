@@ -5,6 +5,7 @@
 #include "kismet/KismetSystemLibrary.h"
 #include "kismet/GameplayStatics.h"
 #include "components/Button.h"
+#include "EndingWidget.h"
 
 void UGameoverWidget::NativeConstruct()
 {
@@ -21,6 +22,12 @@ void UGameoverWidget::ResumeGame()
 
 void UGameoverWidget::QuitGame()
 {
-	APlayerController* playCon = GetWorld()->GetFirstPlayerController();
-	UKismetSystemLibrary::QuitGame(GetWorld(), playCon, EQuitPreference::Quit, true);
+	endingUI = CreateWidget<UEndingWidget>(GetWorld(), endingWidget);
+
+	if (endingUI != nullptr)
+	{
+		endingUI->AddToViewport();
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+	}
 }

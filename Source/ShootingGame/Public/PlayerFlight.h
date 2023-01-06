@@ -33,7 +33,9 @@ public:
 	int32 GetUltimateCount() const;
 	int32 GetMaxUltimateCount() const;
 	bool GetIsDead() const;
+	bool GetIsInvincibility() const;
 	void SetAttackLevel(AttackLevel level);
+	void LifeCalculator();
 	uint8 GetAttackLevel() const; 
 	class ASubBulletPool& GetSubBulletPool();
 

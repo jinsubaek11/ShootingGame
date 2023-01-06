@@ -48,6 +48,10 @@ void ATengaiGameMode::AddScore(int32 point)
 	mainUI->PrintCurrentScore();
 }
 
+int32 ATengaiGameMode::GetBestScore()
+{
+	return bestScore;
+}
 
 void ATengaiGameMode::ShowGameover()
 {
