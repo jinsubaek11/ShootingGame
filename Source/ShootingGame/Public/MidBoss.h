@@ -44,6 +44,7 @@ public:
 	bool isShoot3 = false;
 	FVector currentLoc;
 	FVector mainLoc;
+	int32 point = 100;
 
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

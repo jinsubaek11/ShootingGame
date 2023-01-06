@@ -18,12 +18,8 @@ public:
 	AItemPowerUp();
 
 	virtual void ItemSelector(class APlayerFlight* player) override;
-//	class APlayerFlight* player;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-private:
-	//ItemType type = ItemType::POWER_UP;
 };

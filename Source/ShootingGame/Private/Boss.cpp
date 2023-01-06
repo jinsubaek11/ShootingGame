@@ -14,7 +14,7 @@ ABoss::ABoss()
 
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
-	boxComp->SetBoxExtent(FVector(50, 100, 150));
+	boxComp->SetBoxExtent(FVector(50, 70, 130));
 	boxComp->SetCollisionProfileName(TEXT("BossPreset"));
 
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
@@ -407,7 +407,14 @@ void ABoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 	if (hp < 0)
 	{
-		hp = 0;
+		SetActorEnableCollision(false);
+
+		ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+		if (tengaiGM)
+		{
+			tengaiGM->AddScore(point);
+		}
+
 		SetAnimation(AnimationType::DEAD);
 
 		int32 playbackPosition = currentFlipBookComponent->GetPlaybackPositionInFrames();

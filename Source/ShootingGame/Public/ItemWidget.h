@@ -5,20 +5,18 @@
 #include "Item.h"
 #include "ItemWidget.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class SHOOTINGGAME_API UItemWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
-
-protected:
-
 public:
-	//void PrintGetItemInfo(ItemType type, const FVector& itemPosition);
+	void NativeConstruct();
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting", meta = (BindWidget))
-	//class UTextBlock* textBlock;
+	void PrintGetItemInfo(ItemType type);
+	void PrintMonsterScore(int32 score);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting", meta = (BindWidget))
+	class UTextBlock* textBlock;
 };

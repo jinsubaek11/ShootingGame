@@ -10,6 +10,7 @@
 #include "PooledObject.h"
 #include "EnemyBullet.h"
 #include "kismet/GameplayStatics.h"
+#include "TengaiGameMode.h"
 #include "Item.h"
 
 // Sets default values
@@ -144,11 +145,16 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			//DestroyEnemy();
+			ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+			if (tengaiGM)
+			{
+				tengaiGM->AddScore(point);
+			}
+
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 			Destroy();
 		}
-
 	}
 
 	AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);

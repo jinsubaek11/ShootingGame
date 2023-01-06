@@ -10,6 +10,7 @@
 #include "Fence_Horizontal.h"
 #include "TengaiGameMode.h"
 #include "ItemWidget.h"
+#include "PaperFlipbookComponent.h"
 
 
 // Sets default values
@@ -27,11 +28,11 @@ AItem::AItem()
 	// �޽� ����
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
-
 	
-	//widgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
-	//widgetComp->SetWidget(CreateWidget<UItemWidget>(GetWorld(), itemWidgetClass));
-	//widgetComp->SetupAttachment(RootComponent);
+	widgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	widgetComp->SetupAttachment(RootComponent);
+	widgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	widgetComp->SetPivot(FVector2D(-0.1, 0.15));
 }
 
 // Called when the game starts or when spawned
@@ -44,12 +45,22 @@ void AItem::BeginPlay()
 	randomDir.Z = FMath::RandRange(-100.0f, 100.0f);
 	randomDir.Normalize();
 
+	UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+	if (itemWidget)
+	{
+		itemWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 // Called every frame
 void AItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (isTouched)
+	{
+		randomDir = FVector(0, 0, 1);
+	}
 
 	// ������ ������ ������ �������� �̵��ϰ�
 	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
@@ -62,18 +73,24 @@ void AItem::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 	if (player != nullptr && !player->GetIsDead())
 	{
 		ItemSelector(player);
-		
-		//ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-		//gm->itemUI->PrintGetItemInfo(GetItemType(), GetActorLocation());
 
-		//UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
-		//if (itemWidget)
-		//{
-		//	itemWidget->PrintGetItemInfo(GetItemType(), GetActorLocation());
-		//}
+		SetActorEnableCollision(false);
 
+		UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+		if (itemWidget)
+		{
+			itemWidget->SetVisibility(ESlateVisibility::Visible);
+			itemWidget->PrintGetItemInfo(GetItemType());
+			isTouched = true;
+		}
 
-		Destroy();
+		ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+		if (tengaiGM)
+		{
+			tengaiGM->AddScore(point);
+		}
+
+		GetWorldTimerManager().SetTimer(timer, this, &AItem::DestroySelf, 0.8, false);
 	}
 
 	AFence_Vertical* fenceVer = Cast<AFence_Vertical>(OtherActor);
@@ -99,4 +116,9 @@ void AItem::ItemSelector(APlayerFlight* player)
 ItemType AItem::GetItemType() const
 {
 	return type;
+}
+
+void AItem::DestroySelf()
+{
+	Destroy();
 }

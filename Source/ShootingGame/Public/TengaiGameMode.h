@@ -22,6 +22,7 @@ public:
 
 public:
 	int32 GetCurrentScore();
+	void AddScore(int32 point);
 	void ShowGameover();
 
 public:
@@ -37,7 +38,7 @@ public:
 	float playSpeed = 50;
 
 private:
-	int32 currentScore = 30;
+	int32 currentScore = 0;
 
 	class UGameoverWidget* gameoverUI;
 	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)

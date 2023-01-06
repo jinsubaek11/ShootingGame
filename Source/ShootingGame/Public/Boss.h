@@ -92,11 +92,13 @@ private:
 	TArray<float> timeLine;
 
 	FTimerHandle timer;
-	int16 fanShootCallsRemaining = 10;
-	int16 sequenceShootCallsRemaining = 60;
-	int16 sequenceSpiralShootCallsRemaining = 180;
-	int16 spiralExplosionCallsRemaining = 15;
-	int16 radialExplosionCallsRemaining = 15;
+	int32 fanShootCallsRemaining = 10;
+	int32 sequenceShootCallsRemaining = 60;
+	int32 sequenceSpiralShootCallsRemaining = 180;
+	int32 spiralExplosionCallsRemaining = 15;
+	int32 radialExplosionCallsRemaining = 15;
 
-	int8 hp = 10;
+	bool isDead;
+	int32 hp = 10;
+	int32 point = 200;
 };

@@ -12,6 +12,9 @@
 #include "Fence_Vertical.h"
 #include "EnemyBullet.h"
 #include "PaperFlipbookComponent.h"
+#include "TengaiGameMode.h"
+#include "ItemWidget.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -35,6 +38,10 @@ AEnemy::AEnemy()
 	flipbookComp->SetHiddenInGame(true);
 	flipbookComp->Stop();
 
+	widgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	widgetComp->SetupAttachment(RootComponent);
+	widgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	widgetComp->SetPivot(FVector2D(-0.15, 0.2));
 }
 
 // Called when the game starts or when spawned
@@ -47,12 +54,11 @@ void AEnemy::BeginPlay()
 	drawRate = FMath::RandRange(0.0f, 1.0f);
 	drawRateUlti = FMath::RandRange(0.0f, 1.0f);
 	
-
-
-	//flipbookComp->Deactivate();
-	//flipbookComp->Stop();
-
-
+	UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+	if (itemWidget)
+	{
+		itemWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 // Called every frame
@@ -60,7 +66,11 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (isDead) return;
+	if (isDead)
+	{
+		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
+		return;
+	}
 
 	if (movingMode==1)
 	{
@@ -112,6 +122,7 @@ void AEnemy::Tick(float DeltaTime)
 	}
 	else
 	{
+
 		direction = GetActorForwardVector();
 		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
 	}	
@@ -128,13 +139,20 @@ void AEnemy::DestroyEnemy()
 
 	GetWorldTimerManager().SetTimer(timer, this, &AEnemy::DestroySelf, 0.8f, false);
 
-	//int32 playbackPosition = flipbookComp->GetPlaybackPositionInFrames();
-	//int32 filpbookLength = flipbookComp->GetFlipbookLengthInFrames();
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM)
+	{
+		tengaiGM->AddScore(point);
+	}
 
-	//if (playbackPosition == filpbookLength - 1)
-	//{
-	//	//flipbookComp->Stop();
-	//}
+	direction = FVector(0, 0, 1);
+
+	UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+	if (itemWidget)
+	{
+		itemWidget->SetVisibility(ESlateVisibility::Visible);
+		itemWidget->PrintMonsterScore(point);
+	}
 }
 
 void AEnemy::DestroySelf()
@@ -156,14 +174,16 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		}
 		else
 		{
+			SetActorEnableCollision(false);
+
 			if (drawRate <= dropRate)
 			{
-				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
 				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned1"));
 			}
 			if (drawRateUlti <= dropRateUlti)
 			{
-				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
+				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
 				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned2"));
 			}
 			DestroyEnemy();

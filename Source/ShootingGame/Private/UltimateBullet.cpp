@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "components/BoxComponent.h"
 #include "NiagaraComponent.h"
+#include "TengaiGameMode.h"
 
 AUltimateBullet::AUltimateBullet()
 {
@@ -59,6 +60,12 @@ void AUltimateBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent,
 
 	if (enemy != nullptr)
 	{
+		ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+		if (tengaiGM)
+		{
+			tengaiGM->AddScore(enemy->point);
+		}
+
 		enemy->Destroy();
 	}
 }

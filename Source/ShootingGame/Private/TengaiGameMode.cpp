@@ -42,6 +42,13 @@ int32 ATengaiGameMode::GetCurrentScore()
 	return currentScore;
 }
 
+void ATengaiGameMode::AddScore(int32 point)
+{
+	currentScore += point;
+	mainUI->PrintCurrentScore();
+}
+
+
 void ATengaiGameMode::ShowGameover()
 {
 	gameoverUI = CreateWidget<UGameoverWidget>(GetWorld(), gameoverWidget);

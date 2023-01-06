@@ -64,11 +64,19 @@ public:
 	UPROPERTY(EditAnywhere, category = EnemySettings)
 	class UPaperFlipbookComponent* flipbookComp;
 
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	TSubclassOf<class UItemWidget> itemWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* widgetComp;
+
 	FTimerHandle timer;
 	FTimerHandle TimerHandle;
 	FTimerHandle TimerHandle2;
 	bool isDead = false;
 	bool canMove = false;
+	int32 point = 30;
 
 protected:
 	// Called when the game starts or when spawned

@@ -33,6 +33,8 @@ public:
 	
 	ItemType GetItemType() const;
 
+	void DestroySelf();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -46,14 +48,22 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = ItemSettings)
 	class UStaticMeshComponent* meshComp;
 
-	//UPROPERTY(EditAnywhere)
-	//TSubclassOf<class UItemWidget> itemWidgetClass;
-	//class UWidgetComponent* widgetComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	TSubclassOf<class UItemWidget> itemWidgetClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* widgetComp;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isTouched = false;
 
 protected:
 	ItemType type;
+	int32 point = 10;
 
 private:
 	float itemSpeed = 200;
+	FTimerHandle timer;
+
 
 };
