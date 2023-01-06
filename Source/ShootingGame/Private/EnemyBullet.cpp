@@ -45,9 +45,6 @@ void AEnemyBullet::BeginPlay()
 		}
 	}
 
-	lifeCount = &(target->lifeCount);
-	isDead = &(target->isDead);
-
 }
 
 // Called every frame
@@ -66,6 +63,12 @@ void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 {
 	UE_LOG(LogTemp, Warning, TEXT("Enemy Bullet Overlaped"));
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
+
+	bool isInvincibility = player->GetIsInvincibility();
+	bool isDead = player->GetIsDead();
+
+	if (isInvincibility || isDead) return;
+
 	if (player != nullptr)
 	{
 		player->LifeCalculator();

@@ -19,6 +19,9 @@ public:
 	class UButton* btn_Resume;
 	UPROPERTY(EditDefaultsOnly, meta = (bindwidget))
 	class UButton* btn_Quit;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
+	TSubclassOf <class UEndingWidget> endingWidget;
+	class UEndingWidget* endingUI;
 
 	virtual void NativeConstruct() override;
 

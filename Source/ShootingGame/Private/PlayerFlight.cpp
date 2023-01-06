@@ -67,7 +67,8 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	tengaiGM->mainUI->PrintLifeCount();
+	// 일단 주석 처리 (EnemyBullet에서 작동안해서 넣은거)
+//	tengaiGM->mainUI->PrintLifeCount();
 
 	if (isDead)
 	{
@@ -220,6 +221,11 @@ int32 APlayerFlight::GetMaxUltimateCount() const
 bool APlayerFlight::GetIsDead() const
 {
 	return isDead;
+}
+
+bool APlayerFlight::GetIsInvincibility() const
+{
+	return isInvincibility;
 }
 
 void APlayerFlight::SetAttackLevel(AttackLevel level)

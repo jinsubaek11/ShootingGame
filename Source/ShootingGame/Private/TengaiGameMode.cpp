@@ -42,6 +42,11 @@ int32 ATengaiGameMode::GetCurrentScore()
 	return currentScore;
 }
 
+int32 ATengaiGameMode::GetBestScore()
+{
+	return bestScore;
+}
+
 void ATengaiGameMode::ShowGameover()
 {
 	gameoverUI = CreateWidget<UGameoverWidget>(GetWorld(), gameoverWidget);
