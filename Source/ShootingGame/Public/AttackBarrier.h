@@ -26,15 +26,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class UStaticMeshComponent* meshComp;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UArrowComponent* arrowComp;
-	//UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	//class ABullet* bulletfactory;
 	UPROPERTY()
 	class APlayerFlight* player;
-
-	//TSoftClassPtr<AActor> subBulletBP = TSoftClassPtr<AActor>(FSoftObjectPath(TEXT("Blueprint'/Game/Blueprints/BP_Bullet.BP_Bullet_C'")));
 
 private:
 	float angle;
@@ -42,4 +36,6 @@ private:
 	float accTime = 0.f;
 	float accRotation = 0.f;
 	float distance = 150.f;
+
+	class UPaperSpriteComponent* barrierSpriteComp;
 };

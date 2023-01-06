@@ -2,6 +2,9 @@
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
+#include "PaperSpriteComponent.h"
+#include "PaperSprite.h"
+
 
 APooledSubBullet::APooledSubBullet()
 {
@@ -16,12 +19,11 @@ APooledSubBullet::APooledSubBullet()
 
 	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> subBulletMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_QuadPyramid.Shape_QuadPyramid'"));
-	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	meshComp->SetStaticMesh(subBulletMesh.Object);
-	meshComp->SetWorldScale3D(FVector(0.2));
-	meshComp->SetupAttachment(RootComponent);
-	meshComp->SetRelativeLocation(FVector(0, 0, -10));
+	subBulletSpriteComp = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Sprite"));
+	subBulletSpriteComp->SetSprite(LoadObject<UPaperSprite>(nullptr, TEXT("/Script/Paper2D.PaperSprite'/Game/Asstets/Bullet/candy_Sprite.candy_Sprite'")));
+	subBulletSpriteComp->SetWorldScale3D(FVector(0.2));
+	subBulletSpriteComp->SetRelativeRotation(FRotator(0, 90, 0));
+	subBulletSpriteComp->SetupAttachment(RootComponent);
 }
 
 void APooledSubBullet::BeginPlay()

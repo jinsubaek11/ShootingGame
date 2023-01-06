@@ -37,9 +37,9 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UArrowComponent* arrowComp;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class UStaticMeshComponent* meshComp;
-	
+
+	class UPaperSpriteComponent* subBulletSpriteComp;
+
 	FOnPooledSubBulletDespawn OnPooledSubBulletDespawn;
 
 private:
