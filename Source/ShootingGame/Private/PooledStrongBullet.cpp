@@ -2,6 +2,12 @@
 #include "components/BoxComponent.h"
 #include "components/MeshComponent.h"
 #include "components/ArrowComponent.h"
+#include "PaperFlipbook.h"
+#include "PaperFlipbookComponent.h"
+#include "Enemy.h"
+#include "MidBoss.h"
+#include "Boss.h"
+#include "EngineUtils.h"
 
 APooledStrongBullet::APooledStrongBullet()
 {
@@ -16,12 +22,18 @@ APooledStrongBullet::APooledStrongBullet()
 
 	boxComp->SetCollisionProfileName(TEXT("BulletPreset"));
 
-	ConstructorHelpers::FObjectFinder<UStaticMesh> sphereMesh(TEXT("/Script/Engine.StaticMesh'/Game/StarterContent/Shapes/Shape_Sphere.Shape_Sphere'"));
-	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
-	meshComp->SetStaticMesh(sphereMesh.Object);
-	meshComp->SetWorldScale3D(FVector(0.5));
-	meshComp->SetRelativeLocation(FVector(0, 0, -10));
-	meshComp->SetupAttachment(RootComponent);
+	runFlipbookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("RunFlipBook"));
+	runFlipbookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/Bullet/strong_bullet/Curby_Move.Curby_Move'")));
+	runFlipbookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	runFlipbookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	runFlipbookComp->SetupAttachment(RootComponent);
+
+	stopFlipbookComp = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("StopFlipBook"));
+	stopFlipbookComp->SetFlipbook(LoadObject<UPaperFlipbook>(nullptr, TEXT("/Script/Paper2D.PaperFlipbook'/Game/Asstets/Bullet/strong_bullet/Curby_Stop.Curby_Stop'")));
+	stopFlipbookComp->SetRelativeRotation(FRotator(0, 90, 0));
+	stopFlipbookComp->SetRelativeScale3D(FVector(3, 1, 2.5));
+	stopFlipbookComp->SetupAttachment(RootComponent);
+	stopFlipbookComp->SetHiddenInGame(true);
 
 	speed = 700.f;
 }
@@ -29,6 +41,47 @@ APooledStrongBullet::APooledStrongBullet()
 void APooledStrongBullet::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (TActorIterator<AEnemy> it(GetWorld()); it; ++it)
+	{
+		if (it)
+		{
+			enemy = *it;
+			targetLocation = enemy->GetActorLocation();
+			break;
+		}
+	}
+
+	if (!enemy)
+	{
+		for (TActorIterator<AMidBoss> it(GetWorld()); it; ++it)
+		{
+			if (it)
+			{
+				midBoss = *it;
+				targetLocation = midBoss->GetActorLocation();
+				break;
+			}
+		}
+	}
+
+	if (!midBoss)
+	{
+		for (TActorIterator<ABoss> it(GetWorld()); it; ++it)
+		{
+			if (it)
+			{
+				boss = *it;
+				targetLocation = boss->GetActorLocation();
+				break;
+			}
+		}
+	}
+
+	if (!boss)
+	{
+
+	}
 }
 
 void APooledStrongBullet::Tick(float DeltaTime)

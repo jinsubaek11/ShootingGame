@@ -32,10 +32,15 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UArrowComponent* arrowComp;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
-	class UStaticMeshComponent* meshComp;
+
+	class UPaperFlipbookComponent* runFlipbookComp;
+	class UPaperFlipbookComponent* stopFlipbookComp;
 
 	FOnPooledStrongBulletDespawn OnPooledStrongBulletDespawn;
 private:
 	float att = 2;
+	class AEnemy* enemy;
+	class AMidBoss* midBoss;
+	class ABoss* boss;
+	FVector targetLocation;
 };

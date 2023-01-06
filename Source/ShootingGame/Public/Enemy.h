@@ -71,9 +71,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
 
+	FTimerHandle materialTimer;
 	FTimerHandle timer;
 	FTimerHandle TimerHandle;
 	FTimerHandle TimerHandle2;
+
 	bool isDead = false;
 	bool canMove = false;
 	int32 point = 30;

@@ -188,7 +188,6 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 			}
 			DestroyEnemy();
 		}
-		
 	}
 
 	AFence_Horizontal* fenceH = Cast<AFence_Horizontal>(OtherActor);
