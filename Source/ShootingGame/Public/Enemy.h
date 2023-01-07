@@ -54,7 +54,9 @@ public:
 	float drawRateUlti;
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
-	int8 myHP=1;
+	float myHP;
+	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
+	float MaxHP;
 
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
@@ -64,12 +66,12 @@ public:
 	UPROPERTY(EditAnywhere, category = EnemySettings)
 	class UPaperFlipbookComponent* flipbookComp;
 
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
-	TSubclassOf<class UItemWidget> itemWidgetClass;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
+	class UItemWidget* itemWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* hpWidgetComp;
+	class UHPWidget* hpWidget;
 
 	FTimerHandle materialTimer;
 	FTimerHandle timer;

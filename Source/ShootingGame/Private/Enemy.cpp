@@ -14,6 +14,7 @@
 #include "PaperFlipbookComponent.h"
 #include "TengaiGameMode.h"
 #include "ItemWidget.h"
+#include "HPWidget.h"
 #include "Components/WidgetComponent.h"
 
 // Sets default values
@@ -42,6 +43,12 @@ AEnemy::AEnemy()
 	widgetComp->SetupAttachment(RootComponent);
 	widgetComp->SetRelativeRotation(FRotator(0, -90, 0));
 	widgetComp->SetPivot(FVector2D(-0.15, 0.2));
+
+	hpWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Widget Component"));
+	hpWidgetComp->SetupAttachment(RootComponent);
+	hpWidgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	hpWidgetComp->SetPivot(FVector2D(0.5, 5.0));
+	hpWidgetComp->SetDrawSize(FVector2D(120, 13));
 }
 
 // Called when the game starts or when spawned
@@ -54,10 +61,16 @@ void AEnemy::BeginPlay()
 	drawRate = FMath::RandRange(0.0f, 1.0f);
 	drawRateUlti = FMath::RandRange(0.0f, 1.0f);
 	
-	UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+	itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
 	if (itemWidget)
 	{
 		itemWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	hpWidget = Cast<UHPWidget>(hpWidgetComp->GetWidget());
+	if (hpWidget)
+	{
+		hpWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -145,14 +158,10 @@ void AEnemy::DestroyEnemy()
 		tengaiGM->AddScore(point);
 	}
 
-	direction = FVector(0, 0, 1);
+	direction = FVector(0);
 
-	UItemWidget* itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
-	if (itemWidget)
-	{
-		itemWidget->SetVisibility(ESlateVisibility::Visible);
-		itemWidget->PrintMonsterScore(point);
-	}
+	itemWidget->SetVisibility(ESlateVisibility::Visible);
+	itemWidget->PrintMonsterScore(point);	
 }
 
 void AEnemy::DestroySelf()
@@ -171,6 +180,8 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		if (myHP > 0)
 		{
 			myHP -= playerBullet->GetAttackPower();
+			hpWidget->SetVisibility(ESlateVisibility::Visible);
+			hpWidget->PrintCurrentHealth(myHP, MaxHP);
 		}
 		else
 		{
@@ -179,12 +190,11 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 			if (drawRate <= dropRate)
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
-				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned1"));
 			}
+
 			if (drawRateUlti <= dropRateUlti)
 			{
 				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
-				//UE_LOG(LogTemp, Warning, TEXT("Item Spawned2"));
 			}
 			DestroyEnemy();
 		}

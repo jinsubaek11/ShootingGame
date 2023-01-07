@@ -12,6 +12,9 @@
 #include "kismet/GameplayStatics.h"
 #include "TengaiGameMode.h"
 #include "Item.h"
+#include "ItemWidget.h"
+#include "HPWidget.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AMidBoss::AMidBoss()
@@ -25,6 +28,17 @@ AMidBoss::AMidBoss()
 
 	flipComp = CreateDefaultSubobject<UPaperFlipbookComponent>("Flipbook");
 	flipComp->SetupAttachment(RootComponent);
+
+	itemWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	itemWidgetComp->SetupAttachment(RootComponent);
+	itemWidgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	itemWidgetComp->SetPivot(FVector2D(-0.15, 0.2));
+
+	hpWidgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("HP Widget Component"));
+	hpWidgetComp->SetupAttachment(RootComponent);
+	hpWidgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	hpWidgetComp->SetPivot(FVector2D(0.5, 5.0));
+	hpWidgetComp->SetDrawSize(FVector2D(150, 16));
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +48,17 @@ void AMidBoss::BeginPlay()
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
 
+	itemWidget = Cast<UItemWidget>(itemWidgetComp->GetWidget());
+	if (itemWidget)
+	{
+		itemWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	hpWidget = Cast<UHPWidget>(hpWidgetComp->GetWidget());
+	if (hpWidget)
+	{
+		hpWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 // Called every frame
@@ -41,6 +66,12 @@ void AMidBoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
+	if (isDead) 
+	{
+		SetActorLocation(GetActorLocation() + direction * 200 * DeltaTime);
+		return;
+	};
+
 	currentTime += DeltaTime;
 	currentLoc = GetActorLocation();
 
@@ -141,19 +172,12 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		if (myHP > 0)
 		{
 			myHP -= playerBullet->GetAttackPower();
+			hpWidget->SetVisibility(ESlateVisibility::Visible);
+			hpWidget->PrintCurrentHealth(myHP, maxHP);
 		}
 		else
 		{
-			//DestroyEnemy();
-			ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-			if (tengaiGM)
-			{
-				tengaiGM->AddScore(point);
-			}
-
-			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
-			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
-			Destroy();
+			DestroyMidBoss();
 		}
 	}
 
@@ -171,6 +195,35 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		direction.Z *= -1;
 		directionPlayer.Z *= -1;
 	}
+}
+
+void AMidBoss::DestroyMidBoss()
+{
+	isDead = true;
+
+	boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	flipComp->SetHiddenInGame(false);
+
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM)
+	{
+		tengaiGM->AddScore(point);
+	}
+
+	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+	GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+
+	direction = FVector(0);
+
+	itemWidget->SetVisibility(ESlateVisibility::Visible);
+	itemWidget->PrintMonsterScore(point);
+
+	GetWorldTimerManager().SetTimer(timer, this, &AMidBoss::DestroySelf, 0.8f, false);
+}
+
+void AMidBoss::DestroySelf()
+{
+	Destroy();
 }
 
 // void AMidBoss::DestroyEnemy()

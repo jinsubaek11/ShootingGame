@@ -33,8 +33,18 @@ public:
 	TSubclassOf <class AItem> itemFactoryUlti;
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= MidBossSettings)
-	int32 myHP = 10;
+	float myHP;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = MidBossSettings)
+	float maxHP;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* itemWidgetComp;
+	class UItemWidget* itemWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* hpWidgetComp;
+	class UHPWidget* hpWidget;
 
 	float currentTime = 0;
 	FVector direction;
@@ -45,10 +55,15 @@ public:
 	FVector currentLoc;
 	FVector mainLoc;
 	int32 point = 100;
+	FTimerHandle timer;
+
+	bool isDead;
 
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 // 	void DestroyEnemy();
 // 	void SetDirection();
 	void MidBossStart();
+	void DestroyMidBoss();
+	void DestroySelf();
 };
