@@ -23,8 +23,10 @@ public:
 public:
 	int32 GetCurrentScore();
 	int32 GetBestScore();
+	void SetBestScore(int32 newScore);
 	void ShowGameover();
 	void AddScore(int32 point);
+
 
 public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
@@ -38,6 +40,7 @@ public:
 	
 	float playSpeed = 50;
 
+	FString filePath = FString("../../../Content/Savedata/BestScore.txt");
 private:
 	int32 currentScore = 0;
 	int32 bestScore = 0;
@@ -45,4 +48,5 @@ private:
 	class UGameoverWidget* gameoverUI;
 	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
 	TSubclassOf <class UGameoverWidget> gameoverWidget;
+
 };

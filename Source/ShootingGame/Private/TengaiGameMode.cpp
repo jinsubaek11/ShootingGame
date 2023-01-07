@@ -46,11 +46,23 @@ void ATengaiGameMode::AddScore(int32 point)
 {
 	currentScore += point;
 	mainUI->PrintCurrentScore();
+
+	if (currentScore > bestScore)
+	{
+		bestScore = currentScore;
+		bool isSaved = FFileHelper::SaveStringToFile(FString::FromInt(bestScore), *filePath);
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), isSaved ? TEXT("Saved") : TEXT("Not Saved"));
+	}
 }
 
 int32 ATengaiGameMode::GetBestScore()
 {
 	return bestScore;
+}
+
+void ATengaiGameMode::SetBestScore(int32 newScore)
+{
+	bestScore = newScore;
 }
 
 void ATengaiGameMode::ShowGameover()

@@ -34,4 +34,5 @@ public:
 	void RestartGame();
 	UFUNCTION()
 	void QuitGame();
+
 };

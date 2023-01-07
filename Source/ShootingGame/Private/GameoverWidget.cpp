@@ -6,6 +6,7 @@
 #include "kismet/GameplayStatics.h"
 #include "components/Button.h"
 #include "EndingWidget.h"
+#include "TengaiGameMode.h"
 
 void UGameoverWidget::NativeConstruct()
 {
@@ -22,6 +23,12 @@ void UGameoverWidget::ResumeGame()
 
 void UGameoverWidget::QuitGame()
 {
+	ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	FString scoreText;
+	FString filePath = gm->filePath;
+	FFileHelper::LoadFileToString(scoreText, *filePath);
+	int32 newBestScore = FCString::Atoi(*scoreText);
+	gm->SetBestScore(newBestScore);
 	endingUI = CreateWidget<UEndingWidget>(GetWorld(), endingWidget);
 
 	if (endingUI != nullptr)
