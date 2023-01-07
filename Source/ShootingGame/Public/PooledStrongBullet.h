@@ -4,6 +4,13 @@
 #include "PooledObject.h"
 #include "PooledStrongBullet.generated.h"
 
+UENUM()
+enum class StrongBulletAnimationType
+{
+	STOP,
+	RUN,
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPooledStrongBulletDespawn, APooledStrongBullet*, pooledStrongBullet);
 
 UCLASS()
@@ -26,6 +33,10 @@ public:
 	virtual void SetDeactive() override;
 	virtual float GetAttackPower() override;
 
+private:
+	void SetAnimation(StrongBulletAnimationType type);
+	void ShootStrongSubBullet();
+	void SetIsFiredFalse();
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
@@ -35,12 +46,20 @@ public:
 
 	class UPaperFlipbookComponent* runFlipbookComp;
 	class UPaperFlipbookComponent* stopFlipbookComp;
+	class UPaperFlipbookComponent* rotateFlipbookComp;
 
 	FOnPooledStrongBulletDespawn OnPooledStrongBulletDespawn;
+
 private:
 	float att = 2;
 	class AEnemy* enemy;
 	class AMidBoss* midBoss;
 	class ABoss* boss;
 	FVector targetLocation;
+	bool isFired;
+	FTimerHandle timer;
+	FTimerHandle shootTimer;
+	FTimerHandle rotateTimer;
+	int32 randomAttackType = 0;
+	int32 ShootStrongSubBulletRemaining = 3;
 };

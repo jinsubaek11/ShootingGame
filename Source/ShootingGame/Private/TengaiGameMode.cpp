@@ -16,7 +16,6 @@ void ATengaiGameMode::BeginPlay()
 	GEngine->GetGameUserSettings()->SetFrameRateLimit(60);
 
 	mainUI = CreateWidget<UMainWidget>(GetWorld(), mainWidget);
-	//itemUI = CreateWidget<UItemWidget>(GetWorld(), itemWidget);
 
 	if (mainUI)
 	{
@@ -25,11 +24,6 @@ void ATengaiGameMode::BeginPlay()
 		mainUI->PrintLifeCount();
 		mainUI->PrintUltimateCount();
 	}
-
-	//if (itemUI)
-	//{
-	//	//itemUI->AddToViewport();
-	//}
 }
 
 void ATengaiGameMode::Tick(float DeltaTime)

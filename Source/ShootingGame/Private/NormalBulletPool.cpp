@@ -11,7 +11,7 @@ void ANormalBulletPool::BeginPlay()
 {
 	Super::BeginPlay();
 
-	poolSize = 200;
+	poolSize = 250;
 	pooledObjectLifeSpan = 2.f;
 
 	UWorld* world = GetWorld();

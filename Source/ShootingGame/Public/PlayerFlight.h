@@ -35,7 +35,7 @@ public:
 	bool GetIsDead() const;
 	void SetAttackLevel(AttackLevel level);
 	uint8 GetAttackLevel() const; 
-	class ASubBulletPool& GetSubBulletPool();
+	class ANormalBulletPool* GetNormalBulletPool();
 
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 

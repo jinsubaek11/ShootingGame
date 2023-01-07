@@ -232,6 +232,11 @@ uint8 APlayerFlight::GetAttackLevel() const
 	return (uint8)attackLevel;
 }
 
+ANormalBulletPool* APlayerFlight::GetNormalBulletPool()
+{
+	return normalBulletPool;
+}
+
 void APlayerFlight::SetAttackBarrier(AttackLevel level)
 {
 	if (level > AttackLevel::STRONG) return;
