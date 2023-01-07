@@ -34,6 +34,7 @@ void AStoper::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 	if (gm != nullptr)
 	{
 		gm->playSpeed = 0;
+		Destroy();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("stop!"));
+	//UE_LOG(LogTemp, Warning, TEXT("stop!"));
 }

@@ -160,6 +160,7 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+			tengaiGM->playSpeed = 150;
 			Destroy();
 		}
 	}
