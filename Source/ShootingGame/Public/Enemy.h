@@ -71,6 +71,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
 
+	UPROPERTY(EditAnywhere, Category=SoundEffect)
+	USoundBase* Enemydown;
+
 	FTimerHandle timer;
 	FTimerHandle TimerHandle;
 	FTimerHandle TimerHandle2;

@@ -136,6 +136,7 @@ void AEnemy::DestroyEnemy()
 	meshComp->SetHiddenInGame(true);
 	flipbookComp->SetHiddenInGame(false);
 	flipbookComp->Play();
+	UGameplayStatics::PlaySound2D(this, Enemydown, 1.0f, 1.0f, 0.2f);
 
 	GetWorldTimerManager().SetTimer(timer, this, &AEnemy::DestroySelf, 0.8f, false);
 

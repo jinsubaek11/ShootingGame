@@ -33,6 +33,7 @@ void AMidBoss::BeginPlay()
 	Super::BeginPlay();
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
+	UGameplayStatics::PlaySound2D(this, dragonSpawned, 1.2f, 1.0f, 0.5f);
 
 }
 
@@ -103,6 +104,11 @@ void AMidBoss::Tick(float DeltaTime)
 		AActor* target = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerFlight::StaticClass());
 		directionPlayer = target->GetActorLocation() - GetActorLocation();
 		directionPlayer.Normalize();
+		if (!isPlayed)
+		{
+			UGameplayStatics::PlaySound2D(this, dragonRush);
+			isPlayed = true;
+		}
 	}
 	// 정한 방향으로 빠르게 이동한다
 	else if (currentTime >= 4.5 && currentTime < 8)
@@ -124,6 +130,7 @@ void AMidBoss::Tick(float DeltaTime)
 		isShoot1 = false;
 		isShoot2 = false;
 		isShoot3 = false;
+		isPlayed = false;
 		currentTime = 2.5;
 	}
 

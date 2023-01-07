@@ -62,6 +62,10 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UStaticMeshComponent* meshComp;
+	UPROPERTY(EditAnywhere, Category = SoundEffect)
+	USoundBase* playerDown;
+	UPROPERTY(EditAnywhere, Category = SoundEffect)
+	USoundBase* playerFire;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	float moveSpeed = 800.f;
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)

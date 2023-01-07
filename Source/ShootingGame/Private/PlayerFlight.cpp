@@ -91,7 +91,6 @@ void APlayerFlight::Tick(float DeltaTime)
 	FVector newLoca = GetActorLocation();
 	newLoca.Y = newLoca.Y + spd * DeltaTime;
 	SetActorLocation(newLoca);
-	
 	direction.Normalize();
 	SetActorLocation(GetActorLocation() + direction * moveSpeed * DeltaTime, true);
 
@@ -403,6 +402,8 @@ void APlayerFlight::LifeCalculator()
 		SetAttackBarrier(AttackLevel::WEAK);
 
 		isDead = true;
+
+		UGameplayStatics::PlaySound2D(this, playerDown, 1.0f);
 	}
 	else
 	{

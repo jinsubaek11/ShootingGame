@@ -27,12 +27,16 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=MidBossSettings)
 	class UPaperFlipbookComponent* flipComp;
-	UPROPERTY(EditInstanceOnly, Category = MidBossSettings)
+	UPROPERTY(EditDefaultsOnly, Category = MidBossSettings)
 	TSubclassOf <class AItem> itemFactory;
-	UPROPERTY(EditInstanceOnly, Category = MidBossSettings)
+	UPROPERTY(EditDefaultsOnly, Category = MidBossSettings)
 	TSubclassOf <class AItem> itemFactoryUlti;
-	UPROPERTY(EditInstanceOnly, category = EnemySettings)
+	UPROPERTY(EditDefaultsOnly, Category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
+	UPROPERTY(EditDefaultsOnly, Category = SoundEffect)
+	USoundBase* dragonSpawned;
+	UPROPERTY(EditDefaultsOnly, Category = SoundEffect)
+	USoundBase* dragonRush;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= MidBossSettings)
 	int32 myHP = 10;
 
@@ -42,6 +46,7 @@ public:
 	bool isShoot1 = false;
 	bool isShoot2 = false;
 	bool isShoot3 = false;
+	bool isPlayed = false;
 	FVector currentLoc;
 	FVector mainLoc;
 	int32 point = 100;
