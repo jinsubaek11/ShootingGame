@@ -32,11 +32,6 @@ void ATengaiGameMode::BeginPlay()
 	//}
 }
 
-void ATengaiGameMode::Tick(float DeltaTime)
-{
-
-}
-
 int32 ATengaiGameMode::GetCurrentScore()
 {
 	return currentScore;

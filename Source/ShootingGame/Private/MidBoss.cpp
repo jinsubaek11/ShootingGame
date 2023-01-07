@@ -12,6 +12,7 @@
 #include "kismet/GameplayStatics.h"
 #include "TengaiGameMode.h"
 #include "Item.h"
+#include "WarningWidget.h"
 
 // Sets default values
 AMidBoss::AMidBoss()
@@ -161,6 +162,13 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 			tengaiGM->playSpeed = 150;
+
+			warningUI = CreateWidget<UWarningWidget>(GetWorld(), warningWidget);
+			if (warningUI != nullptr)
+			{
+				warningUI->AddToViewport();
+			}
+
 			Destroy();
 		}
 	}

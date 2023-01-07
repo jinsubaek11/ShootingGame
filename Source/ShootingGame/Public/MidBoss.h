@@ -33,6 +33,9 @@ public:
 	TSubclassOf <class AItem> itemFactoryUlti;
 	UPROPERTY(EditDefaultsOnly, Category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
+	class UWarningWidget* warningUI;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
+	TSubclassOf <class UWarningWidget> warningWidget;
 	UPROPERTY(EditDefaultsOnly, Category = SoundEffect)
 	USoundBase* dragonSpawned;
 	UPROPERTY(EditDefaultsOnly, Category = SoundEffect)

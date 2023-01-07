@@ -18,9 +18,6 @@ protected:
 	virtual void BeginPlay() override;
 	
 public:
-	virtual void Tick(float DeltaTime) override;
-
-public:
 	int32 GetCurrentScore();
 	int32 GetBestScore();
 	void SetBestScore(int32 newScore);
