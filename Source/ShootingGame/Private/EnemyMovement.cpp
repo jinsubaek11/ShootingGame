@@ -35,6 +35,16 @@ FVector UEnemyMovement::Curve(const FVector& start, const FVector& p1, const FVe
 		t * t * t * dest;
 }
 
+void UEnemyMovement::Start(const FVector& start, const FVector& dest, float cumulativeTime, float duration)
+{
+	float t = cumulativeTime / duration;
+
+	//FMath::Lerp()
+	FVector position = FMath::Lerp<FVector, float>(start, dest, t);
+	//FMath::Lerp<
+	GetOwner()->SetActorLocation(position);
+}
+
 void UEnemyMovement::Custom(const TArray<FMovement>& path, const TArray<float>& timeLine, float duration, float cumulativeTime)
 {
 	float t = cumulativeTime / duration;

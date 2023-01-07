@@ -45,6 +45,7 @@ public:
 
 	FVector CalcLinearInterpolate(const FVector& p1, const FVector& p2, float t);
 	FVector Curve(const FVector& start, const FVector& p1, const FVector& p2, const FVector& dest, float t);
+	void Start(const FVector& start, const FVector& dest, float cumulativeTime, float duration);
 	void Custom(const TArray<FMovement>& path, const TArray<float>& timeLine, float duration, float cumulativeTime);
 	
 private:

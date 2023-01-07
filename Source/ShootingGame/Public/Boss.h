@@ -88,15 +88,22 @@ private:
 	bool isFired;
 	bool isFiredComplete;
 
+	FVector startOrigin;
+	FVector attackStartOrigin;
 	TArray<FMovement> customPath;
 	TArray<float> timeLine;
 
 	FTimerHandle timer;
 	int32 fanShootCallsRemaining = 10;
-	int32 sequenceShootCallsRemaining = 60;
+	int32 sequenceShootCallsRemaining = 40;
+	int32 sequenceShootCallsMax = 40;
 	int32 sequenceSpiralShootCallsRemaining = 180;
 	int32 spiralExplosionCallsRemaining = 15;
 	int32 radialExplosionCallsRemaining = 15;
+
+	bool isPlayedStartAnimation;
+	float startAnimationDuration = 3.f;
+	float startAnimationPlayTime;
 
 	bool isDead;
 	int32 hp = 10;

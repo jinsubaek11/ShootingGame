@@ -60,6 +60,9 @@ void ABoss::BeginPlay()
 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABoss::OnOverlap);
 
+	startOrigin = GetActorLocation();
+	attackStartOrigin = startOrigin - FVector(0, 600, 0);
+
 	SetMovingPath(30);
 	enemyBulletPool = GetWorld()->SpawnActor<AEnemyBulletPool>();
 }
@@ -69,20 +72,15 @@ void ABoss::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	if (hp <= 0) return;
-
-	AGameModeBase* gm = GetWorld()->GetAuthGameMode();
-	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(gm);
-	if (tengaiGM)
+	
+	startAnimationPlayTime += DeltaTime;
+	if (!isPlayedStartAnimation || startAnimationPlayTime <= startAnimationDuration)
 	{
-		float spd = tengaiGM->playSpeed;
-		//FVector newLoca = GetActorLocation();
-		//newLoca.Y = newLoca.Y + spd * DeltaTime;
-		//SetActorLocation(newLoca);
+		movementComp->Start(startOrigin, attackStartOrigin, startAnimationPlayTime, 3.f);
+		SetAnimation(AnimationType::WALK);
 
-		for (int i = 0; i < customPath.Num(); i++)
-		{
-			//customPath[i].position.Y += spd * DeltaTime;
-		}
+		isPlayedStartAnimation = true;
+		return;
 	}
 
 	movementComp->Custom(customPath, timeLine, 60, time);
@@ -95,7 +93,7 @@ void ABoss::Tick(float DeltaTime)
 		if (isFiredComplete)
 		{
 			SetAnimation(AnimationType::WALK_WITH_SWORD);
-			return;
+			//return;
 		}
 
 		if (!isFired)
@@ -164,7 +162,7 @@ void ABoss::SetMovingPath(uint16 pathCount)
 			FMovement start;
 			start.type = MovingType::LINEAR;
 			//start.type = MovingType::NONE;
-			start.position = GetActorLocation();
+			start.position = attackStartOrigin;
 			customPath.Emplace(start);
 
 			continue;
@@ -186,8 +184,8 @@ void ABoss::SetMovingPath(uint16 pathCount)
 		}
 
 		uint8 randomIdx = FMath::RandRange(0, 3);
-		float posY = FMath::RandRange(GetActorLocation().Y - 800, GetActorLocation().Y);
-		float posZ = FMath::RandRange(-500, 500);
+		float posY = FMath::RandRange(attackStartOrigin.Y - 1000, attackStartOrigin.Y);
+		float posZ = FMath::RandRange(-400, 400);
 
 		FMovement movement;
 		//movement.type = MovingType::NONE;
@@ -260,12 +258,14 @@ void ABoss::SequenceShoot()
 	if (--sequenceShootCallsRemaining < 0)
 	{
 		GetWorldTimerManager().ClearTimer(timer);
-		sequenceShootCallsRemaining = 60; 
+		sequenceShootCallsRemaining = sequenceShootCallsMax;
 		isFiredComplete = true;
 		return;
 	}
 
-	float theta = -FMath::Cos((60 - sequenceShootCallsRemaining) / (float)60 * 3 * PI) * 40 + 180;
+	float theta = -FMath::Cos(
+		(sequenceShootCallsMax - sequenceShootCallsRemaining) / 
+		(float)sequenceShootCallsMax * 2 * PI) * 40 + 180;
 	FVector BossLocation = GetActorLocation();
 	FVector targetDirection = FVector(
 		0,
@@ -361,8 +361,8 @@ AttackType ABoss::SelectAttackType()
 {
 	uint8 randomIdx = FMath::RandRange(0, 4);
 
-	return (AttackType)randomIdx;
-	//return AttackType::SPIRAL_EXPLOSION;
+	//return (AttackType)randomIdx;
+	return AttackType::SEQUENCE_SHOOT;
 }
 
 void ABoss::DestroySelf()

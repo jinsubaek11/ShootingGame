@@ -36,6 +36,7 @@ public:
 	//class UItemWidget* itemUI;
 	
 	float playSpeed = 50;
+	bool encountMidBoss = true;
 
 private:
 	int32 currentScore = 0;
