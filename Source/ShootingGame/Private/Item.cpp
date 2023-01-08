@@ -19,13 +19,11 @@ AItem::AItem()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// �ڽ� �ݸ��� ����
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(25));
 	boxComp->SetCollisionProfileName(TEXT("ItemPreset"));
 
-	// �޽� ����
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 	
@@ -62,7 +60,6 @@ void AItem::Tick(float DeltaTime)
 		randomDir = FVector(0, 0, 1);
 	}
 
-	// ������ ������ ������ �������� �̵��ϰ�
 	SetActorLocation(GetActorLocation() + randomDir * itemSpeed * DeltaTime, true);
 
 }

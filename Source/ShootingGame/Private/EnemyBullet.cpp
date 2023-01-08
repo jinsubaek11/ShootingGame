@@ -66,7 +66,7 @@ void AEnemyBullet::Tick(float DeltaTime)
 
 void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Enemy Bullet Overlaped"));
+	//UE_LOG(LogTemp, Warning, TEXT("Enemy Bullet Overlaped"));
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 
 	bool isInvincibility = player->GetIsInvincibility();

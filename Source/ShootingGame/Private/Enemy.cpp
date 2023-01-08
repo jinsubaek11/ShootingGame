@@ -216,29 +216,4 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		Destroy();
 	}
 
-
-	//APooledSubBullet* subBullet = Cast<APooledSubBullet>(OtherActor);
-
-	//// reset moving time overriding APooledObject
-	//if (subBullet)
-	//{
-	//	subBullet->ResetMovingTime();
-	//	subBullet->SetDeactive();
-	//}
-	//else
-	//{
-	//	APooledObject* bullet = Cast<APooledObject>(OtherActor);
-	//	
-	//	if (bullet)
-	//	{
-	//		bullet->SetDeactive();
-	//	}
-	//}
-
-	//if (drawRate <= dropRate)
-	//{
-	//	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-	//}
-
-	//Destroy();
 }
