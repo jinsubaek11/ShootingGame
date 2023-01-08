@@ -138,7 +138,7 @@ void AEnemy::Tick(float DeltaTime)
 	{
 
 		direction = GetActorForwardVector();
-		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
+		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime * 2.0f);
 	}	
 }
 
