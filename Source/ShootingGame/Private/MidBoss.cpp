@@ -236,7 +236,7 @@ void AMidBoss::DestroyMidBoss()
 		tengaiGM->AddScore(point);
 	}
 
-	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -90), FRotator(0, 90, 0));
 	GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
 
 	direction = FVector(0);
@@ -252,14 +252,3 @@ void AMidBoss::DestroySelf()
 	Destroy();
 }
 
-// void AMidBoss::DestroyEnemy()
-// {
-// 	isDead = true;
-// 
-// 	boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-// 	meshComp->SetHiddenInGame(true);
-// 	flipbookComp->SetHiddenInGame(false);
-// 	flipbookComp->Play();
-// 
-// 	GetWorldTimerManager().SetTimer(timer, this, &AEnemy::DestroySelf, 0.8f, false);
-// }

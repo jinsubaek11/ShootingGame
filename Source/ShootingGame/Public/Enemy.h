@@ -10,49 +10,40 @@ UCLASS()
 class SHOOTINGGAME_API AEnemy : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AEnemy();
 
-	// �ڽ� �ݸ��� ����
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UBoxComponent* boxComp;
-	// �޽� ����
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category=EnemySettings)
 	class UStaticMeshComponent* meshComp;
+	UPROPERTY(EditAnywhere, category = EnemySettings)
+	class UPaperFlipbookComponent* flipbookComp;
 
-	// �� �̵� �ӵ� ����
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
-	float enemySpeed=400;
-	// �� �̵� ����
-	FVector direction;
-	// �̵� ��� ����
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	int32 movingMode = 0;
-	float runningTime = 0;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
+	float enemySpeed=400;
 
-	// ������ ��������Ʈ ����â �����
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactory;
-
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactoryUlti;
 
-	// ������ ���� �Լ�
-	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	// ������ ��� Ȯ��
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRate=0.05;
-
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRateUlti = 0.05;
-
-	float drawRate;
-	float drawRateUlti;
-
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float myHP;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
@@ -61,11 +52,6 @@ public:
 	UPROPERTY(EditInstanceOnly, category = EnemySettings)
 	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
-	bool isShoot = false;
-
-	UPROPERTY(EditAnywhere, category = EnemySettings)
-	class UPaperFlipbookComponent* flipbookComp;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
 	class UItemWidget* itemWidget;
@@ -73,28 +59,28 @@ public:
 	class UWidgetComponent* hpWidgetComp;
 	class UHPWidget* hpWidget;
 
-	FTimerHandle materialTimer;
 	UPROPERTY(EditAnywhere, Category=SoundEffect)
 	USoundBase* Enemydown;
 
 	FTimerHandle timer;
 	FTimerHandle TimerHandle;
 	FTimerHandle TimerHandle2;
+	FTimerHandle materialTimer;
 
+	FVector direction;
+	float drawRate;
+	float drawRateUlti;
+	float runningTime = 0;
+	bool isShoot = false;
 	bool isDead = false;
 	bool canMove = false;
 	int32 point = 30;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-public:
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	void DestroyEnemy();
 	void DestroySelf();
+
+
 };
 

@@ -51,6 +51,11 @@ void AEnemyBullet::BeginPlay()
 void AEnemyBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	currentTime += DeltaTime;
+	if (currentTime >= selfDestroyTime)
+	{
+		Destroy();
+	}
 
 	if (enemyBulletTrace == 0)
 	{
@@ -75,4 +80,5 @@ void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 //		tengaiGM->mainUI->PrintLifeCount();
 		Destroy();
 	}
+
 }

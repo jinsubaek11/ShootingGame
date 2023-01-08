@@ -50,6 +50,7 @@ void AStoper::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 		}
 	}
 		Destroy();
+		//UE_LOG(LogTemp, Warning, TEXT("stop!"));
 	}
-	//UE_LOG(LogTemp, Warning, TEXT("stop!"));
-}
+
+

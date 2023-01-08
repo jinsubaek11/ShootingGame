@@ -29,17 +29,18 @@ public:
 	class UStaticMeshComponent* meshComp;
 	UPROPERTY(EditDefaultsOnly, Category=EnemyBulletSettings)
 	int32 enemyBulletTrace = 1;
-	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 
 	TSubclassOf<class AItem> powerItem;
 	class ATengaiGameMode* tengaiGM;
 
+	UFUNCTION()
+	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 private:
 	FVector direction;
-	float bulletSpeed = 600;
 	class APlayerFlight* target;
+	float bulletSpeed = 600;
+	float currentTime = 0;
+	float selfDestroyTime = 6;
 
 };
