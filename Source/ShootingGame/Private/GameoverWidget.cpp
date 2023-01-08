@@ -5,6 +5,8 @@
 #include "kismet/KismetSystemLibrary.h"
 #include "kismet/GameplayStatics.h"
 #include "components/Button.h"
+#include "EndingWidget.h"
+#include "TengaiGameMode.h"
 
 void UGameoverWidget::NativeConstruct()
 {
@@ -21,6 +23,18 @@ void UGameoverWidget::ResumeGame()
 
 void UGameoverWidget::QuitGame()
 {
-	APlayerController* playCon = GetWorld()->GetFirstPlayerController();
-	UKismetSystemLibrary::QuitGame(GetWorld(), playCon, EQuitPreference::Quit, true);
+	ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	FString scoreText;
+	FString filePath = gm->filePath;
+	FFileHelper::LoadFileToString(scoreText, *filePath);
+	int32 newBestScore = FCString::Atoi(*scoreText);
+	gm->SetBestScore(newBestScore);
+	endingUI = CreateWidget<UEndingWidget>(GetWorld(), endingWidget);
+
+	if (endingUI != nullptr)
+	{
+		endingUI->AddToViewport();
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+	}
 }

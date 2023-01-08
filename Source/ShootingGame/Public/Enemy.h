@@ -74,6 +74,9 @@ public:
 	class UHPWidget* hpWidget;
 
 	FTimerHandle materialTimer;
+	UPROPERTY(EditAnywhere, Category=SoundEffect)
+	USoundBase* Enemydown;
+
 	FTimerHandle timer;
 	FTimerHandle TimerHandle;
 	FTimerHandle TimerHandle2;

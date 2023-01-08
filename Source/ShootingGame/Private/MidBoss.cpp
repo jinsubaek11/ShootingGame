@@ -15,6 +15,7 @@
 #include "ItemWidget.h"
 #include "HPWidget.h"
 #include "Components/WidgetComponent.h"
+#include "WarningWidget.h"
 
 // Sets default values
 AMidBoss::AMidBoss()
@@ -47,6 +48,7 @@ void AMidBoss::BeginPlay()
 	Super::BeginPlay();
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
+	UGameplayStatics::PlaySound2D(this, dragonSpawned, 1.2f, 1.0f, 0.5f);
 
 	itemWidget = Cast<UItemWidget>(itemWidgetComp->GetWidget());
 	if (itemWidget)
@@ -134,6 +136,11 @@ void AMidBoss::Tick(float DeltaTime)
 		AActor* target = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerFlight::StaticClass());
 		directionPlayer = target->GetActorLocation() - GetActorLocation();
 		directionPlayer.Normalize();
+		if (!isPlayed)
+		{
+			UGameplayStatics::PlaySound2D(this, dragonRush);
+			isPlayed = true;
+		}
 	}
 	// 정한 방향으로 빠르게 이동한다
 	else if (currentTime >= 4.5 && currentTime < 8)
@@ -155,6 +162,7 @@ void AMidBoss::Tick(float DeltaTime)
 		isShoot1 = false;
 		isShoot2 = false;
 		isShoot3 = false;
+		isPlayed = false;
 		currentTime = 2.5;
 	}
 
@@ -178,6 +186,24 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			DestroyMidBoss();
+			//DestroyEnemy();
+			ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+			if (tengaiGM)
+			{
+				tengaiGM->AddScore(point);
+			}
+
+			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+			tengaiGM->playSpeed = 150;
+
+			warningUI = CreateWidget<UWarningWidget>(GetWorld(), warningWidget);
+			if (warningUI != nullptr)
+			{
+				warningUI->AddToViewport();
+			}
+
+			Destroy();
 		}
 	}
 
