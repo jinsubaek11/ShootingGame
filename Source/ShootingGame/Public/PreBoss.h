@@ -49,6 +49,10 @@ public:
 	class UHPWidget* bossHPWidget;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ABoss> boss;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool isDead;
+
 
 private:
 	friend class ABoss;
@@ -66,7 +70,6 @@ private:
 	float shootCoolTime = 3.f;
 	float shootWaitTime;
 
-	bool isDead;
 	float hp = 10.f;
 	float maxHP = 10.f;
 	float point = 200.f;

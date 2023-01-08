@@ -12,7 +12,7 @@ enum class AttackType: uint8
 {
 	FAN_SHOOT,
 	SEQUENCE_SHOOT,
-	SEQUENCE_SPIRAL_SHOOT,
+	RECURSIVE_SHOOT,
 	SPIRAL_EXPLOSION,
 	RADIAL_EXPLOSION,
 };
@@ -50,7 +50,7 @@ private:
 	void Shoot(AttackType attackType);
 	void FanShoot();
 	void SequenceShoot();
-	void SequenceSpiralShoot();
+	void RecursiveShoot(int32 count, const FVector& location);
 	void SpiralExplosion();
 	void RadialExplosion();
 	AttackType SelectAttackType();
@@ -99,12 +99,12 @@ private:
 	TArray<float> timeLine;
 
 	FTimerHandle timer;
-	int32 fanShootCallsRemaining = 10;
+	int32 fanShootCallsRemaining = 7;
 	int32 sequenceShootCallsRemaining = 40;
 	int32 sequenceShootCallsMax = 40;
 	int32 sequenceSpiralShootCallsRemaining = 180;
-	int32 spiralExplosionCallsRemaining = 15;
-	int32 radialExplosionCallsRemaining = 15;
+	int32 spiralExplosionCallsRemaining = 7;
+	int32 radialExplosionCallsRemaining = 7;
 
 	bool isPlayedStartAnimation;
 	float startAnimationDuration = 3.f;

@@ -12,7 +12,7 @@ void AObjectsPool::BeginPlay()
 
 }
 
-APooledObject* AObjectsPool::SpawnPooledObject(FVector start, FVector end)
+APooledObject* AObjectsPool::SpawnPooledObject(FVector start, FVector end, float speed)
 {
 	for (APooledObject* object : objectPool)
 	{
@@ -22,6 +22,7 @@ APooledObject* AObjectsPool::SpawnPooledObject(FVector start, FVector end)
 			object->SetDirection(start, end);
 			object->SetLifeSpan(pooledObjectLifeSpan);
 			object->SetActive(true);
+			object->SetSpeedScale(speed);
 			spawnedPoolIndexes.Add(object->GetIndex());
 			return object;
 		}

@@ -19,7 +19,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	APooledObject* SpawnPooledObject(FVector start, FVector end);
+	APooledObject* SpawnPooledObject(FVector start, FVector end, float speed = 1.f);
 
 	TArray<APooledObject*> objectPool;
 

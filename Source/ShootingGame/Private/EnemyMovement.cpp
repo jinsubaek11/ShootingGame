@@ -15,9 +15,14 @@ void UEnemyMovement::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-uint16 UEnemyMovement::GetCurrentTimeLineIndex()
+int32 UEnemyMovement::GetCurrentTimeLineIndex()
 {
 	return timeLineIndex;
+}
+
+void UEnemyMovement::SetCurrentTimeLineIndex(int32 index)
+{
+	timeLineIndex = index;
 }
 
 FVector UEnemyMovement::CalcLinearInterpolate(const FVector& p1, const FVector& p2, float t)

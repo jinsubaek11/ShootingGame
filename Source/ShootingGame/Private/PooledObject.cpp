@@ -56,6 +56,11 @@ void APooledObject::SetLifeSpan(float lifeTime)
 	lifeSpan = lifeTime;
 }
 
+void APooledObject::SetSpeedScale(float scale)
+{
+	speed *= scale;
+}
+
 void APooledObject::SetIndex(uint16 objectIndex)
 {
 	index = objectIndex;

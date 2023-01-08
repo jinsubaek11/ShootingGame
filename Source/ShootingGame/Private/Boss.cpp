@@ -86,7 +86,7 @@ void ABoss::BeginPlay()
 	startOrigin = GetActorLocation();
 	attackStartOrigin = startOrigin - FVector(0, 600, 0);
 
-	SetMovingPath(30);
+	SetMovingPath(50);
 	
 	for (TActorIterator<APreBoss> it(GetWorld()); it; ++it)
 	{
@@ -113,21 +113,36 @@ void ABoss::Tick(float DeltaTime)
 		return;
 	}
 
-	movementComp->Custom(customPath, timeLine, 60, time);
+	movementComp->Custom(customPath, timeLine, 120, time);
 	time += DeltaTime;
 
 	uint16 currentTimeLineIndex = movementComp->GetCurrentTimeLineIndex();
+	if (currentTimeLineIndex == customPath.Num() - 1)
+	{
+		movementComp->SetCurrentTimeLineIndex(0);
+		time = 0;
+		return;
+	}
 
 	if (customPath[currentTimeLineIndex].type == MovingType::NONE)
 	{
+		if (customPath[currentTimeLineIndex - 1].type == MovingType::NONE)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Change Moving Type"));
+			customPath[currentTimeLineIndex].type = MovingType::LINEAR;
+			return;
+		}
+
 		if (isFiredComplete)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("1"));
 			SetAnimation(AnimationType::WALK_WITH_SWORD);
 			//return;
 		}
 
 		if (!isFired)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("2"));
 			SetAnimation(AnimationType::ATTACK);
 			Shoot(SelectAttackType());
 			isFired = true;
@@ -135,6 +150,7 @@ void ABoss::Tick(float DeltaTime)
 	}
 	else
 	{
+		UE_LOG(LogTemp, Warning, TEXT("3"));
 		SetAnimation(AnimationType::WALK_WITH_SWORD);
 		isFiredComplete = false;
 		isFired = false;
@@ -262,12 +278,12 @@ void ABoss::FanShoot()
 	if (--fanShootCallsRemaining < 0)
 	{
 		GetWorldTimerManager().ClearTimer(timer);
-		fanShootCallsRemaining = 10;
+		fanShootCallsRemaining = 7;
 		isFiredComplete = true;
 		return;
 	}
 
-	for (int j = 110; j <= 250; j += 20)
+	for (int j = 110; j <= 250; j += 30)
 	{
 		FVector BossLocation = GetActorLocation();
 		FVector targetDirection = FVector(
@@ -277,8 +293,8 @@ void ABoss::FanShoot()
 		);
 
 		enemyBulletPool->SpawnPooledObject(
-			BossLocation, 
-			BossLocation + targetDirection
+			BossLocation + targetDirection * 200,
+			BossLocation + targetDirection * 201
 		);
 	}
 }
@@ -309,28 +325,31 @@ void ABoss::SequenceShoot()
 	);
 }
 
-void ABoss::SequenceSpiralShoot()
+void ABoss::RecursiveShoot(int32 count, const FVector& location)
 {
-	if (--sequenceSpiralShootCallsRemaining < 0)
+	if (count >= 5)
 	{
-		GetWorldTimerManager().ClearTimer(timer);
-		sequenceSpiralShootCallsRemaining = 180;
 		isFiredComplete = true;
 		return;
+	};
+
+	for (float i = 0; i < 360; i += 120)
+	{
+		float theta = FMath::DegreesToRadians(i);
+
+		FVector targetDirection = FVector(
+			0,
+			FMath::Cos(theta),
+			FMath::Sin(theta)
+		);
+
+		enemyBulletPool->SpawnPooledObject(
+			location + targetDirection * 80,
+			location + targetDirection * 81
+		);
+
+		RecursiveShoot(count + 1, location + targetDirection * 80);
 	}
-
-	float theta = (180 - sequenceSpiralShootCallsRemaining) / (float)180 * 10 * PI;
-	FVector BossLocation = GetActorLocation();
-	FVector targetDirection = FVector(
-		0,
-		FMath::Cos(theta),
-		FMath::Sin(theta)
-	);
-
-	enemyBulletPool->SpawnPooledObject(
-		BossLocation,
-		BossLocation + targetDirection
-	);
 }
 
 void ABoss::SpiralExplosion()
@@ -338,14 +357,16 @@ void ABoss::SpiralExplosion()
 	if (--spiralExplosionCallsRemaining < 0)
 	{
 		GetWorldTimerManager().ClearTimer(timer);
-		spiralExplosionCallsRemaining = 10;
+		spiralExplosionCallsRemaining = 7;
 		isFiredComplete = true;
 		return;
 	}
 
+	float randSpeedScale = FMath::RandRange(0.5, 1.0);
+
 	for (int degree = 0 + spiralExplosionCallsRemaining * 13;	
 		degree <= 360 + spiralExplosionCallsRemaining * 13; 
-		degree += 15)
+		degree += 30)
 	{
 		FVector BossLocation = GetActorLocation();
 		FVector targetDirection = FVector(
@@ -355,8 +376,9 @@ void ABoss::SpiralExplosion()
 		);
 
 		enemyBulletPool->SpawnPooledObject(
-			BossLocation,
-			BossLocation + targetDirection
+			BossLocation + targetDirection * 200,
+			BossLocation + targetDirection * 201,
+			randSpeedScale
 		);
 	}
 }
@@ -366,12 +388,12 @@ void ABoss::RadialExplosion()
 	if (--radialExplosionCallsRemaining < 0)
 	{
 		GetWorldTimerManager().ClearTimer(timer);
-		radialExplosionCallsRemaining = 10;
+		radialExplosionCallsRemaining = 7;
 		isFiredComplete = true;
 		return;
 	}
 
-	for (int degree = 0; degree <= 360; degree += 20)
+	for (int degree = 0; degree <= 360; degree += 30)
 	{
 		FVector BossLocation = GetActorLocation();
 		FVector targetDirection = FVector(
@@ -381,8 +403,8 @@ void ABoss::RadialExplosion()
 		);
 
 		enemyBulletPool->SpawnPooledObject(
-			BossLocation,
-			BossLocation + targetDirection
+			BossLocation + targetDirection * 200,
+			BossLocation + targetDirection * 201
 		);
 	}
 }
@@ -392,7 +414,7 @@ AttackType ABoss::SelectAttackType()
 	uint8 randomIdx = FMath::RandRange(0, 4);
 
 	//return (AttackType)randomIdx;
-	return AttackType::SEQUENCE_SHOOT;
+	return AttackType::RECURSIVE_SHOOT;
 }
 
 void ABoss::DestroySelf()
@@ -410,14 +432,15 @@ void ABoss::Shoot(AttackType attackType)
 	case AttackType::SEQUENCE_SHOOT:
 		GetWorldTimerManager().SetTimer(timer, this, &ABoss::SequenceShoot, 0.05, true);
 		break;
-	case AttackType::SEQUENCE_SPIRAL_SHOOT:
-		GetWorldTimerManager().SetTimer(timer, this, &ABoss::SequenceSpiralShoot, 0.015, true);
+	case AttackType::RECURSIVE_SHOOT:
+		//GetWorldTimerManager().SetTimer(timer, this, &ABoss::SequenceSpiralShoot, 0.015, true);
+		RecursiveShoot(1, GetActorLocation());
 		break;
 	case AttackType::RADIAL_EXPLOSION:
 		GetWorldTimerManager().SetTimer(timer, this, &ABoss::RadialExplosion, 0.1, true);
 		break;
 	case AttackType::SPIRAL_EXPLOSION:
-		GetWorldTimerManager().SetTimer(timer, this, &ABoss::SpiralExplosion, 0.07, true);
+		GetWorldTimerManager().SetTimer(timer, this, &ABoss::SpiralExplosion, 0.1, true);
 		break;
 	default:
 		break;
