@@ -4,7 +4,7 @@
 #include "Stoper.h"
 #include "components/BoxComponent.h"
 #include "TengaiGameMode.h"
-#include "Boss.h"
+#include "PreBoss.h"
 
 // Sets default values
 AStoper::AStoper()
@@ -46,9 +46,8 @@ void AStoper::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherA
 		else
 		{
 			// º¸½º
-			UE_LOG(LogTemp, Warning, TEXT("boss appear"));
-			GetWorld()->SpawnActor<ABoss>(ABoss::StaticClass(), GetActorLocation() + FVector(0, 100, 0), FRotator::ZeroRotator);
+			UE_LOG(LogTemp, Warning, TEXT("pre boss appear"));
+			GetWorld()->SpawnActor<APreBoss>(preBoss, GetActorLocation() + FVector(0, -250, -200), FRotator::ZeroRotator);
 		}
 	}
-	UE_LOG(LogTemp, Warning, TEXT("stop!"));
 }

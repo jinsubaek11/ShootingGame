@@ -54,6 +54,7 @@ private:
 	float att = 2;
 	class AEnemy* enemy;
 	class AMidBoss* midBoss;
+	class APreBoss* preBoss;
 	class ABoss* boss;
 	FVector targetLocation;
 	bool isFired;

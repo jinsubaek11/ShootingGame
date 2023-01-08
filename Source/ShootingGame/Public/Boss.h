@@ -56,6 +56,7 @@ private:
 	AttackType SelectAttackType();
 
 	void DestroySelf();
+	void RecoverHPBar();
 
 	UFUNCTION()
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -76,6 +77,8 @@ public:
 	class UPaperFlipbookComponent* walkWithSwordFlipBookComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UPaperFlipbookComponent* deadFlipBookComp;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
+	class UWidgetComponent* widgetComp;
 
 private:
 	class UEnemyMovement* movementComp;
@@ -83,6 +86,8 @@ private:
 
 	AnimationType currentAnimationType = AnimationType::WALK_WITH_SWORD;
 	class UPaperFlipbookComponent* currentFlipBookComponent;
+	class UItemWidget* itemWidget;
+	class UHPWidget* bossHPWidget;
 
 	float time;
 	bool isFired;
@@ -107,5 +112,10 @@ private:
 
 	bool isDead;
 	int32 hp = 10;
+	int32 maxHP = 10;
 	int32 point = 200;
+
+	FTimerHandle hpTimer;
+	int32 hpRecoverRemaining = 100;
+	int32 hpRecoverRemainingMax = 100;
 };

@@ -8,6 +8,7 @@
 #include "Enemy.h"
 #include "Boss.h"
 #include "MidBoss.h"
+#include "PreBoss.h"
 #include "EngineUtils.h"
 #include "PlayerFlight.h"
 #include "NormalBulletPool.h"
@@ -82,6 +83,19 @@ void APooledStrongBullet::Tick(float DeltaTime)
 
 	if (!enemy && !midBoss)
 	{
+		for (TActorIterator<APreBoss> it(GetWorld()); it; ++it)
+		{
+			if (it)
+			{
+				preBoss = *it;
+				targetLocation = preBoss->GetActorLocation();
+				break;
+			}
+		}
+	}
+
+	if (!enemy && !midBoss && !preBoss)
+	{
 		for (TActorIterator<ABoss> it(GetWorld()); it; ++it)
 		{
 			if (it)
@@ -93,7 +107,7 @@ void APooledStrongBullet::Tick(float DeltaTime)
 		}
 	}
 
-	if (enemy || midBoss || boss)
+	if (enemy || midBoss || preBoss || boss)
 	{		
 		float distance = (GetActorLocation() - targetLocation).Length();
 

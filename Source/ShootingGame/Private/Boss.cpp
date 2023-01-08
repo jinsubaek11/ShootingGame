@@ -1,12 +1,16 @@
 #include "Boss.h"
 #include "Components/BoxComponent.h"
+#include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "EnemyBulletPool.h"
 #include "TengaiGameMode.h"
 #include "PaperFlipbook.h"
 #include "PaperFlipbookComponent.h"
 #include "PooledObject.h"
-
+#include "EngineUtils.h"
+#include "PreBoss.h"
+#include "ItemWidget.h"
+#include "HPWidget.h"
 
 ABoss::ABoss()
 {
@@ -52,6 +56,11 @@ ABoss::ABoss()
 	deadFlipBookComp->SetHiddenInGame(true);
 
 	currentFlipBookComponent = walkWithSwordFlipBookComp;
+
+	widgetComp = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget Component"));
+	widgetComp->SetupAttachment(RootComponent);
+	widgetComp->SetRelativeRotation(FRotator(0, -90, 0));
+	widgetComp->SetPivot(FVector2D(-0.15, 0.2));
 }
 
 void ABoss::BeginPlay()
@@ -60,11 +69,32 @@ void ABoss::BeginPlay()
 
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &ABoss::OnOverlap);
 
+	itemWidget = Cast<UItemWidget>(widgetComp->GetWidget());
+	if (itemWidget)
+	{
+		itemWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (!bossHPWidget)
+	{
+		bossHPWidget = tengaiGM->bossUI;
+	}
+
+	GetWorldTimerManager().SetTimer(hpTimer, this, &ABoss::RecoverHPBar, 0.02f, true, 0.f);
+
 	startOrigin = GetActorLocation();
 	attackStartOrigin = startOrigin - FVector(0, 600, 0);
 
 	SetMovingPath(30);
-	enemyBulletPool = GetWorld()->SpawnActor<AEnemyBulletPool>();
+	
+	for (TActorIterator<APreBoss> it(GetWorld()); it; ++it)
+	{
+		if (it)
+		{
+			enemyBulletPool = it->enemyBulletPool;
+		}
+	}
 }
 
 void ABoss::Tick(float DeltaTime)
@@ -397,12 +427,15 @@ void ABoss::Shoot(AttackType attackType)
 void ABoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (startAnimationPlayTime <= startAnimationDuration) return;
+
 	APooledObject* playerBullet = Cast<APooledObject>(OtherActor);
 
 	if (playerBullet)
 	{
 		hp -= playerBullet->GetAttackPower();
 		playerBullet->Reset();
+		bossHPWidget->PrintCurrentHealth(hp, maxHP, FLinearColor::Green);
 	}
 
 	if (hp < 0)
@@ -427,5 +460,16 @@ void ABoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 		GetWorldTimerManager().SetTimer(timer, this, &ABoss::DestroySelf, 1.f, false);
 	}
+}
+
+void ABoss::RecoverHPBar()
+{
+	if (--hpRecoverRemaining < 0)
+	{
+		GetWorldTimerManager().ClearTimer(hpTimer);
+		return;
+	}
+
+	bossHPWidget->PrintCurrentHealth(hpRecoverRemainingMax - hpRecoverRemaining, 100, FLinearColor::Green);
 }
 

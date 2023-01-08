@@ -29,11 +29,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
 	TSubclassOf<class UMainWidget> mainWidget;
 
-	//UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
-	//TSubclassOf<class UItemWidget> itemWidget;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSetting)
+	TSubclassOf<class UHPWidget> bossHPWidget;
 
 	class UMainWidget* mainUI;
-	//class UItemWidget* itemUI;
+	class UHPWidget* bossUI;
 	
 	float playSpeed = 50;
 	bool encountMidBoss = true;

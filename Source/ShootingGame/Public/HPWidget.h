@@ -11,7 +11,7 @@ class SHOOTINGGAME_API UHPWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	void PrintCurrentHealth(float currentHP, float MaxHP);
+	void PrintCurrentHealth(float currentHP, float MaxHP, FLinearColor color = FLinearColor::Red);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MySetting", meta = (BindWidget))
 	class UProgressBar* healthBar;

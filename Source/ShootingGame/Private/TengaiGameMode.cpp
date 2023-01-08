@@ -6,6 +6,7 @@
 #include "Engine.h"
 #include "MainWidget.h"
 #include "ItemWidget.h"
+#include "HPWidget.h"
 #include "MidBoss.h"
 #include "kismet/GameplayStatics.h"
 #include "GameoverWidget.h"
@@ -16,6 +17,7 @@ void ATengaiGameMode::BeginPlay()
 	GEngine->GetGameUserSettings()->SetFrameRateLimit(60);
 
 	mainUI = CreateWidget<UMainWidget>(GetWorld(), mainWidget);
+	bossUI = CreateWidget<UHPWidget>(GetWorld(), bossHPWidget);
 
 	if (mainUI)
 	{
@@ -23,6 +25,12 @@ void ATengaiGameMode::BeginPlay()
 		mainUI->PrintCurrentScore();
 		mainUI->PrintLifeCount();
 		mainUI->PrintUltimateCount();
+	}
+
+	if (bossUI)
+	{
+		bossUI->AddToViewport();
+		bossUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
