@@ -56,8 +56,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isDead;
 
-	float hp = 10.f;
-	float maxHP = 10.f;
+	float hp = 100.f;
+	float maxHP = 100.f;
 	float point = 200.f;
 
 private:

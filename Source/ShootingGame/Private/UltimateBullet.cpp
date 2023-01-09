@@ -57,6 +57,7 @@ void AUltimateBullet::Tick(float DeltaTime)
 
 		if (midBoss->myHP <= 0)
 		{
+
 			midBoss->DestroyMidBoss();
 		}
 	}

@@ -148,6 +148,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (attackLevel == AttackLevel::WEAK)
 		{
 			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.0f);
 		}
 		else
 		{
@@ -162,6 +163,7 @@ void APlayerFlight::Tick(float DeltaTime)
 
 				normalBulletPool->SpawnPooledObject(playerLocation, targetDirection);
 			}
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.0f);
 		}
 		
 		enemies.Empty();
@@ -389,9 +391,9 @@ void APlayerFlight::LifeCalculator()
 
 		for (uint8 i = 1; i < (uint8)attackLevel; i++)
 		{
-			GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+			//GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
-		// �ñر� ������ ����� Ȯ���ϰ� ����
+		// �ñر� ������ �����?Ȯ���ϰ� ����
 
 		SetAttackLevel(AttackLevel::WEAK);
 		SetAttackBarrier(AttackLevel::WEAK);

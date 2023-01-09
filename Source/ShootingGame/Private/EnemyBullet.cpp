@@ -75,7 +75,11 @@ void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if (player->isInvincibility || player->isDead) return;
 
 		player->LifeCalculator();
-//		tengaiGM->mainUI->PrintLifeCount();
-		Destroy();
+		tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+		if (tengaiGM != nullptr)
+		{
+			tengaiGM->mainUI->PrintLifeCount();
+			Destroy();
+		}
 	}
 }
