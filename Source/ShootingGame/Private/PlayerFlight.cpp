@@ -69,6 +69,9 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// 일단 주석 처리 (EnemyBullet에서 작동안해서 넣은거)
+//	tengaiGM->mainUI->PrintLifeCount();
+
 	if (isDead)
 	{
 		position = GetActorLocation();
@@ -145,7 +148,6 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (attackLevel == AttackLevel::WEAK)
 		{
 			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
-			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		else
 		{
@@ -160,7 +162,6 @@ void APlayerFlight::Tick(float DeltaTime)
 
 				normalBulletPool->SpawnPooledObject(playerLocation, targetDirection);
 			}
-			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		
 		enemies.Empty();
@@ -216,11 +217,6 @@ int32 APlayerFlight::GetUltimateCount() const
 int32 APlayerFlight::GetMaxUltimateCount() const
 {
 	return MAX_ULTIMATE_COUNT;
-}
-
-void APlayerFlight::AddUltimateCount()
-{
-	ultimateCount += 1;
 }
 
 bool APlayerFlight::GetIsDead() const
@@ -299,7 +295,6 @@ void APlayerFlight::Fire(float value)
 	if (value >= 1.0f)
 	{
 		isShooting = true;
-		//UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 	}
 	else
 	{
@@ -353,9 +348,9 @@ void APlayerFlight::SetFalseInvincibility()
 
 void APlayerFlight::ShootUltimate()
 {
-		isFireUltimate = true;
-		ultimateCount --;
-		tengaiGM->mainUI->PrintUltimateCount();
+	isFireUltimate = true;
+	ultimateCount--;
+	tengaiGM->mainUI->PrintUltimateCount();
 }
 
 void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -368,8 +363,28 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	{
 		enemyBullet->Reset();
 		LifeCalculator();
+// 		if (lifeCount > 1)
+// 		{
+// 			lifeCount -= 1;
+// 			
+// 			for (uint8 i = 1; i < (uint8)attackLevel; i++)
+// 			{
+// 				GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+// 			}
+// 			// 궁극기 아이템 만들면 확인하고 스폰
+// 
+// 			SetAttackLevel(AttackLevel::WEAK);
+// 			SetAttackBarrier(AttackLevel::WEAK);
+// 
+// 			isDead = true;
+// 		}
+// 		else
+// 		{
+// 			tengaiGM->ShowGameover();
+// 			//Destroy();
+// 		}			
 
-		tengaiGM->mainUI->PrintLifeCount();
+//		tengaiGM->mainUI->PrintLifeCount();
 	}
 }
 
@@ -396,7 +411,7 @@ void APlayerFlight::LifeCalculator()
 
 		for (uint8 i = 1; i < (uint8)attackLevel; i++)
 		{
-			//GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+			GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
 		// 궁극기 아이템 만들면 확인하고 스폰
 

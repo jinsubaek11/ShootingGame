@@ -414,8 +414,8 @@ AttackType ABoss::SelectAttackType()
 {
 	uint8 randomIdx = FMath::RandRange(0, 4);
 
-	return (AttackType)randomIdx;
-	//return AttackType::RECURSIVE_SHOOT;
+	//return (AttackType)randomIdx;
+	return AttackType::RECURSIVE_SHOOT;
 }
 
 void ABoss::DestroySelf()

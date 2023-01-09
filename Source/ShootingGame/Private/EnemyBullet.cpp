@@ -77,16 +77,7 @@ void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	if (player != nullptr)
 	{
 		player->LifeCalculator();
-		tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-		if (tengaiGM != nullptr)
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("gm is ok"));
-			if (tengaiGM->mainUI != nullptr)
-			{
-				//UE_LOG(LogTemp, Warning, TEXT("mainUI is ok"));
-				tengaiGM->mainUI->PrintLifeCount();
-			}
-		}
+//		tengaiGM->mainUI->PrintLifeCount();
 		Destroy();
 	}
 

@@ -36,7 +36,6 @@ public:
 	bool GetIsInvincibility() const;
 	void SetAttackLevel(AttackLevel level);
 	void LifeCalculator();
-	void AddUltimateCount();
 	uint8 GetAttackLevel() const; 
 	class ANormalBulletPool* GetNormalBulletPool();
 
