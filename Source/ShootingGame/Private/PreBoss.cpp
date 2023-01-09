@@ -65,6 +65,13 @@ void APreBoss::BeginPlay()
 	{
 		itemWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (!bossHPWidget)
+	{
+		bossHPWidget = tengaiGM->bossUI;
+		return;
+	}
 }
 
 void APreBoss::Tick(float DeltaTime)
@@ -176,17 +183,27 @@ void APreBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 
 	if (hp < 0)
 	{
-		SetActorEnableCollision(false);
-		isDead = true;
-
-		tengaiGM->AddScore(point);
-
-		itemWidget->SetVisibility(ESlateVisibility::Visible);
-		itemWidget->PrintMonsterScore(point);
-
-		GetWorldTimerManager().SetTimer(explosionAnimationTimer, this, &APreBoss::PlayExplosionAnimation, 0.5f, true, 0);
-		GetWorldTimerManager().SetTimer(destroyTimer, this, &APreBoss::DestroySelf, 2.5f, false);
+		DestroyPreBoss();
 	}
+}
+
+void APreBoss::DestroyPreBoss()
+{
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+
+	SetActorEnableCollision(false);
+	isDead = true;
+
+	if (tengaiGM)
+	{
+		tengaiGM->AddScore(point);
+	}
+
+	itemWidget->SetVisibility(ESlateVisibility::Visible);
+	itemWidget->PrintMonsterScore(point);
+
+	GetWorldTimerManager().SetTimer(explosionAnimationTimer, this, &APreBoss::PlayExplosionAnimation, 0.5f, true, 0);
+	GetWorldTimerManager().SetTimer(destroyTimer, this, &APreBoss::DestroySelf, 2.5f, false);
 }
 
 void APreBoss::PlayExplosionAnimation()

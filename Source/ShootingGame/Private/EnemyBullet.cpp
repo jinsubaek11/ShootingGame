@@ -68,17 +68,16 @@ void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Enemy Bullet Overlaped"));
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
-
-	bool isInvincibility = player->GetIsInvincibility();
-	bool isDead = player->GetIsDead();
-
-	if (isInvincibility || isDead) return;
-
+	
 	if (player != nullptr)
 	{
-		player->LifeCalculator();
-//		tengaiGM->mainUI->PrintLifeCount();
-		Destroy();
-	}
+		bool isInvincibility = player->GetIsInvincibility();
+		bool isDead = player->GetIsDead();
 
+		if (isInvincibility || isDead) return;
+
+		player->LifeCalculator();
+	//	tengaiGM->mainUI->PrintLifeCount();
+	Destroy();
+	}
 }

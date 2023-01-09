@@ -40,6 +40,9 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	void DestroyBoss();
+
 private:
 	void SetAnimation(AnimationType animationType);
 	void SetAnimationComponent(AnimationType animationType);
@@ -81,6 +84,11 @@ public:
 	class UWidgetComponent* widgetComp;
 	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
 	TSubclassOf <class UEndingWidget> endingWidget;
+	class UHPWidget* bossHPWidget;
+
+	float hp = 10;
+	float maxHP = 10;
+	int32 point = 200;
 
 
 private:
@@ -90,7 +98,6 @@ private:
 	AnimationType currentAnimationType = AnimationType::WALK_WITH_SWORD;
 	class UPaperFlipbookComponent* currentFlipBookComponent;
 	class UItemWidget* itemWidget;
-	class UHPWidget* bossHPWidget;
 	class UEndingWidget* endingUI;
 
 	float time;
@@ -115,9 +122,8 @@ private:
 	float startAnimationPlayTime;
 
 	bool isDead;
-	int32 hp = 10;
-	int32 maxHP = 10;
-	int32 point = 200;
+	//int32 hp = 10;
+	//float maxHP = 10;
 
 	FTimerHandle hpTimer;
 	int32 hpRecoverRemaining = 100;

@@ -25,6 +25,9 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	void DestroyPreBoss();
+
 private:
 	void LineShoot();
 	void RandomShoot();
@@ -53,6 +56,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isDead;
 
+	float hp = 10.f;
+	float maxHP = 10.f;
+	float point = 200.f;
 
 private:
 	friend class ABoss;
@@ -69,10 +75,6 @@ private:
 
 	float shootCoolTime = 3.f;
 	float shootWaitTime;
-
-	float hp = 10.f;
-	float maxHP = 10.f;
-	float point = 200.f;
 
 	bool isPlayExplosionAnimation;
 	int32 playExplosionAnimationRemaining = 5;
