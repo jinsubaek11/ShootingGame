@@ -18,6 +18,7 @@
 #include "TengaiGameMode.h"
 #include "MainWidget.h"
 #include "Item.h"
+#include "kismet/GameplayStatics.h"
 
 
 APlayerFlight::APlayerFlight()
@@ -143,6 +144,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (attackLevel == AttackLevel::WEAK)
 		{
 			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		else
 		{
@@ -157,6 +159,7 @@ void APlayerFlight::Tick(float DeltaTime)
 
 				normalBulletPool->SpawnPooledObject(playerLocation, targetDirection);
 			}
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		
 		enemies.Empty();
@@ -295,6 +298,7 @@ void APlayerFlight::Fire(float value)
 	if (value >= 1.0f)
 	{
 		isShooting = true;
+		//UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 	}
 	else
 	{
