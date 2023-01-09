@@ -69,9 +69,6 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ÀÏ´Ü ÁÖ¼® Ã³¸® (EnemyBullet¿¡¼­ ÀÛµ¿¾ÈÇØ¼­ ³ÖÀº°Å)
-//	tengaiGM->mainUI->PrintLifeCount();
-
 	if (isDead)
 	{
 		position = GetActorLocation();
@@ -88,7 +85,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		return;
 	}
 
-	// ±âº» ÀÌµ¿
+	// ï¿½âº» ï¿½Ìµï¿½
 	float spd = tengaiGM->playSpeed;
 	FVector newLoca = GetActorLocation();
 	newLoca.Y = newLoca.Y + spd * DeltaTime;
@@ -148,6 +145,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		if (attackLevel == AttackLevel::WEAK)
 		{
 			normalBulletPool->SpawnPooledObject(GetActorLocation(), GetActorLocation() + GetActorRightVector());
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		else
 		{
@@ -162,6 +160,7 @@ void APlayerFlight::Tick(float DeltaTime)
 
 				normalBulletPool->SpawnPooledObject(playerLocation, targetDirection);
 			}
+			UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 		}
 		
 		enemies.Empty();
@@ -217,6 +216,11 @@ int32 APlayerFlight::GetUltimateCount() const
 int32 APlayerFlight::GetMaxUltimateCount() const
 {
 	return MAX_ULTIMATE_COUNT;
+}
+
+void APlayerFlight::AddUltimateCount()
+{
+	ultimateCount += 1;
 }
 
 bool APlayerFlight::GetIsDead() const
@@ -295,6 +299,7 @@ void APlayerFlight::Fire(float value)
 	if (value >= 1.0f)
 	{
 		isShooting = true;
+		//UGameplayStatics::PlaySound2D(this, playerFire, 1.f, 1.f, 0.f);
 	}
 	else
 	{
@@ -348,9 +353,9 @@ void APlayerFlight::SetFalseInvincibility()
 
 void APlayerFlight::ShootUltimate()
 {
-	isFireUltimate = true;
-	ultimateCount--;
-	tengaiGM->mainUI->PrintUltimateCount();
+		isFireUltimate = true;
+		ultimateCount --;
+		tengaiGM->mainUI->PrintUltimateCount();
 }
 
 void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -363,6 +368,7 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	{
 		enemyBullet->Reset();
 		LifeCalculator();
+		//tengaiGM->mainUI->PrintLifeCount();
 	}
 }
 
@@ -389,9 +395,9 @@ void APlayerFlight::LifeCalculator()
 
 		for (uint8 i = 1; i < (uint8)attackLevel; i++)
 		{
-			GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+			//GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
-		// ±Ã±Ø±â ¾ÆÀÌÅÛ ¸¸µé¸é È®ÀÎÇÏ°í ½ºÆù
+		// ï¿½Ã±Ø±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		SetAttackLevel(AttackLevel::WEAK);
 		SetAttackBarrier(AttackLevel::WEAK);

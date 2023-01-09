@@ -48,6 +48,7 @@ void AMidBoss::BeginPlay()
 	Super::BeginPlay();
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
+
 	UGameplayStatics::PlaySound2D(this, dragonSpawned, 1.2f, 1.0f, 0.5f);
 
 	itemWidget = Cast<UItemWidget>(itemWidgetComp->GetWidget());

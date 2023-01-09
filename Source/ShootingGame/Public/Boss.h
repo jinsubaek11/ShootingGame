@@ -85,11 +85,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
 	TSubclassOf <class UEndingWidget> endingWidget;
 	class UHPWidget* bossHPWidget;
-
-	float hp = 10;
-	float maxHP = 10;
-	int32 point = 200;
-
+	
+	int32 hp = 300;
+	int32 maxHP = 300;
+	int32 point = 1000;
 
 private:
 	class UEnemyMovement* movementComp;
