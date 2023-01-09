@@ -45,6 +45,8 @@ void APooledEnemyBullet::Reset()
 void APooledEnemyBullet::SetActive(bool value)
 {
 	Super::SetActive(value);
+	
+	speed = 1000.f;
 
 	GetWorldTimerManager().SetTimer(
 		lifeSpanTimer, this, &APooledEnemyBullet::SetDeactive, lifeSpan, false

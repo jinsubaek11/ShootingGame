@@ -25,6 +25,7 @@ public:
 	virtual void SetDirection(FVector start, FVector end);
 	virtual float GetAttackPower();
 	void SetLifeSpan(float lifeTime) override;
+	void SetSpeedScale(float scale);
 	void SetIndex(uint16 objectIndex);
 	bool IsActive() const;
 	uint16 GetIndex() const;

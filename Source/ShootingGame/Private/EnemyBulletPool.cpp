@@ -38,6 +38,7 @@ void AEnemyBulletPool::BeginPlay()
 
 void AEnemyBulletPool::OnPooledEnemyBulletDespawn(APooledEnemyBullet* pooledEnemyBullet)
 {
+	//pooledEnemyBullet->Reset();
 	spawnedPoolIndexes.Remove(pooledEnemyBullet->GetIndex());
 	pooledEnemyBullet->SetActorLocation(GetActorLocation());
 }

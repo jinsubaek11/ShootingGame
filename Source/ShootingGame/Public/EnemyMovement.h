@@ -41,7 +41,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 public:
-	uint16 GetCurrentTimeLineIndex();
+	int32 GetCurrentTimeLineIndex();
+	void SetCurrentTimeLineIndex(int32 index);
 
 	FVector CalcLinearInterpolate(const FVector& p1, const FVector& p2, float t);
 	FVector Curve(const FVector& start, const FVector& p1, const FVector& p2, const FVector& dest, float t);

@@ -14,7 +14,7 @@
 #include "TengaiGameMode.h"
 #include "PaperFlipbookComponent.h"
 #include "PaperFlipbook.h"
-
+#include "ExplosionCameraShake.h"
 
 
 APreBoss::APreBoss()
@@ -202,6 +202,7 @@ void APreBoss::PlayExplosionAnimation()
 	if (explosionIndex < explosionPosition.Num())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("explosion"));
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraShake(UExplosionCameraShake::StaticClass(), 1.f);
 		explosionFlipbookComp->AddRelativeLocation(explosionPosition[explosionIndex]);
 		explosionFlipbookComp->SetHiddenInGame(false);
 		explosionFlipbookComp->Play();
