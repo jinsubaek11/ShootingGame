@@ -6,6 +6,15 @@
 #include "GameFramework/Actor.h"
 #include "Enemy.generated.h"
 
+UENUM()
+enum class EnemyMovingType: uint8
+{
+	GO_STRAIGHT,
+	RIGHT_RETURN_BACK,
+	RIGHT_SHOOT_UP,
+	RIGHT_CIRCLE_LEFT,
+};
+
 UCLASS()
 class SHOOTINGGAME_API AEnemy : public AActor
 {
@@ -30,8 +39,8 @@ public:
 	UPROPERTY(EditAnywhere, category = EnemySettings)
 	class UPaperFlipbookComponent* flipbookComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
-	int32 movingMode = 0;
+ 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
+ 	EnemyMovingType movingType = static_cast<EnemyMovingType>(0);
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	float enemySpeed=400;
 
