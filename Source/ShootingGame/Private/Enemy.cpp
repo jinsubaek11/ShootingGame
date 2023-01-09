@@ -70,6 +70,7 @@ void AEnemy::BeginPlay()
 	{
 		hpWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
+
 }
 
 // Called every frame
@@ -77,70 +78,36 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	deltaTimeForFunc = GetWorld()->GetDeltaSeconds();
+
 	if (isDead)
 	{
 		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
 		return;
 	}
-	// 오른쪽에서 들어왔다가 다시 오른쪽으로 되돌아감
-	if (movingMode==1)
-	{
-		FVector newLocation = GetActorLocation();
-		float deltaY = (FMath::Sin(runningTime + DeltaTime) - FMath::Sin(runningTime));
-		newLocation.Y += deltaY * -900.0f + 3.5f;
-		runningTime += DeltaTime;
-		SetActorLocation(newLocation);
 
-	} 
-	// 오른쪽에서 들어왔다가 총알 쏘고 위로 올라감
-	else if (movingMode == 2)
+	switch (movingType)
 	{
-		FVector newLocation = GetActorLocation();
-		runningTime += DeltaTime;
-		float deltaY = FMath::Sin(runningTime * 2);
-		if (deltaY > 0)
-		{
-			newLocation.Y += deltaY * -6.0f;
-			SetActorLocation(newLocation);
-			return;
-		}
-		else if (!isShoot)
-		{
-			GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
-				{
-						GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
-						//UE_LOG(LogTemp, Warning, TEXT("Shoot Timer"));
-				}, 0.1f, false);
-			isShoot = true;
-			//UE_LOG(LogTemp, Warning, TEXT("Shoot"));
-			return;
-		}
- 		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed * 2;
- 		SetActorLocation(newLocation);
+	case
+		EnemyMovingType::GO_STRAIGHT:
+			GoStraight();
+		break;
+	case 
+		EnemyMovingType::RIGHT_RETURN_BACK:
+			RightReturnBack();
+		break;
+	case 
+		EnemyMovingType::RIGHT_SHOOT_UP:
+			RightShootUp();
+		break;
+	case 
+		EnemyMovingType::RIGHT_CIRCLE_LEFT:
+			RightCircleLeft();
+		break;
+	default:
+		break;
 	}
-	// 오른쪽에서 들어와 위로 원을 그리며 한바퀴 회전 후 왼쪽으로 퇴장
-	else if (movingMode == 3)
-	{
-
-		FVector newLocation = GetActorLocation();
-		runningTime += DeltaTime;
-		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 1.0f) - FMath::Sin(runningTime * 1.0f));
-		float deltaZ = FMath::Sin(runningTime * 1.0f);
-		newLocation.Y -= 3.0f;
-		newLocation.Y -= deltaY * 400.0f;
-		newLocation.Z += deltaZ * 5.0f;
-
-		SetActorLocation(newLocation);
-	}
-	// 그 외 오른쪽에서 왼쪽으로 직진
-	else
-	{
-
-		direction = GetActorForwardVector();
-		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime * 2.0f);
-	}	
-}
+ }
 
 void AEnemy::DestroyEnemy()
 {
@@ -169,6 +136,61 @@ void AEnemy::DestroyEnemy()
 void AEnemy::DestroySelf()
 {
 	Destroy();
+}
+
+void AEnemy::GoStraight()
+{
+	direction = GetActorForwardVector();
+	SetActorLocation(GetActorLocation() + direction * enemySpeed * deltaTimeForFunc * 2.0f);
+}
+
+void AEnemy::RightReturnBack()
+{
+	FVector newLocation = GetActorLocation();
+	float deltaY = (FMath::Sin(runningTime + deltaTimeForFunc) - FMath::Sin(runningTime));
+	newLocation.Y += deltaY * -900.0f + 3.5f;
+	runningTime += deltaTimeForFunc;
+	SetActorLocation(newLocation);
+}
+
+void AEnemy::RightShootUp()
+{
+	FVector newLocation = GetActorLocation();
+	runningTime += deltaTimeForFunc;
+	float deltaY = FMath::Sin(runningTime * 2);
+	if (deltaY > 0)
+	{
+		newLocation.Y += deltaY * -6.0f;
+		SetActorLocation(newLocation);
+		return;
+	}
+	else if (!isShoot)
+	{
+		GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]()
+			{
+				GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation(), GetActorRotation());
+				//UE_LOG(LogTemp, Warning, TEXT("Shoot Timer"));
+			}, 0.1f, false);
+		isShoot = true;
+		//UE_LOG(LogTemp, Warning, TEXT("Shoot"));
+		return;
+	}
+	newLocation.Z = newLocation.Z + deltaTimeForFunc * enemySpeed * 2;
+	SetActorLocation(newLocation);
+}
+
+void AEnemy::RightCircleLeft()
+{
+	FVector newLocation = GetActorLocation();
+	runningTime += deltaTimeForFunc;
+	float deltaY = (FMath::Sin((runningTime + deltaTimeForFunc) * 1.0f) - FMath::Sin(runningTime * 1.0f));
+	float deltaZ = FMath::Sin(runningTime * 1.0f);
+	newLocation.Y -= 3.0f;
+	newLocation.Y -= deltaY * 400.0f;
+	newLocation.Z += deltaZ * 5.0f;
+
+	SetActorLocation(newLocation);
 }
 
 void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

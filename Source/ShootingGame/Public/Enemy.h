@@ -6,6 +6,15 @@
 #include "GameFramework/Actor.h"
 #include "Enemy.generated.h"
 
+UENUM(BlueprintType)
+enum class EnemyMovingType: uint8
+{
+	GO_STRAIGHT,
+	RIGHT_RETURN_BACK,
+	RIGHT_SHOOT_UP,
+	RIGHT_CIRCLE_LEFT,
+};
+
 UCLASS()
 class SHOOTINGGAME_API AEnemy : public AActor
 {
@@ -30,8 +39,8 @@ public:
 	UPROPERTY(EditAnywhere, category = EnemySettings)
 	class UPaperFlipbookComponent* flipbookComp;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
-	int32 movingMode = 0;
+ 	UPROPERTY(EditAnywhere, Category = EnemySettings)
+ 	EnemyMovingType movingType;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = EnemySettings)
 	float enemySpeed=400;
 
@@ -39,6 +48,8 @@ public:
 	TSubclassOf <class AItem> itemFactory;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AItem> itemFactoryUlti;
+	UPROPERTY(EditInstanceOnly, category = EnemySettings)
+	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float dropRate=0.05;
@@ -49,14 +60,11 @@ public:
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float MaxHP;
 
-	UPROPERTY(EditInstanceOnly, category = EnemySettings)
-	TSubclassOf<class AEnemyBullet>EnemyBulFactory;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
-	class UItemWidget* itemWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* hpWidgetComp;
+	class UItemWidget* itemWidget;
 	class UHPWidget* hpWidget;
 
 	UPROPERTY(EditAnywhere, Category=SoundEffect)
@@ -71,6 +79,7 @@ public:
 	float drawRate;
 	float drawRateUlti;
 	float runningTime = 0;
+	float deltaTimeForFunc;
 	bool isShoot = false;
 	bool isDead = false;
 	bool canMove = false;
@@ -80,7 +89,10 @@ public:
 	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	void DestroyEnemy();
 	void DestroySelf();
-
+	void GoStraight();
+	void RightReturnBack();
+	void RightShootUp();
+	void RightCircleLeft();
 
 };
 
