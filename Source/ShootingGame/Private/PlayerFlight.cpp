@@ -18,6 +18,8 @@
 #include "TengaiGameMode.h"
 #include "MainWidget.h"
 #include "Item.h"
+#include "kismet/KismetMathLibrary.h"
+#include "kismet/GameplayStatics.h"
 
 
 APlayerFlight::APlayerFlight()
@@ -308,7 +310,17 @@ void APlayerFlight::ShootStrongAttack()
 
 void APlayerFlight::Reset()
 {
-	SetActorLocation(FVector(0, -800, 0));
+	FVector respawnPosition = FVector(0,TNumericLimits<float>::Max(), 0);
+
+	for (TActorIterator<AFence_Vertical> it(GetWorld()); it; ++it)
+	{
+		if (it && it->GetActorLocation().Y < respawnPosition.Y)
+		{
+			respawnPosition = FVector(0, it->GetActorLocation().Y, 0);
+		}
+	}
+
+	SetActorLocation(respawnPosition + FVector(0, 100, 0));
 	velocity = FVector(0, -20, 30);
 	gravity = FVector(0, 0, -9.8);
 
