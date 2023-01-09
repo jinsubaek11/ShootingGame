@@ -396,7 +396,7 @@ void APlayerFlight::LifeCalculator()
 
 		for (uint8 i = 1; i < (uint8)attackLevel; i++)
 		{
-			GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
+			//GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
 		// 궁극기 아이템 만들면 확인하고 스폰
 
