@@ -3,6 +3,7 @@
 
 #include "ItemUltimate.h"
 #include "PlayerFlight.h"
+#include "TengaiGameMode.h"
 
 AItemUltimate::AItemUltimate()
 {
@@ -16,5 +17,15 @@ void AItemUltimate::BeginPlay()
 
 void AItemUltimate::ItemSelector(APlayerFlight* player)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("This is Ultimate item"));
+	if (player != nullptr)
+	{
+		int32 ultCount = player->GetUltimateCount();
+		int32 maxUltCount = player->GetMaxUltimateCount();
+		if (ultCount < maxUltCount)
+		{
+			player->AddUltimateCount();
+			ATengaiGameMode* gm = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+			gm->mainUI->PrintUltimateCount();
+		}
+	}
 }
