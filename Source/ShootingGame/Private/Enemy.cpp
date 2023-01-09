@@ -191,12 +191,14 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 			if (drawRate <= dropRate)
 			{
-				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
+				GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+				//UE_LOG(LogTemp, Warning, TEXT("power item spawned"));
 			}
 
 			if (drawRateUlti <= dropRateUlti)
 			{
-				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator::ZeroRotator);
+				GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+				//UE_LOG(LogTemp, Warning, TEXT("ult item spawned"));
 			}
 			DestroyEnemy();
 		}
