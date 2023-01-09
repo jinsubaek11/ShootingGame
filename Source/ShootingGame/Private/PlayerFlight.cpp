@@ -67,9 +67,6 @@ void APlayerFlight::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 일단 주석 처리 (EnemyBullet에서 작동안해서 넣은거)
-//	tengaiGM->mainUI->PrintLifeCount();
-
 	if (isDead)
 	{
 		position = GetActorLocation();
@@ -357,7 +354,7 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		enemyBullet->Reset();
 		LifeCalculator();
 
-//		tengaiGM->mainUI->PrintLifeCount();
+		tengaiGM->mainUI->PrintLifeCount();
 	}
 }
 
