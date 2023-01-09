@@ -393,7 +393,6 @@ void APlayerFlight::LifeCalculator()
 		{
 			//GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
-		// �ñر� ������ �����?Ȯ���ϰ� ����
 
 		SetAttackLevel(AttackLevel::WEAK);
 		SetAttackBarrier(AttackLevel::WEAK);
@@ -407,4 +406,9 @@ void APlayerFlight::LifeCalculator()
 		tengaiGM->ShowGameover();
 		//Destroy();
 	}
+}
+
+void APlayerFlight::AddUltimateCount()
+{
+	ultimateCount += 1;
 }
