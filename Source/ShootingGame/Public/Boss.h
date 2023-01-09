@@ -79,6 +79,9 @@ public:
 	class UPaperFlipbookComponent* deadFlipBookComp;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemSettings)
 	class UWidgetComponent* widgetComp;
+	UPROPERTY(EditAnywhere, Category = MyDefaultSettings)
+	TSubclassOf <class UEndingWidget> endingWidget;
+
 
 private:
 	class UEnemyMovement* movementComp;
@@ -88,6 +91,7 @@ private:
 	class UPaperFlipbookComponent* currentFlipBookComponent;
 	class UItemWidget* itemWidget;
 	class UHPWidget* bossHPWidget;
+	class UEndingWidget* endingUI;
 
 	float time;
 	bool isFired;

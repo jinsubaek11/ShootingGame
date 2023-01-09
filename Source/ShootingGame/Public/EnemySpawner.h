@@ -15,23 +15,13 @@ public:
 	// Sets default values for this actor's properties
 	AEnemySpawner();
 
-	// �ð��� �������� �����ϴ� ���� ���� ����
-	//float currentTime;
-
-	//UPROPERTY(EditInstanceOnly, Category=EnemySettings)
-	//float spawnTime=2;
-
 	UPROPERTY(EditInstanceOnly, Category=EnemySettings)
 	TSubclassOf <class AEnemy> enemyFactory;
 
-	// �ַο� ���̱� ���� ���� �Բ� ����
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	class UArrowComponent* spawnArrow;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	class USceneComponent* rootScene;
-
-	//FVector curLoc;
-	float worldTime = 0;
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float spawnTimer1 = 99999;
@@ -49,6 +39,8 @@ public:
 	float spawnTimer7 = 99999;
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	float spawnTimer8 = 99999;
+
+	float worldTime = 0;
 
 protected:
 	// Called when the game starts or when spawned

@@ -24,6 +24,7 @@ public:
 
 	UPROPERTY(EditInstanceOnly, Category = EnemySettings)
 	TSubclassOf <class AMidBoss> midBossFactory;
+
 	float mainSpeed;
 	bool isSpawned = false;
 };

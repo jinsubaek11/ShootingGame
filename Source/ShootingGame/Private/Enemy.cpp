@@ -23,13 +23,11 @@ AEnemy::AEnemy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// �ڽ� �ݸ��� ����
 	boxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Collision"));
 	SetRootComponent(boxComp);
 	boxComp->SetBoxExtent(FVector(50));
 	boxComp->SetCollisionProfileName(TEXT("EnemyPreset"));
 
-	// �޽� ����
 	meshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh"));
 	meshComp->SetupAttachment(RootComponent);
 
@@ -84,7 +82,7 @@ void AEnemy::Tick(float DeltaTime)
 		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
 		return;
 	}
-
+	// 오른쪽에서 들어왔다가 다시 오른쪽으로 되돌아감
 	if (movingMode==1)
 	{
 		FVector newLocation = GetActorLocation();
@@ -94,6 +92,7 @@ void AEnemy::Tick(float DeltaTime)
 		SetActorLocation(newLocation);
 
 	} 
+	// 오른쪽에서 들어왔다가 총알 쏘고 위로 올라감
 	else if (movingMode == 2)
 	{
 		FVector newLocation = GetActorLocation();
@@ -120,9 +119,10 @@ void AEnemy::Tick(float DeltaTime)
  		newLocation.Z = newLocation.Z + DeltaTime * enemySpeed * 2;
  		SetActorLocation(newLocation);
 	}
+	// 오른쪽에서 들어와 위로 원을 그리며 한바퀴 회전 후 왼쪽으로 퇴장
 	else if (movingMode == 3)
 	{
-	// �����ڸ��� ���� �׸��� ȸ�� �� �������� ����
+
 		FVector newLocation = GetActorLocation();
 		runningTime += DeltaTime;
 		float deltaY = (FMath::Sin((runningTime + DeltaTime) * 1.0f) - FMath::Sin(runningTime * 1.0f));
@@ -133,11 +133,12 @@ void AEnemy::Tick(float DeltaTime)
 
 		SetActorLocation(newLocation);
 	}
+	// 그 외 오른쪽에서 왼쪽으로 직진
 	else
 	{
 
 		direction = GetActorForwardVector();
-		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime);
+		SetActorLocation(GetActorLocation() + direction * enemySpeed * DeltaTime * 2.0f);
 	}	
 }
 
@@ -149,6 +150,7 @@ void AEnemy::DestroyEnemy()
 	meshComp->SetHiddenInGame(true);
 	flipbookComp->SetHiddenInGame(false);
 	flipbookComp->Play();
+	UGameplayStatics::PlaySound2D(this, Enemydown, 1.0f, 1.0f, 0.2f);
 
 	GetWorldTimerManager().SetTimer(timer, this, &AEnemy::DestroySelf, 0.8f, false);
 
@@ -214,29 +216,4 @@ void AEnemy::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		Destroy();
 	}
 
-
-	//APooledSubBullet* subBullet = Cast<APooledSubBullet>(OtherActor);
-
-	//// reset moving time overriding APooledObject
-	//if (subBullet)
-	//{
-	//	subBullet->ResetMovingTime();
-	//	subBullet->SetDeactive();
-	//}
-	//else
-	//{
-	//	APooledObject* bullet = Cast<APooledObject>(OtherActor);
-	//	
-	//	if (bullet)
-	//	{
-	//		bullet->SetDeactive();
-	//	}
-	//}
-
-	//if (drawRate <= dropRate)
-	//{
-	//	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), GetActorRotation());
-	//}
-
-	//Destroy();
 }

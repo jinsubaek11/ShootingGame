@@ -33,7 +33,9 @@ public:
 	int32 GetUltimateCount() const;
 	int32 GetMaxUltimateCount() const;
 	bool GetIsDead() const;
+	bool GetIsInvincibility() const;
 	void SetAttackLevel(AttackLevel level);
+	void LifeCalculator();
 	uint8 GetAttackLevel() const; 
 	class ANormalBulletPool* GetNormalBulletPool();
 
@@ -60,6 +62,10 @@ public:
 	class UBoxComponent* boxComp;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = PlayerSettings)
 	class UStaticMeshComponent* meshComp;
+	UPROPERTY(EditAnywhere, Category = SoundEffect)
+	USoundBase* playerDown;
+	UPROPERTY(EditAnywhere, Category = SoundEffect)
+	USoundBase* playerFire;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = PlayerSettings)
 	float moveSpeed = 800.f;
 	UPROPERTY(EditAnywhere, Category = PlayerSettings)

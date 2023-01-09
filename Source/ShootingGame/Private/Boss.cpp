@@ -2,6 +2,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "kismet/GameplayStatics.h"
 #include "EnemyBulletPool.h"
 #include "TengaiGameMode.h"
 #include "PaperFlipbook.h"
@@ -419,6 +420,14 @@ AttackType ABoss::SelectAttackType()
 
 void ABoss::DestroySelf()
 {
+	endingUI = CreateWidget<UEndingWidget>(GetWorld(), endingWidget);
+	if (endingUI != nullptr)
+	{
+		endingUI->AddToViewport();
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+		GetWorld()->GetFirstPlayerController()->SetShowMouseCursor(true);
+	}
+
 	Destroy();
 }
 

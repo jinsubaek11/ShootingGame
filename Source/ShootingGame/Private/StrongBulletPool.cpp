@@ -1,8 +1,11 @@
 #include "StrongBulletPool.h"
 #include "PooledStrongBullet.h"
 
+
+
 AStrongBulletPool::AStrongBulletPool()
 {
+
 }
 
 void AStrongBulletPool::BeginPlay()

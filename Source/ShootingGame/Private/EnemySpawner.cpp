@@ -30,20 +30,9 @@ void AEnemySpawner::BeginPlay()
 void AEnemySpawner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-// 	currentTime += DeltaTime;
-// 	if (currentTime>=spawnTime)
-// 	{
-// 		GetWorld()->SpawnActor<AEnemy>(enemyFactory,GetActorLocation(),spawnArrow->GetComponentRotation());
-// 		currentTime = 0;
-// 	}
-
-	//curLoc = GetActorLocation();
 	
-
 	worldTime += DeltaTime;
 	//UE_LOG(LogTemp, Warning, TEXT("time is %d"), worldTime);
-
 
 	if (worldTime >= spawnTimer1)
 	{
