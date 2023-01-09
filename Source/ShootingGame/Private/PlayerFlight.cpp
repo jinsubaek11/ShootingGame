@@ -88,7 +88,7 @@ void APlayerFlight::Tick(float DeltaTime)
 		return;
 	}
 
-	// ±âº» ÀÌµ¿
+	// ï¿½âº» ï¿½Ìµï¿½
 	float spd = tengaiGM->playSpeed;
 	FVector newLoca = GetActorLocation();
 	newLoca.Y = newLoca.Y + spd * DeltaTime;
@@ -363,28 +363,6 @@ void APlayerFlight::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 	{
 		enemyBullet->Reset();
 		LifeCalculator();
-// 		if (lifeCount > 1)
-// 		{
-// 			lifeCount -= 1;
-// 			
-// 			for (uint8 i = 1; i < (uint8)attackLevel; i++)
-// 			{
-// 				GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
-// 			}
-// 			// ±Ã±Ø±â ¾ÆÀÌÅÛ ¸¸µé¸é È®ÀÎÇÏ°í ½ºÆù
-// 
-// 			SetAttackLevel(AttackLevel::WEAK);
-// 			SetAttackBarrier(AttackLevel::WEAK);
-// 
-// 			isDead = true;
-// 		}
-// 		else
-// 		{
-// 			tengaiGM->ShowGameover();
-// 			//Destroy();
-// 		}			
-
-//		tengaiGM->mainUI->PrintLifeCount();
 	}
 }
 
@@ -413,7 +391,7 @@ void APlayerFlight::LifeCalculator()
 		{
 			GetWorld()->SpawnActor<AItem>(powerItem, GetActorLocation() + GetActorUpVector() * 100 * i, FRotator::ZeroRotator);
 		}
-		// ±Ã±Ø±â ¾ÆÀÌÅÛ ¸¸µé¸é È®ÀÎÇÏ°í ½ºÆù
+		// ï¿½Ã±Ø±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 		SetAttackLevel(AttackLevel::WEAK);
 		SetAttackBarrier(AttackLevel::WEAK);

@@ -27,6 +27,11 @@ public:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult
 	);
 
+	UFUNCTION()
+	void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex
+	);
+
 public:
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* boxComp;
@@ -34,6 +39,15 @@ public:
 	class UNiagaraComponent* niagaraComp;
 
 private:
+	bool isOverlappingMidBoss = false;
+	bool isOverlappingPreBoss = false;
+	bool isOverlappingBoss = false;
 	bool isUltimateActive = false;
-	uint8 att = 2;
+	float att = 0.5;
+
+	class ATengaiGameMode* tengaiGM;
+
+	class AMidBoss* midBoss;
+	class APreBoss* preBoss;
+	class ABoss* boss;
 };

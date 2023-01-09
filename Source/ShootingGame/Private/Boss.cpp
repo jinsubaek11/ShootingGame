@@ -12,6 +12,7 @@
 #include "PreBoss.h"
 #include "ItemWidget.h"
 #include "HPWidget.h"
+#include "EndingWidget.h"
 
 ABoss::ABoss()
 {
@@ -472,26 +473,31 @@ void ABoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherAct
 
 	if (hp < 0)
 	{
-		SetActorEnableCollision(false);
-
-		ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-		if (tengaiGM)
-		{
-			tengaiGM->AddScore(point);
-		}
-
-		SetAnimation(AnimationType::DEAD);
-
-		int32 playbackPosition = currentFlipBookComponent->GetPlaybackPositionInFrames();
-		int32 filpbookLength = currentFlipBookComponent->GetFlipbookLengthInFrames();
-
-		if (playbackPosition == filpbookLength - 1)
-		{
-			currentFlipBookComponent->Stop();
-		}
-
-		GetWorldTimerManager().SetTimer(timer, this, &ABoss::DestroySelf, 1.f, false);
+		DestroyBoss();
 	}
+}
+
+void ABoss::DestroyBoss()
+{
+	SetActorEnableCollision(false);
+
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM)
+	{
+		tengaiGM->AddScore(point);
+	}
+
+	SetAnimation(AnimationType::DEAD);
+
+	int32 playbackPosition = currentFlipBookComponent->GetPlaybackPositionInFrames();
+	int32 filpbookLength = currentFlipBookComponent->GetFlipbookLengthInFrames();
+
+	if (playbackPosition == filpbookLength - 1)
+	{
+		currentFlipBookComponent->Stop();
+	}
+
+	GetWorldTimerManager().SetTimer(timer, this, &ABoss::DestroySelf, 1.f, false);
 }
 
 void ABoss::RecoverHPBar()

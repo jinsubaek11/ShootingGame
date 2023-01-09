@@ -74,6 +74,9 @@ public:
 	AttackLevel attackLevel = AttackLevel::WEAK;
 	UPROPERTY()
 	class ASubBulletPool* subBulletPool;
+	bool isDead = false;
+	bool isInvincibility = false;
+
 private:
 	UPROPERTY()
 	TArray<class AAttackBarrier*> attackBarriers;
@@ -109,8 +112,6 @@ private:
 	float shootWaitingTime = 0.f;
 	float subAttackWaitingTime = 0.f;
 	float subAttackCoolTime = 1.f;
-	bool isDead = false;
-	bool isInvincibility = false;
 	float deadWaitingTime = 0.f;
 	float deadCoolTime = 2.f;
 

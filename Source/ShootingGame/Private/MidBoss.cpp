@@ -98,7 +98,10 @@ void AMidBoss::Tick(float DeltaTime)
 			for (int32 i = 0; i < 5; i++)
 			{
 				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
-				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (5 - 1) + 30 * i));
+				if (bullet)
+				{
+					bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (5 - 1) + 30 * i));
+				}
 			}
 			isShoot1 = true;
 		}
@@ -111,7 +114,10 @@ void AMidBoss::Tick(float DeltaTime)
 			for (int32 i = 0; i < 6; i++)
 			{
 				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
-				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (6 - 1) + 30 * i));
+				if (bullet)
+				{
+					bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (6 - 1) + 30 * i));
+				}
 			}
 			isShoot2 = true;
 		}
@@ -124,7 +130,10 @@ void AMidBoss::Tick(float DeltaTime)
 			for (int32 i = 0; i < 7; i++)
 			{
 				AEnemyBullet* bullet = GetWorld()->SpawnActor<AEnemyBullet>(EnemyBulFactory, GetActorLocation() + FVector(0, 0, -1 * 150 / 2 * (4 - 1) + 150 * i), GetActorRotation());
-				bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (7 - 1) + 30 * i));
+				if (bullet)
+				{
+					bullet->AddActorLocalRotation(FRotator(0, 0, -1 * 30 / 2 * (7 - 1) + 30 * i));
+				}
 			}
 			isShoot3 = true;
 		}
@@ -134,8 +143,11 @@ void AMidBoss::Tick(float DeltaTime)
 	else if (currentTime >= 4 && currentTime < 4.5)
 	{
 		AActor* target = UGameplayStatics::GetActorOfClass(GetWorld(), APlayerFlight::StaticClass());
-		directionPlayer = target->GetActorLocation() - GetActorLocation();
-		directionPlayer.Normalize();
+		if (target)
+		{
+			directionPlayer = target->GetActorLocation() - GetActorLocation();
+			directionPlayer.Normalize();
+		}
 		if (!isPlayed)
 		{
 			UGameplayStatics::PlaySound2D(this, dragonRush);
