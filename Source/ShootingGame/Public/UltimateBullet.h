@@ -39,9 +39,13 @@ public:
 	class UNiagaraComponent* niagaraComp;
 
 private:
-	bool isOverlapping = false;
+	bool isOverlappingMidBoss = false;
+	bool isOverlappingPreBoss = false;
+	bool isOverlappingBoss = false;
 	bool isUltimateActive = false;
 	float att = 0.5;
+
+	class ATengaiGameMode* tengaiGM;
 
 	class AMidBoss* midBoss;
 	class APreBoss* preBoss;

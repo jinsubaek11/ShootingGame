@@ -67,12 +67,13 @@ void AEnemyBullet::Tick(float DeltaTime)
 void AEnemyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Enemy Bullet Overlaped"));
-	if (isInvincibility || isDead) return;
 	
 	APlayerFlight* player = Cast<APlayerFlight>(OtherActor);
 
 	if (player != nullptr)
 	{
+		if (player->isInvincibility || player->isDead) return;
+
 		player->LifeCalculator();
 		tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
 		if (tengaiGM != nullptr)

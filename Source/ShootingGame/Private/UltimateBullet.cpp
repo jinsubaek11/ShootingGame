@@ -35,69 +35,58 @@ void AUltimateBullet::BeginPlay()
 	niagaraComp->SetActive(false);
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AUltimateBullet::OnOverlap);
 	boxComp->OnComponentEndOverlap.AddDynamic(this, &AUltimateBullet::OnEndOverlap);
+
+	tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
 }
 
 void AUltimateBullet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-//if (tengaiGM)
-//{
-//	tengaiGM->AddScore(enemy->point);
-//}
-
-//enemy->Destroy();
 
 	if (!isUltimateActive) return;
-	//UE_LOG(LogTemp, Warning, TEXT("isUltimateActive"));
 
-	if (isOverlapping)
+	if (midBoss && isOverlappingMidBoss)
 	{
-		if (midBoss)
+		if (midBoss->hpWidget)
 		{
-			if (midBoss->hpWidget)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("MidBoss"));
-				midBoss->myHP -= att;
-				midBoss->hpWidget->SetVisibility(ESlateVisibility::Visible);
-				midBoss->hpWidget->PrintCurrentHealth(midBoss->myHP, midBoss->maxHP);
-			}
-
-			if (midBoss->myHP <= 0)
-			{
-				midBoss->DestroyMidBoss();
-			}
+			//UE_LOG(LogTemp, Warning, TEXT("MidBoss"));
+			midBoss->myHP -= att;
+			midBoss->hpWidget->SetVisibility(ESlateVisibility::Visible);
+			midBoss->hpWidget->PrintCurrentHealth(midBoss->myHP, midBoss->maxHP);
 		}
 
-		if (preBoss)
+		if (midBoss->myHP <= 0)
 		{
-			if (preBoss->bossHPWidget)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("PreBoss"));
-				preBoss->hp -= att;
-				preBoss->bossHPWidget->SetVisibility(ESlateVisibility::Visible);
-				preBoss->bossHPWidget->PrintCurrentHealth(preBoss->hp, preBoss->maxHP);
-			}
+			midBoss->DestroyMidBoss();
+		}
+	}
 
-			if (preBoss->hp <= 0)
-			{
-				preBoss->DestroyPreBoss();
-			}
+	if (preBoss && isOverlappingPreBoss)
+	{
+		if (tengaiGM->bossUI)
+		{
+			preBoss->hp -= att;
+			tengaiGM->bossUI->SetVisibility(ESlateVisibility::Visible);
+			tengaiGM->bossUI->PrintCurrentHealth(preBoss->hp, preBoss->maxHP);
 		}
 
-		if (boss)
+		if (preBoss->hp <= 0)
 		{
-			if (boss->bossHPWidget)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("Boss"));
-				boss->hp -= att;
-				boss->bossHPWidget->SetVisibility(ESlateVisibility::Visible);
-				boss->bossHPWidget->PrintCurrentHealth(boss->hp, boss->maxHP);
-			}
-			if (boss->hp <= 0)
-			{
-				boss->DestroyBoss();
-			}
+			preBoss->DestroyPreBoss();
+		}
+	}
+
+	if (boss && isOverlappingBoss)
+	{
+		if (tengaiGM->bossUI)
+		{
+			boss->hp -= att;
+			tengaiGM->bossUI->SetVisibility(ESlateVisibility::Visible);
+			tengaiGM->bossUI->PrintCurrentHealth(boss->hp, boss->maxHP);
+		}
+		if (boss->hp <= 0)
+		{
+			boss->DestroyBoss();
 		}
 	}
 }
@@ -126,13 +115,11 @@ void AUltimateBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)
 {
-	isOverlapping = true;
-	//if (!isOverlapping) return;
+	if (!isUltimateActive) return;
 
 	AEnemy* enemy = Cast<AEnemy>(OtherActor);
 	if (enemy != nullptr)
 	{
-		ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
 		if (tengaiGM)
 		{
 			tengaiGM->AddScore(enemy->point);
@@ -144,20 +131,21 @@ void AUltimateBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent,
 	AMidBoss* overlappedMidBoss = Cast<AMidBoss>(OtherActor);
 	if (overlappedMidBoss)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("overlaped midboss"));
-
+		isOverlappingMidBoss = true;
 		midBoss = overlappedMidBoss;
 	}
 
 	APreBoss* overlappedPreBoss = Cast<APreBoss>(OtherActor);
 	if (overlappedPreBoss)
 	{
+		isOverlappingPreBoss = true;
 		preBoss = overlappedPreBoss;
 	}
 
 	ABoss* overlappedBoss = Cast<ABoss>(OtherActor);
 	if (overlappedBoss)
 	{
+		isOverlappingBoss = true;
 		boss = overlappedBoss;
 	}
 
@@ -179,9 +167,24 @@ void AUltimateBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent,
 void AUltimateBullet::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	isOverlapping = false;
+	AMidBoss* overlappedMidBoss = Cast<AMidBoss>(OtherActor);
+	if (overlappedMidBoss)
+	{
+		isOverlappingMidBoss = false;
+		midBoss = nullptr;
+	}
 
-	//midBoss = nullptr;
-	//preBoss = nullptr;
-	//boss = nullptr;
+	APreBoss* overlappedPreBoss = Cast<APreBoss>(OtherActor);
+	if (overlappedPreBoss)
+	{
+		isOverlappingPreBoss = false;
+		preBoss = nullptr;
+	}
+
+	ABoss* overlappedBoss = Cast<ABoss>(OtherActor);
+	if (overlappedBoss)
+	{
+		isOverlappingBoss = false;
+		boss = nullptr;
+	}
 }
