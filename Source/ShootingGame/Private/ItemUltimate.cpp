@@ -17,6 +17,7 @@ void AItemUltimate::BeginPlay()
 
 void AItemUltimate::ItemSelector(APlayerFlight* player)
 {
+	//UE_LOG(LogTemp, Warning, TEXT("This is Ultimate item"));
 	if (player != nullptr)
 	{
 		int32 ultCount = player->GetUltimateCount();

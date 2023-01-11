@@ -48,7 +48,6 @@ void AMidBoss::BeginPlay()
 	Super::BeginPlay();
 	direction = GetActorUpVector() * -1;
 	boxComp->OnComponentBeginOverlap.AddDynamic(this, &AMidBoss::OnOverlap);
-
 	UGameplayStatics::PlaySound2D(this, dragonSpawned, 1.2f, 1.0f, 0.5f);
 
 	itemWidget = Cast<UItemWidget>(itemWidgetComp->GetWidget());
@@ -199,24 +198,6 @@ void AMidBoss::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			DestroyMidBoss();
-			//DestroyEnemy();
-			ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-			if (tengaiGM)
-			{
-				tengaiGM->AddScore(point);
-			}
-
-			GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
-			GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
-			tengaiGM->playSpeed = 150;
-
-			warningUI = CreateWidget<UWarningWidget>(GetWorld(), warningWidget);
-			if (warningUI != nullptr)
-			{
-				warningUI->AddToViewport();
-			}
-
-			Destroy();
 		}
 	}
 
@@ -243,19 +224,26 @@ void AMidBoss::DestroyMidBoss()
 	boxComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	flipComp->SetHiddenInGame(false);
 
-	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
-	if (tengaiGM)
-	{
-		tengaiGM->AddScore(point);
-	}
-
-	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -90), FRotator(0, 90, 0));
-	GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
-
 	direction = FVector(0);
 
 	itemWidget->SetVisibility(ESlateVisibility::Visible);
 	itemWidget->PrintMonsterScore(point);
+
+	ATengaiGameMode* tengaiGM = Cast<ATengaiGameMode>(GetWorld()->GetAuthGameMode());
+	if (tengaiGM)
+	{
+		tengaiGM->AddScore(point);
+		tengaiGM->playSpeed = 150;
+	}
+
+	GetWorld()->SpawnActor<AItem>(itemFactory, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+	GetWorld()->SpawnActor<AItem>(itemFactoryUlti, GetActorLocation() + FVector(0, 0, -100), FRotator(0, 90, 0));
+
+	warningUI = CreateWidget<UWarningWidget>(GetWorld(), warningWidget);
+	if (warningUI != nullptr)
+	{
+		warningUI->AddToViewport();
+	}
 
 	GetWorldTimerManager().SetTimer(timer, this, &AMidBoss::DestroySelf, 0.8f, false);
 }

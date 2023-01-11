@@ -121,8 +121,6 @@ private:
 	float startAnimationPlayTime;
 
 	bool isDead;
-	//int32 hp = 10;
-	//float maxHP = 10;
 
 	FTimerHandle hpTimer;
 	int32 hpRecoverRemaining = 100;

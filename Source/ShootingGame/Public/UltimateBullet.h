@@ -43,7 +43,7 @@ private:
 	bool isOverlappingPreBoss = false;
 	bool isOverlappingBoss = false;
 	bool isUltimateActive = false;
-	float att = 0.5;
+	float att = 0.2;
 
 	class ATengaiGameMode* tengaiGM;
 
