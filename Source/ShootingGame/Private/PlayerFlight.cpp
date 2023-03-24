@@ -398,6 +398,7 @@ void APlayerFlight::LifeCalculator()
 		SetAttackLevel(AttackLevel::WEAK);
 		SetAttackBarrier(AttackLevel::WEAK);
 
+		tengaiGM->mainUI->PrintLifeCount();
 		isDead = true;
 
 		UGameplayStatics::PlaySound2D(this, playerDown, 1.0f);
