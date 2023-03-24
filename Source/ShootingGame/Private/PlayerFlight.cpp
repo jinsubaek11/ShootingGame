@@ -103,8 +103,9 @@ void APlayerFlight::Tick(float DeltaTime)
 		SetAttackBarrier(attackLevel);
 	}
 
-	if (ultimateCount && isFireUltimate)
+	if (ultimateCount >= 0 && isFireUltimate)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("%d"), ultimateCount);
 		ultimateDurationTime += DeltaTime;
 
 		if (ultimateDurationTime <= ultimateMaxDurationTime)
